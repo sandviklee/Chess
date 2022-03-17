@@ -39,6 +39,16 @@ public abstract class BasePiece {
         } return "White";
     }
 
+    public void setPiecePos(int x, int y) {
+        if (!(x < 8 && x >= 0) || !(y < 8 && y >= 0)) {
+            System.out.println(x + y);
+            throw new IllegalArgumentException("The piece is not in an available range.");
+        } 
+        pos.clear();
+        pos.add(x);
+        pos.add(y);
+    }
+
     public ArrayList<Integer> getPiecePos() {
         return new ArrayList<>(pos);
     }

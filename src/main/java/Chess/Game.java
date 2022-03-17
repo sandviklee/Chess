@@ -36,7 +36,9 @@ public class Game extends Application {
     Chessboard c1 = new Chessboard();
   
     primaryStage.setTitle("Chess");
-    Group root = new Group(FXMLLoader.load(Game.class.getResource("Chessboard.fxml")), c1.MatrixToFXML());
+    Group root = new Group(FXMLLoader.load(Game.class.getResource("Chessboard.fxml")), c1.MatrixToFXML().get(0), c1.MatrixToFXML().get(1),
+    c1.MatrixToFXML().get(2), c1.MatrixToFXML().get(3), c1.MatrixToFXML().get(4), c1.MatrixToFXML().get(5), c1.MatrixToFXML().get(6), c1.MatrixToFXML().get(7),
+    c1.MatrixToFXML().get(7), c1.MatrixToFXML().get(8), c1.MatrixToFXML().get(9));
     Scene scene = new Scene(root);
     primaryStage.setScene(scene);
     primaryStage.setResizable(false);
@@ -45,9 +47,16 @@ public class Game extends Application {
     // placer.addPieces();
 
     // container.getChildren().add(mainImageView);
-
     primaryStage.show();
-    
+
+
+    c1.Move(0, 0, 2, 5);
+    root = new Group(FXMLLoader.load(Game.class.getResource("Chessboard.fxml")), c1.MatrixToFXML().get(0), c1.MatrixToFXML().get(1),
+    c1.MatrixToFXML().get(2), c1.MatrixToFXML().get(3), c1.MatrixToFXML().get(4), c1.MatrixToFXML().get(5), c1.MatrixToFXML().get(6), c1.MatrixToFXML().get(7),
+    c1.MatrixToFXML().get(7), c1.MatrixToFXML().get(8), c1.MatrixToFXML().get(9));
+    scene = new Scene(root);
+    primaryStage.setScene(scene);
+    primaryStage.show();
   }
 
   public static void main(String[] args) {
