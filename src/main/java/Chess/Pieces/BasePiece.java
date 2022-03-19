@@ -30,13 +30,13 @@ public abstract class BasePiece {
     public abstract ArrayList<Integer> layPattern(int x, int y);
 
     public String getPieceName() {
-        return "" + this.getClass().getName() + "_" + this.getPieceColor() + "";
+        return "" + this.getClass().getName() + "";
     }
 
     public String getPieceColor() {
         if (pieceColor == 1) {
-            return "Black";
-        } return "White";
+            return "b";
+        } return "w";
     }
 
     public void setPiecePos(int x, int y) {

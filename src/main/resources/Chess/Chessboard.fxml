@@ -8,7 +8,7 @@
    <children>
       <ImageView fitHeight="512.0" fitWidth="512.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@images/Chessboard.png" />
+            <Image url="@../../java/Chess/images/Chessboard.png" />
          </image>
       </ImageView>
    </children>
