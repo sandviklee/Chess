@@ -23,20 +23,18 @@ public class Game extends Application {
 
     primaryStage.setTitle("Chess");
     Chessboard c1 = new Chessboard();
-    c1.Move(0, 1, 0, 2);
-    c1.Move(0, 2, 0, 3);
-    System.out.println(c1.getChessboardState());
+    // c1.Move(0, 1, 0, 2);
+    // c1.Move(0, 2, 0, 3);
+    // System.out.println(c1.getChessboardState());
     Group root = new Group();
-    root.getChildren().add(FXMLLoader.load(Game.class.getResource("Chessboard.fxml")));
     root.getChildren().add(c1.ChessboardView());
+    root.getChildren().add(FXMLLoader.load(Game.class.getResource("Chessboard.fxml")));
     root.getChildren().addAll(c1.MatrixToFXML());
-
     Scene scene = new Scene(root);
     primaryStage.setScene(scene);
+
     primaryStage.setResizable(false);
     primaryStage.show();
-
-
   }
 
   public static void main(String[] args) {
