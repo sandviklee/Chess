@@ -1,25 +1,20 @@
 package Chess;
 
 import java.net.URL;
-import java.util.Arrays;
 import java.util.ResourceBundle;
-
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.control.TextArea;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 
 
 public class ChessController implements Initializable{
-    @FXML private GridPane gridpane;
+    @FXML private GridPane gridPane;
     @FXML private Button x0y0;
     private Pane[][] paneArray;
+    private boolean firstClick;
+    // private boolean secondClick;
 
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
@@ -28,19 +23,26 @@ public class ChessController implements Initializable{
         for (int i = 0; i < 8; i++) {
             int IntegerI = i; //Making the y coordinate static
             for (int j = 0; j < 8; j++) {
-                Pane pane = new Pane();
                 int IntegerJ = j; //Making the x coordinate static
-                pane.setOnMouseClicked(e -> { System.out.println("y: " + IntegerI + " x: " + IntegerJ);});
+                Pane pane = new Pane();
                 paneArray[i][j] = pane;
-                gridpane.add(pane, i, j);
+                gridPane.add(pane, IntegerI, IntegerJ);
+                if (!(firstClick)) {
+                    // firstClick = true;
+                    pane.setOnMouseClicked(e -> { System.out.println("y: " + IntegerJ + " x: " + IntegerI);
+                    Move.x_1 = IntegerI;
+                    Move.y_1 = IntegerJ;
+                    BlackClick();});
+                
+                 }
             }
         }
     }    
 
     @FXML
     public void BlackClick() {
-        System.out.println("DU sug");
-        changeColorToBlack(paneArray[1][1]);
+        System.out.println(Move.x_1 + " " + Move.y_1);
+        changeColorToBlack(paneArray[Move.x_1][Move.y_1]);
     }
 
     private void changeColorToBlack(Pane pane) {

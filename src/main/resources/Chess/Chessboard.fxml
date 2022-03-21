@@ -17,7 +17,7 @@
             <Image url="@../../java/Chess/images/Chessboard.png" />
          </image>
       </ImageView>
-      <GridPane fx:id="gridpane" gridLinesVisible="true" layoutY="-3.0" prefHeight="515.0" prefWidth="512.0">
+      <GridPane fx:id="gridPane" gridLinesVisible="true" layoutY="-3.0" prefHeight="515.0" prefWidth="512.0">
         <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
