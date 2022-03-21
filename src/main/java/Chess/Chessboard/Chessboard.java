@@ -139,6 +139,10 @@ public class Chessboard {
     }
 
     public ArrayList<ArrayList<BasePiece>> getChessboardState() {
+        return new ArrayList<ArrayList<BasePiece>>(MainBoard);
+    }
+
+    public ArrayList<ArrayList<BasePiece>> setChessboardState() {
         return MainBoard;
     }
 

@@ -87,11 +87,11 @@ public class PiecePlacer {
     }
 
     public ArrayList<ArrayList<BasePiece>> getOuter() {
-        return this.outer;
+        return new ArrayList<ArrayList<BasePiece>>(this.outer);
     }
 
     public ArrayList<BasePiece> getInner() {
-        return this.inner;
+        return new ArrayList<BasePiece>(this.inner);
     }
 
     public static void main(String[] args) {

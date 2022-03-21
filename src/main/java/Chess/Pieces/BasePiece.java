@@ -2,6 +2,8 @@ package Chess.Pieces;
 
 import java.util.ArrayList;
 
+/*This is where my BasePiece abstract class is written, where all the underclasses (Pieces) are made out of this class */
+
 public abstract class BasePiece {
     int pieceColor;
     ArrayList<Integer> availColor = new ArrayList<>();
