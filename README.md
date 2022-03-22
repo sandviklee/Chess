@@ -18,7 +18,7 @@ Java Chess game made during the course **[TDT4100 - Object oriented programming]
 | Keypoints                                | Description                             |
 | ---------------------------------------- | --------------------------------------- |
 | Precentage of grade                      | 35% (App) + 15% (Documentation/Theory)  |
-| Deadline                                 | 29. April                               |
-| Demonstration due                        | 03. May                                 |
+| Deadline                                 | 29. April 2022                          |
+| Demonstration due                        | 03. May 2022                            |
 
 
