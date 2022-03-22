@@ -4,23 +4,21 @@ Java Chess game made during the course **[TDT4100 - Object oriented programming]
 
 ![](https://i.pinimg.com/originals/5e/45/c3/5e45c3f6445fba750c3b4776c7a298fb.gif)
 
-## Reminder av nøkkelpunkter
+## Yet to be implemented:
 
-| Nøkkelpunkt                              | Beskrivelse                             |
+- IO system, storing and accessing files. (Fenstring)
+- Piece patterns and logic.
+- Piece moving.
+- Player, switching between White and Black.
+- Option to turn around the board.
+- Garbage pieces stored.
+
+## Task keypoints
+
+| Keypoints                                | Description                             |
 | ---------------------------------------- | --------------------------------------- |
-| Andel av karakter                        | 35% (appen) + 15% (dokumentasjon/teori) |
-| Frist for godkjenning av prosjektplan    | 25. februar                             |
-| Innleveringsfrist                        | 29. april                               |
-| Demonstrasjonsfrist hos læringsassistent | 03. mai                                 |
-| Gruppestørrelse                          | 1 eller 2 personer                      |
+| Precentage of grade                      | 35% (App) + 15% (Documentation/Theory)  |
+| Deadline                                 | 29. April                               |
+| Demonstration due                        | 03. May                                 |
 
-### Anbefalte perioder å jobbe med prosjektet
 
-| Uke   | Fra  | Til  | Beskrivelse                                 |
-| ----- | ---- | ---- | ------------------------------------------- |
-| 7-8   | 14/2 | 25/2 | Grunnklasser og brukergrensesnitt           |
-| 11    | 14/3 | 18/3 | Lagring of filhåndtering                    |
-| 14    | 04/4 | 08/4 | Testing                                     |
-| 16-17 | 19/4 | 29/4 | Fullføre appen med tilhørende dokumentasjon |
-
-**_LYKKE TIL_**
