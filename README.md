@@ -2,7 +2,7 @@
 
 Java Chess game made during the course **[TDT4100 - Object oriented programming](https://www.ntnu.no/studier/emner/TDT4100#tab=omEmnet)** at NTNU.
 
-[![](https://i.pinimg.com/originals/5e/45/c3/5e45c3f6445fba750c3b4776c7a298fb.gif)]
+![](https://i.pinimg.com/originals/5e/45/c3/5e45c3f6445fba750c3b4776c7a298fb.gif)
 
 ## Reminder av nøkkelpunkter
 
