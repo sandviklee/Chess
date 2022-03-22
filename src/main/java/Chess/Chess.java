@@ -6,6 +6,7 @@ import Chess.Chessboard.Chessboard;
 while moving, or initializing the main chessboard is done. */
 
 public class Chess {
+    public static final String ChessController = null;
     public static Chessboard chessboard = new Chessboard();
 
 

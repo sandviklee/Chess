@@ -1,6 +1,8 @@
 package Chess;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -13,8 +15,7 @@ public class ChessController implements Initializable{
     @FXML private GridPane gridPane;
     @FXML private Button x0y0;
     private Pane[][] paneArray;
-    private boolean firstClick;
-    // private boolean secondClick;
+    public static List<Integer> mouseposlist = new ArrayList<>();
 
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
@@ -27,22 +28,26 @@ public class ChessController implements Initializable{
                 Pane pane = new Pane();
                 paneArray[i][j] = pane;
                 gridPane.add(pane, IntegerI, IntegerJ);
-                if (!(firstClick)) {
-                    // firstClick = true;
-                    pane.setOnMouseClicked(e -> { System.out.println("y: " + IntegerJ + " x: " + IntegerI);
-                    Move.x_1 = IntegerI;
-                    Move.y_1 = IntegerJ;
-                    BlackClick();});
-                
-                 }
+                pane.setOnMouseClicked(e -> { System.out.println("FIRST y: " + IntegerJ + " x: " + IntegerI);
+                if (mouseposlist.size() < 2) {
+                    mouseposlist.add(IntegerI);
+                    mouseposlist.add(IntegerJ);
+                    BlackClick(mouseposlist.get(0), mouseposlist.get(1));
+                } else if (mouseposlist.size() == 2) {
+                    mouseposlist.add(IntegerI);
+                    mouseposlist.add(IntegerJ);
+                    BlackClick(mouseposlist.get(2), mouseposlist.get(3));
+                    Move.MovePiece();
+                    mouseposlist.clear();
+                    }
+                });  
             }
         }
     }    
 
     @FXML
-    public void BlackClick() {
-        System.out.println(Move.x_1 + " " + Move.y_1);
-        changeColorToBlack(paneArray[Move.x_1][Move.y_1]);
+    public void BlackClick(int x, int y) {
+        changeColorToBlack(paneArray[x][y]);
     }
 
     private void changeColorToBlack(Pane pane) {

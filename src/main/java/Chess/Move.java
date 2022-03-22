@@ -1,11 +1,22 @@
 package Chess;
 
+
 /* This class is for implementing moving on the main board, but also updating the Chessgame class */
 
 public class Move {
-    public static int x_1;
-    public static int y_1;
-    public int x_2;
-    public int y_2;
+
+    public static void MovePiece() {
+        //TODO: ADD MORE FUNCTIONALITY
+        //NEED BASIC PIECE LOGIC AND MOVING FROM THE SAME SPACE TO THE OTHER IS NOT AN AVAILABLE MOVE.
+        if (!((Chess.chessboard.getChessboardState()).get(ChessController.mouseposlist.get(1)).get(ChessController.mouseposlist.get(0)) == null)) {
+            Chess.chessboard.Move(ChessController.mouseposlist.get(0), ChessController.mouseposlist.get(1), ChessController.mouseposlist.get(2), ChessController.mouseposlist.get(3));
+            System.out.println("Moved!");
+            System.out.println(Chess.chessboard.getChessboardState());
+        } else {
+            throw new IllegalArgumentException("You can't do that move!" + " y1: " + ChessController.mouseposlist.get(1) + " x1: " + ChessController.mouseposlist.get(0));
+        }
+        
+    }
+    
 
 }
