@@ -11,7 +11,7 @@ public class Move {
         if (!((Chess.chessboard.getChessboardState()).get(ChessController.mouseposlist.get(1)).get(ChessController.mouseposlist.get(0)) == null)) {
             Chess.chessboard.Move(ChessController.mouseposlist.get(0), ChessController.mouseposlist.get(1), ChessController.mouseposlist.get(2), ChessController.mouseposlist.get(3));
             System.out.println("Moved!");
-            System.out.println(Chess.chessboard.getChessboardState());
+            // System.out.println(Chess.chessboard.getChessboardState());
         } else {
             throw new IllegalArgumentException("You can't do that move!" + " y1: " + ChessController.mouseposlist.get(1) + " x1: " + ChessController.mouseposlist.get(0));
         }
