@@ -8,7 +8,7 @@ Java Chess game made during the course **[TDT4100 - Object oriented programming]
 
 - IO system, storing and accessing files. (Fenstring)
 - Piece patterns and logic.
-- Piece moving.
+- Pieces moving. ✔️
 - Player, switching between White and Black.
 - Option to turn around the board.
 - Garbage pieces stored.
