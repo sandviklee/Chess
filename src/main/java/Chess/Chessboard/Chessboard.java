@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 
 import Chess.Pieces.*;
+import javafx.scene.Cursor;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
@@ -128,6 +129,7 @@ public class Chessboard {
                         ImageView.setY(piece.getPiecePos().get(1)*64 + 1);
                         ImageArray.add(ImageView);
                     }
+                    
                     else {
                         ImageArray.add(null);
                     }

@@ -12,6 +12,8 @@ import javafx.stage.Stage;
 
 public class ChessApp extends Application {
 
+  static Group root = new Group();
+
   private void UpdateChessboard(Group g) throws FileNotFoundException {
     g.getChildren().clear();
     g.getChildren().add(Chess.chessboard.ChessboardView());
@@ -28,7 +30,7 @@ public class ChessApp extends Application {
   @Override
   public void start(Stage primaryStage) throws Exception { 
     primaryStage.setTitle("Chess");
-    Group root = new Group();
+    ChessApp.root = new Group();
     root.getChildren().add(Chess.chessboard.ChessboardView());
     root.getChildren().addAll(Chess.chessboard.MatrixToFXML());
     Scene scene = new Scene(root);
@@ -48,11 +50,13 @@ public class ChessApp extends Application {
         };
           while (true) {
             try {
-              Thread.sleep(1500);
+              Thread.sleep(1);
             } catch (InterruptedException e) {
               }
-              Platform.runLater(updater);
-              
+              if (Move.Moving) {
+                Platform.runLater(updater);
+                Move.Moving = false;
+              } 
           }
         }
       });
@@ -60,7 +64,7 @@ public class ChessApp extends Application {
     thread.setDaemon(true);
     thread.start();
     
-    
+    // System.out.println(root.getChildren());
     root.getChildren().add(FXMLLoader.load(ChessApp.class.getResource("Chessboard.fxml")));
     primaryStage.setScene(scene);
     primaryStage.setResizable(false);
