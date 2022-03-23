@@ -6,12 +6,12 @@ Java Chess game made during the course **[TDT4100 - Object oriented programming]
 
 ## Yet to be implemented:
 
-- IO system, storing and accessing files. (Fenstring)
-- Piece patterns and logic.
-- Pieces moving. ✔️
-- Player, switching between White and Black.
-- Option to turn around the board.
-- Garbage pieces stored.
+- IO system, storing and accessing files. (Fenstring) □
+- Piece patterns and logic. □
+- Pieces moving. ☑
+- Player, switching between White and Black. □
+- Option to turn around the board. □
+- Garbage pieces stored. □
 
 ## Task keypoints
 
