@@ -62,8 +62,9 @@ public class ChessController implements Initializable{
                         ChessApp.root.getChildren().remove(piece);
                         ChessApp.root.getChildren().add(ChessApp.root.getChildren().size()-1, piece);
                         this.draggable = (ImageView) ChessApp.root.getChildren().get(ChessApp.root.getChildren().size()-2);
-
-
+                        ChessApp.root.getChildren().remove(piece);
+                        ChessApp.root.getChildren().add(ChessApp.root.getChildren().size()-1, piece);
+                        
                         Thread thread = new Thread(new Runnable() {
                             @Override
                             public void run() {

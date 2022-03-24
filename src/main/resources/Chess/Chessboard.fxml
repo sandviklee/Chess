@@ -16,7 +16,7 @@
             <Image url="@../../java/Chess/images/Chessboard.png" />
          </image>
       </ImageView>
-      <GridPane fx:id="gridPane" gridLinesVisible="true" layoutY="-3.0" prefHeight="515.0" prefWidth="512.0">
+      <GridPane fx:id="gridPane" blendMode="SCREEN" prefHeight="512.0" prefWidth="512.0">
         <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -28,14 +28,14 @@
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
         </columnConstraints>
         <rowConstraints>
-          <RowConstraints maxHeight="70.0" minHeight="10.0" prefHeight="67.0" vgrow="SOMETIMES" />
-          <RowConstraints maxHeight="72.0" minHeight="10.0" prefHeight="65.0" vgrow="SOMETIMES" />
-          <RowConstraints maxHeight="70.0" minHeight="10.0" prefHeight="63.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="72.0" minHeight="10.0" prefHeight="65.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="64.0" minHeight="10.0" prefHeight="64.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="64.0" minHeight="10.0" prefHeight="64.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="64.0" minHeight="10.0" prefHeight="64.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="64.0" minHeight="10.0" prefHeight="64.0" vgrow="SOMETIMES" />
             <RowConstraints maxHeight="82.0" minHeight="10.0" prefHeight="63.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="70.0" minHeight="10.0" prefHeight="64.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="64.0" minHeight="10.0" prefHeight="64.0" vgrow="SOMETIMES" />
             <RowConstraints maxHeight="71.0" minHeight="10.0" prefHeight="64.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="67.0" minHeight="10.0" prefHeight="65.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="64.0" minHeight="10.0" prefHeight="64.0" vgrow="SOMETIMES" />
         </rowConstraints>
       </GridPane>
       <Text layoutX="571.0" layoutY="48.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Chesspieces Out" wrappingWidth="145.14452362060547">

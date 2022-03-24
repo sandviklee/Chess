@@ -33,6 +33,7 @@ public class ChessApp extends Application {
     ChessApp.root = new Group();
     root.getChildren().add(Chess.chessboard.ChessboardView());
     root.getChildren().addAll(Chess.chessboard.MatrixToFXML());
+    root.getChildren().add(FXMLLoader.load(ChessApp.class.getResource("Chessboard.fxml")));
     Scene scene = new Scene(root);
 
     Thread thread = new Thread(new Runnable() {
@@ -60,12 +61,11 @@ public class ChessApp extends Application {
           }
         }
       });
-    
-    thread.setDaemon(true);
+        thread.setDaemon(true);
     thread.start();
     
     // System.out.println(root.getChildren());
-    root.getChildren().add(FXMLLoader.load(ChessApp.class.getResource("Chessboard.fxml")));
+    
     primaryStage.setScene(scene);
     primaryStage.setResizable(false);
     primaryStage.show();

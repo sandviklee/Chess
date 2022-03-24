@@ -130,9 +130,10 @@ public class Chessboard {
                         ImageArray.add(ImageView);
                     }
                     
-                    else {
-                        ImageArray.add(null);
-                    }
+
+                    } else {
+                        ImageView = new ImageView();
+                        ImageArray.add(ImageView);
                 }
             }
         }
