@@ -71,7 +71,7 @@ public class ChessController implements Initializable{
                             };
                                 while (true) {
                                   try {
-                                    Thread.sleep(1);
+                                    Thread.sleep(100);
                                   } catch (InterruptedException e) {
                                     }
                                 

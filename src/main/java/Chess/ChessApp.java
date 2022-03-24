@@ -51,7 +51,7 @@ public class ChessApp extends Application {
         };
           while (true) {
             try {
-              Thread.sleep(1);
+              Thread.sleep(300);
             } catch (InterruptedException e) {
               }
               if (Move.Moving) {
