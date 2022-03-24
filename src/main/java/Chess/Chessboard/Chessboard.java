@@ -6,7 +6,6 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 
 import Chess.Pieces.*;
-import javafx.scene.Cursor;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
@@ -69,10 +68,6 @@ public class Chessboard {
                         } else {
                             ImageView = new ImageView(bwImage);
                         }
-                        
-                        ImageView.setX(piece.getPiecePos().get(0)*64 + 1);
-                        ImageView.setY(piece.getPiecePos().get(1)*64 + 1);
-                        ImageArray.add(ImageView);
                     }
                     else if (piece.getPieceName().equals("Chess.Pieces.Knight")) {
                         if (piece.getPieceColor().equals("b")) {
@@ -80,10 +75,6 @@ public class Chessboard {
                         } else {
                             ImageView = new ImageView(hwImage);
                         }
-                        
-                        ImageView.setX(piece.getPiecePos().get(0)*64 + 1);
-                        ImageView.setY(piece.getPiecePos().get(1)*64 + 1);
-                        ImageArray.add(ImageView);
                     }
                     else if (piece.getPieceName().equals("Chess.Pieces.Rook")) {
                         if (piece.getPieceColor().equals("b")) {
@@ -91,10 +82,6 @@ public class Chessboard {
                         } else {
                             ImageView = new ImageView(rwImage);
                         }
-
-                        ImageView.setX(piece.getPiecePos().get(0)*64 + 1);
-                        ImageView.setY(piece.getPiecePos().get(1)*64 + 1);
-                        ImageArray.add(ImageView);
                     }
                     else if (piece.getPieceName().equals("Chess.Pieces.King")) {
                         if (piece.getPieceColor().equals("b")) {
@@ -102,10 +89,6 @@ public class Chessboard {
                         } else {
                             ImageView = new ImageView(kwImage);
                         }
-
-                        ImageView.setX(piece.getPiecePos().get(0)*64 + 1);
-                        ImageView.setY(piece.getPiecePos().get(1)*64 + 1);
-                        ImageArray.add(ImageView);
                     }
                     else if (piece.getPieceName().equals("Chess.Pieces.Queen")) {
                         if (piece.getPieceColor().equals("b")) {
@@ -113,10 +96,6 @@ public class Chessboard {
                         } else {
                             ImageView = new ImageView(qwImage);
                         }
-
-                        ImageView.setX(piece.getPiecePos().get(0)*64 + 1);
-                        ImageView.setY(piece.getPiecePos().get(1)*64 + 1);
-                        ImageArray.add(ImageView);
                     }
                     else if (piece.getPieceName().equals("Chess.Pieces.Pawn")) {
                         if (piece.getPieceColor().equals("b")) {
@@ -124,13 +103,11 @@ public class Chessboard {
                         } else {
                             ImageView = new ImageView(pwImage);
                         }
-                        
-                        ImageView.setX(piece.getPiecePos().get(0)*64 + 1);
-                        ImageView.setY(piece.getPiecePos().get(1)*64 + 1);
-                        ImageArray.add(ImageView);
                     }
-                    
-
+                    ImageView.setX(piece.getPiecePos().get(0)*64 + 1);
+                    ImageView.setY(piece.getPiecePos().get(1)*64 + 1);
+                    ImageArray.add(ImageView);
+                
                     } else {
                         ImageView = new ImageView();
                         ImageArray.add(ImageView);

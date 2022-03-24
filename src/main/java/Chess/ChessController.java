@@ -1,27 +1,17 @@
 package Chess;
 
-import java.io.FileNotFoundException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
-
 import javafx.application.Platform;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.ClipboardContent;
-import javafx.scene.input.DragEvent;
-import javafx.scene.input.Dragboard;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.input.TransferMode;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
-
 
 public class ChessController implements Initializable{
     @FXML private GridPane gridPane;
@@ -64,7 +54,7 @@ public class ChessController implements Initializable{
                         this.draggable = (ImageView) ChessApp.root.getChildren().get(ChessApp.root.getChildren().size()-2);
                         ChessApp.root.getChildren().remove(piece);
                         ChessApp.root.getChildren().add(ChessApp.root.getChildren().size()-1, piece);
-                        
+
                         Thread thread = new Thread(new Runnable() {
                             @Override
                             public void run() {

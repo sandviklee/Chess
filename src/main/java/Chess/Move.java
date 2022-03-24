@@ -11,7 +11,7 @@ public class Move {
         //TODO: ADD MORE FUNCTIONALITY
         //NEED BASIC PIECE LOGIC AND MOVING FROM THE SAME SPACE TO THE OTHER IS NOT AN AVAILABLE MOVE.
         Moving = true;
-        if (!((Chess.chessboard.getChessboardState()).get(ChessController.mouseposlist.get(1)).get(ChessController.mouseposlist.get(0)) == null)) {
+        if (!((Chess.chessboard.getChessboardState()).get(ChessController.mouseposlist.get(1)).get(ChessController.mouseposlist.get(0)) == null) && !((Chess.chessboard.getChessboardState()).get(ChessController.mouseposlist.get(1)).get(ChessController.mouseposlist.get(0)) == (Chess.chessboard.getChessboardState()).get(ChessController.mouseposlist.get(3)).get(ChessController.mouseposlist.get(2)))) {
             Chess.chessboard.Move(ChessController.mouseposlist.get(0), ChessController.mouseposlist.get(1), ChessController.mouseposlist.get(2), ChessController.mouseposlist.get(3));
             System.out.println("Moved!");
             // System.out.println(Chess.chessboard.getChessboardState());
