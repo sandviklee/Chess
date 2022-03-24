@@ -13,7 +13,11 @@ Java Chess game made during the course **[TDT4100 - Object oriented programming]
 - Option to turn around the board. □
 - Garbage pieces stored. □
 
-## Task keypoints
+## What i want to implement in the future:
+- AI that you can play against.
+- Better coding structure, with more efficient code.
+
+## Project Keypoints
 
 | Keypoints                                | Description                             |
 | ---------------------------------------- | --------------------------------------- |
