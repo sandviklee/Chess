@@ -36,6 +36,7 @@ public class ChessApp extends Application {
     root.getChildren().add(FXMLLoader.load(ChessApp.class.getResource("Chessboard.fxml")));
     Scene scene = new Scene(root);
 
+
     Thread thread = new Thread(new Runnable() {
       @Override
       public void run() {
@@ -51,7 +52,7 @@ public class ChessApp extends Application {
         };
           while (true) {
             try {
-              Thread.sleep(300);
+              Thread.sleep(10);
             } catch (InterruptedException e) {
               }
               if (Move.Moving) {
@@ -61,7 +62,7 @@ public class ChessApp extends Application {
           }
         }
       });
-        thread.setDaemon(true);
+    thread.setDaemon(true);
     thread.start();
     
     // System.out.println(root.getChildren());

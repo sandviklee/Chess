@@ -31,7 +31,7 @@ public class Move {
             }
             
             
-            // System.out.println(Chess.chessboard.getChessboardState());
+        System.out.println(Chess.chessboard.getChessboardState());
         } else {
             
             // throw new IllegalArgumentException("You can't do that move!" + " y1: " + ChessController.mouseposlist.get(1) + " x1: " + ChessController.mouseposlist.get(0));

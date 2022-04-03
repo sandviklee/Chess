@@ -128,14 +128,19 @@ public class Chessboard {
 
     public void Move(int x_1, int y_1, int x_2, int y_2) {
         BasePiece piece = MainBoard.get(y_1).get(x_1);
-        MainBoard.get(y_2).remove(x_2);
-        MainBoard.get(y_2).add(x_2, piece);
-        MainBoard.get(y_1).remove(piece);
+        try {
+            MainBoard.get(y_2).remove(x_2);
+            MainBoard.get(y_2).add(x_2, piece);
+            MainBoard.get(y_1).remove(piece);
 
-        MainBoard.get(y_1).add(x_1, null);
-        piece = MainBoard.get(y_2).get(x_2);
-        
-        piece.setPiecePos(x_2, y_2);
+            MainBoard.get(y_1).add(x_1, null);
+            piece = MainBoard.get(y_2).get(x_2);
+            
+            piece.setPiecePos(x_2, y_2);
+        } catch (Exception e) {
+            
+        }
+
         
 
     }
