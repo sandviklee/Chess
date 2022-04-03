@@ -19,7 +19,7 @@ public class Chessboard {
     }
 
     public ImageView ChessboardView() throws FileNotFoundException {
-        InputStream board = new FileInputStream("src/main/java/Chess/images/Chessboard.png");
+        InputStream board = new FileInputStream("src/main/resources/Chess/images/Chessboard.png");
         Image boardimg = new Image(board);
         ImageView boardView = new ImageView(boardimg);
         return boardView;
@@ -32,19 +32,19 @@ public class Chessboard {
     }
 
     public ArrayList<ImageView> MatrixToFXML() throws FileNotFoundException {
-        Image bbImage = addChessImage("src/main/java/Chess/images/cpb/b_bishop_png_shadow_128px.png");
-        Image hbImage = addChessImage("src/main/java/Chess/images/cpb/b_knight_png_shadow_128px.png");
-        Image rbImage = addChessImage("src/main/java/Chess/images/cpb/b_rook_png_shadow_128px.png");
-        Image kbImage = addChessImage("src/main/java/Chess/images/cpb/b_king_png_shadow_128px.png");
-        Image qbImage = addChessImage("src/main/java/Chess/images/cpb/b_queen_png_shadow_128px.png");
-        Image pbImage = addChessImage("src/main/java/Chess/images/cpb/b_pawn_png_shadow_128px.png");
+        Image bbImage = addChessImage("src/main/resources/Chess/images/cpb/b_bishop_png_shadow_128px.png");
+        Image hbImage = addChessImage("src/main/resources/Chess/images/cpb/b_knight_png_shadow_128px.png");
+        Image rbImage = addChessImage("src/main/resources/Chess/images/cpb/b_rook_png_shadow_128px.png");
+        Image kbImage = addChessImage("src/main/resources/Chess/images/cpb/b_king_png_shadow_128px.png");
+        Image qbImage = addChessImage("src/main/resources/Chess/images/cpb/b_queen_png_shadow_128px.png");
+        Image pbImage = addChessImage("src/main/resources/Chess/images/cpb/b_pawn_png_shadow_128px.png");
 
-        Image bwImage = addChessImage("src/main/java/Chess/images/cpw/w_bishop_png_shadow_128px.png");
-        Image hwImage = addChessImage("src/main/java/Chess/images/cpw/w_knight_png_shadow_128px.png");
-        Image rwImage = addChessImage("src/main/java/Chess/images/cpw/w_rook_png_shadow_128px.png");
-        Image kwImage = addChessImage("src/main/java/Chess/images/cpw/w_king_png_shadow_128px.png");
-        Image qwImage = addChessImage("src/main/java/Chess/images/cpw/w_queen_png_shadow_128px.png");
-        Image pwImage = addChessImage("src/main/java/Chess/images/cpw/w_pawn_png_shadow_128px.png");
+        Image bwImage = addChessImage("src/main/resources/Chess/images/cpw/w_bishop_png_shadow_128px.png");
+        Image hwImage = addChessImage("src/main/resources/Chess/images/cpw/w_knight_png_shadow_128px.png");
+        Image rwImage = addChessImage("src/main/resources/Chess/images/cpw/w_rook_png_shadow_128px.png");
+        Image kwImage = addChessImage("src/main/resources/Chess/images/cpw/w_king_png_shadow_128px.png");
+        Image qwImage = addChessImage("src/main/resources/Chess/images/cpw/w_queen_png_shadow_128px.png");
+        Image pwImage = addChessImage("src/main/resources/Chess/images/cpw/w_pawn_png_shadow_128px.png");
 
         ArrayList<ImageView> ImageArray = new ArrayList<>();
 

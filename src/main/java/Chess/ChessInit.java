@@ -26,12 +26,13 @@ public class ChessInit {
     private Pane[][] paneArray;
     public static List<Integer> mouseposlist = new ArrayList<>();
     private ImageView draggable;
+    private int msecupdate = 10;
     
     // INITIALIZING A STATIC "GLOBAL" CHESSBOARD AVAILABLE TO EVERY CLASS
     public static Chessboard chessboard = new Chessboard();
 
-    // GROUPING THE IMPORTANT STUFF
-    static Group root = new Group();
+    // "GLOBAL" GROUP FOR ALL IMAGES ON THE CHESSBOARD
+    public static Group root = new Group();
     
     public void ChessPlay() throws IOException {
         root = new Group();
@@ -53,7 +54,7 @@ public class ChessInit {
             };
               while (true) {
                 try {
-                  Thread.sleep(10);
+                  Thread.sleep(msecupdate);
                 } catch (InterruptedException e) {
                   }
                   if (Move.Moving) {
@@ -82,29 +83,29 @@ public class ChessInit {
     public void ChessPlayInit(GridPane gridPane) {
         paneArray = new Pane[8][8];
         for (int i = 0; i < 8; i++) {
-            int IntegerI = i; //Making the y coordinate static
+            int yaxis = i; //Making the y coordinate static
             for (int j = 0; j < 8; j++) {
-                int IntegerJ = j; //Making the x coordinate static
-                Pane pane = new Pane();
+                int xaxis = j; //Making the x coordinate static
+                Pane pane = new Pane(); //Making a pane for every gridpane space
                 paneArray[i][j] = pane;
                 pane.setCursor(Cursor.HAND);
-                gridPane.add(pane, IntegerI, IntegerJ);
+                gridPane.add(pane, yaxis, xaxis);
                 pane.setOnMouseEntered(e -> {
-                    GrayHover(IntegerI, IntegerJ);
+                    GrayHover(yaxis, xaxis);
                 });
                 pane.setOnMouseExited(e -> {
-                    RemoveGrayHover(IntegerI, IntegerJ);
+                    RemoveGrayHover(yaxis, xaxis);
                 });
                 
                 pane.setOnMouseClicked(e -> { //Lambda Eventhandler MouseEvent
-                    System.out.println("FIRST y: " + IntegerJ + " x: " + IntegerI);
+                    System.out.println("y: " + xaxis + " x: " + yaxis);
 
                     if (mouseposlist.size() < 2) {
-                        mouseposlist.add(IntegerI);
-                        mouseposlist.add(IntegerJ);
-                        BlackClick(mouseposlist.get(0), mouseposlist.get(1));
+                        mouseposlist.add(yaxis);
+                        mouseposlist.add(xaxis);
+                        GreenClick(mouseposlist.get(0), mouseposlist.get(1));
  
-                        ImageView piece = (ImageView) root.getChildren().get(((IntegerJ)*8 + IntegerI) + 1);
+                        ImageView piece = (ImageView) root.getChildren().get(((xaxis)*8 + yaxis) + 1);
                         root.getChildren().remove(piece);
                         root.getChildren().add(root.getChildren().size()-1, piece);
                         this.draggable = (ImageView) root.getChildren().get(root.getChildren().size()-2);
@@ -127,20 +128,20 @@ public class ChessInit {
                             };
                                 while (true) {
                                   try {
-                                    Thread.sleep(100);
+                                    Thread.sleep(msecupdate);
                                   } catch (InterruptedException e) {
                                     }
                                 Platform.runLater(updater);
                                 }
-                              }
-                            });
-                          thread.setDaemon(true);
-                          thread.start();
+                            }
+                        });
+                        thread.setDaemon(true);
+                        thread.start();
 
                     } else if (mouseposlist.size() == 2) {
-                        mouseposlist.add(IntegerI);
-                        mouseposlist.add(IntegerJ);
-                        BlackClick(mouseposlist.get(2), mouseposlist.get(3));
+                        mouseposlist.add(yaxis);
+                        mouseposlist.add(xaxis);
+                        GreenClick(mouseposlist.get(2), mouseposlist.get(3));
                         Move.MovePiece();
                         mouseposlist.clear();
                         }                
@@ -149,19 +150,19 @@ public class ChessInit {
         }
     }
 
-    public void BlackClick(int x, int y) {
-        changeColorToBlack(paneArray[x][y]);
+    private void GreenClick(int x, int y) {
+        changeColorToGreen(paneArray[x][y]);
     }
 
-    public void GrayHover(int x, int y) {
+    private void GrayHover(int x, int y) {
         changeColorToGray(paneArray[x][y]);
     }
 
-    public void RemoveGrayHover(int x, int y) {
+    private void RemoveGrayHover(int x, int y) {
         changeColorToNone(paneArray[x][y]);
     }
 
-    public void changeColorToNone(Pane pane) {
+    private void changeColorToNone(Pane pane) {
         if (pane == null) return;
         pane.setStyle(null);
     }
@@ -171,7 +172,7 @@ public class ChessInit {
         pane.setStyle("-fx-background-color: rgba(211, 211, 211, .2);");
     }
 
-    private void changeColorToBlack(Pane pane) {
+    private void changeColorToGreen(Pane pane) {
         if (pane == null) return;
         pane.setStyle("-fx-background-color: rgba(0, 255, 0, .2);");
     }

@@ -90,10 +90,6 @@ public class PiecePlacer {
         return new ArrayList<ArrayList<BasePiece>>(this.outer);
     }
 
-    public ArrayList<BasePiece> getInner() {
-        return new ArrayList<BasePiece>(this.inner);
-    }
-
     public static void main(String[] args) {
         PiecePlacer placer = new PiecePlacer();
         System.out.println(placer.PieceList);
