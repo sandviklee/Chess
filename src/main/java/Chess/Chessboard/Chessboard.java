@@ -25,34 +25,26 @@ public class Chessboard {
         return boardView;
     }
 
+    private Image addChessImage(String s) throws FileNotFoundException {
+        InputStream file = new FileInputStream(s);
+        Image image = new Image(file);
+        return image;
+    }
+
     public ArrayList<ImageView> MatrixToFXML() throws FileNotFoundException {
-        InputStream bb = new FileInputStream("src/main/java/Chess/images/cpb/b_bishop_png_shadow_128px.png");
-        InputStream hb = new FileInputStream("src/main/java/Chess/images/cpb/b_knight_png_shadow_128px.png");
-        InputStream rb = new FileInputStream("src/main/java/Chess/images/cpb/b_rook_png_shadow_128px.png");
-        InputStream kb = new FileInputStream("src/main/java/Chess/images/cpb/b_king_png_shadow_128px.png");
-        InputStream qb = new FileInputStream("src/main/java/Chess/images/cpb/b_queen_png_shadow_128px.png");
-        InputStream pb = new FileInputStream("src/main/java/Chess/images/cpb/b_pawn_png_shadow_128px.png");
+        Image bbImage = addChessImage("src/main/java/Chess/images/cpb/b_bishop_png_shadow_128px.png");
+        Image hbImage = addChessImage("src/main/java/Chess/images/cpb/b_knight_png_shadow_128px.png");
+        Image rbImage = addChessImage("src/main/java/Chess/images/cpb/b_rook_png_shadow_128px.png");
+        Image kbImage = addChessImage("src/main/java/Chess/images/cpb/b_king_png_shadow_128px.png");
+        Image qbImage = addChessImage("src/main/java/Chess/images/cpb/b_queen_png_shadow_128px.png");
+        Image pbImage = addChessImage("src/main/java/Chess/images/cpb/b_pawn_png_shadow_128px.png");
 
-        InputStream bw = new FileInputStream("src/main/java/Chess/images/cpw/w_bishop_png_shadow_128px.png");
-        InputStream hw = new FileInputStream("src/main/java/Chess/images/cpw/w_knight_png_shadow_128px.png");
-        InputStream rw = new FileInputStream("src/main/java/Chess/images/cpw/w_rook_png_shadow_128px.png");
-        InputStream kw = new FileInputStream("src/main/java/Chess/images/cpw/w_king_png_shadow_128px.png");
-        InputStream qw = new FileInputStream("src/main/java/Chess/images/cpw/w_queen_png_shadow_128px.png");
-        InputStream pw = new FileInputStream("src/main/java/Chess/images/cpw/w_pawn_png_shadow_128px.png");
-
-        Image bbImage = new Image(bb);
-        Image hbImage = new Image(hb);
-        Image rbImage = new Image(rb);
-        Image kbImage = new Image(kb);
-        Image qbImage = new Image(qb);
-        Image pbImage = new Image(pb);
-
-        Image bwImage = new Image(bw);
-        Image hwImage = new Image(hw);
-        Image rwImage = new Image(rw);
-        Image kwImage = new Image(kw);
-        Image qwImage = new Image(qw);
-        Image pwImage = new Image(pw);
+        Image bwImage = addChessImage("src/main/java/Chess/images/cpw/w_bishop_png_shadow_128px.png");
+        Image hwImage = addChessImage("src/main/java/Chess/images/cpw/w_knight_png_shadow_128px.png");
+        Image rwImage = addChessImage("src/main/java/Chess/images/cpw/w_rook_png_shadow_128px.png");
+        Image kwImage = addChessImage("src/main/java/Chess/images/cpw/w_king_png_shadow_128px.png");
+        Image qwImage = addChessImage("src/main/java/Chess/images/cpw/w_queen_png_shadow_128px.png");
+        Image pwImage = addChessImage("src/main/java/Chess/images/cpw/w_pawn_png_shadow_128px.png");
 
         ArrayList<ImageView> ImageArray = new ArrayList<>();
 
@@ -138,7 +130,7 @@ public class Chessboard {
             
             piece.setPiecePos(x_2, y_2);
         } catch (Exception e) {
-            
+            //TODO: FIKS EXCEPTION
         }
 
         
