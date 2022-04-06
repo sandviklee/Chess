@@ -22,7 +22,6 @@ public abstract class BasePiece {
             throw new IllegalArgumentException("The piece is not in an available range.");
         } 
 
-
         pos.add(x);
         pos.add(y);
     }

@@ -26,25 +26,26 @@ public class Chessboard {
     }
 
     private Image addChessImage(String s) throws FileNotFoundException {
-        InputStream file = new FileInputStream(s);
+        InputStream file = new FileInputStream("src/main/resources/Chess/images/" + (String) s + "_png_shadow_128px.png");
         Image image = new Image(file);
-        return image;
+        return (Image) image;
     }
 
     public ArrayList<ImageView> MatrixToFXML() throws FileNotFoundException {
-        Image bbImage = addChessImage("src/main/resources/Chess/images/cpb/b_bishop_png_shadow_128px.png");
-        Image hbImage = addChessImage("src/main/resources/Chess/images/cpb/b_knight_png_shadow_128px.png");
-        Image rbImage = addChessImage("src/main/resources/Chess/images/cpb/b_rook_png_shadow_128px.png");
-        Image kbImage = addChessImage("src/main/resources/Chess/images/cpb/b_king_png_shadow_128px.png");
-        Image qbImage = addChessImage("src/main/resources/Chess/images/cpb/b_queen_png_shadow_128px.png");
-        Image pbImage = addChessImage("src/main/resources/Chess/images/cpb/b_pawn_png_shadow_128px.png");
+        //Adding all images.
+        Image bbImage = addChessImage("cpb/b_bishop");
+        Image hbImage = addChessImage("cpb/b_knight");
+        Image rbImage = addChessImage("cpb/b_rook");
+        Image kbImage = addChessImage("cpb/b_king");
+        Image qbImage = addChessImage("cpb/b_queen");
+        Image pbImage = addChessImage("cpb/b_pawn");
 
-        Image bwImage = addChessImage("src/main/resources/Chess/images/cpw/w_bishop_png_shadow_128px.png");
-        Image hwImage = addChessImage("src/main/resources/Chess/images/cpw/w_knight_png_shadow_128px.png");
-        Image rwImage = addChessImage("src/main/resources/Chess/images/cpw/w_rook_png_shadow_128px.png");
-        Image kwImage = addChessImage("src/main/resources/Chess/images/cpw/w_king_png_shadow_128px.png");
-        Image qwImage = addChessImage("src/main/resources/Chess/images/cpw/w_queen_png_shadow_128px.png");
-        Image pwImage = addChessImage("src/main/resources/Chess/images/cpw/w_pawn_png_shadow_128px.png");
+        Image bwImage = addChessImage("cpw/w_bishop");
+        Image hwImage = addChessImage("cpw/w_knight");
+        Image rwImage = addChessImage("cpw/w_rook");
+        Image kwImage = addChessImage("cpw/w_king");
+        Image qwImage = addChessImage("cpw/w_queen");
+        Image pwImage = addChessImage("cpw/w_pawn");
 
         ArrayList<ImageView> ImageArray = new ArrayList<>();
 
