@@ -16,7 +16,7 @@ public class Knight extends BasePiece {
     }
 
     @Override
-    public ArrayList<Integer> layPattern(int x, int y) {
+    public ArrayList<ArrayList<Integer>>  layPattern(int x, int y) {
         // TODO Auto-generated method stub
         return null;
     }

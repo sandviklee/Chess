@@ -8,9 +8,10 @@ public abstract class BasePiece {
     int pieceColor;
     ArrayList<Integer> availColor = new ArrayList<>();
     ArrayList<Integer> pos = new ArrayList<>();
+    static boolean moved = false;
 
     public BasePiece(int pieceColor, int x, int y) {
-        availColor.add(0);
+        availColor.add(-1);
         availColor.add(1);
 
         if (!(availColor.contains(pieceColor))) {
@@ -28,14 +29,14 @@ public abstract class BasePiece {
 
     public abstract boolean legalMove(int x, int y);
 
-    public abstract ArrayList<Integer> layPattern(int x, int y);
+    public abstract ArrayList<ArrayList<Integer>>  layPattern(int x, int y);
 
     public String getPieceName() {
         return "" + this.getClass().getName() + "";
     }
 
     public String getPieceColor() {
-        if (pieceColor == 1) {
+        if (pieceColor == -1) {
             return "b";
         } return "w";
     }
@@ -45,6 +46,7 @@ public abstract class BasePiece {
             System.out.println(x + y);
             throw new IllegalArgumentException("The piece is not in an available range.");
         } 
+        moved = true;
         pos.clear();
         pos.add(x);
         pos.add(y);
@@ -56,7 +58,7 @@ public abstract class BasePiece {
 
     @Override
     public String toString() {
-        return "" + this.getPieceName() + this.getPiecePos() + "";
+        return "" + this.getPieceName() + this.getPiecePos() + "" + this.getPieceColor();
     }
 
 }

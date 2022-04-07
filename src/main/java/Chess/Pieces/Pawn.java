@@ -12,13 +12,19 @@ public class Pawn extends BasePiece{
     public boolean legalMove(int x, int y) {
         if (this.pos.get(0) - x != 0) {
             return false;
-        } return true;
+        } 
+
+        if (!(BasePiece.moved)) {
+            return ((this.pos.get(1)-y) * this.pieceColor) >= 1 && ((this.pos.get(1)-y) * this.pieceColor) <= 2;
+        }
+        return ((this.pos.get(1)-y) * this.pieceColor) == 1;
+        
     }
 
     @Override
-    public ArrayList<Integer> layPattern(int x, int y) {
-        // TODO Auto-generated method stub
-        return null;
+    public ArrayList<ArrayList<Integer>> layPattern(int x, int y) {
+        ArrayList<ArrayList<Integer>> pattern = new ArrayList<>(); 
+        
     }
 
     public static void main(String[] args) {
