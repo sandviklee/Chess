@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import Chess.Chessboard.Chessboard;
+import Chess.Pieces.*;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Cursor;
@@ -103,7 +104,21 @@ public class ChessInit {
                     if (mouseposlist.size() < 2) {
                         mouseposlist.add(yaxis);
                         mouseposlist.add(xaxis);
-                        GreenClick(mouseposlist.get(0), mouseposlist.get(1));
+                        // GreenClick(mouseposlist.get(0), mouseposlist.get(1));
+
+
+                        BasePiece boardpiece = chessboard.getChessboardState().get(mouseposlist.get(1)).get(mouseposlist.get(0));
+
+                        if (boardpiece.getClass() == Pawn.class) {
+
+                        System.out.println(boardpiece.layPattern(mouseposlist.get(0), mouseposlist.get(1)));
+
+                        for (ArrayList<Integer> pos : boardpiece.layPattern(mouseposlist.get(0), mouseposlist.get(1))) {
+                          GreenClick(pos.get(0), pos.get(1));
+                        }
+                      }
+                        
+
  
                         ImageView piece = (ImageView) root.getChildren().get(((xaxis)*8 + yaxis) + 1);
                         root.getChildren().remove(piece);
@@ -120,6 +135,15 @@ public class ChessInit {
                                 public void run() {
                                     if (draggable != null) {
                                         gridPane.setOnMouseMoved(event -> {
+                                          
+                                            if (boardpiece.getClass() == Pawn.class) {
+
+                                              System.out.println(boardpiece.layPattern(mouseposlist.get(0), mouseposlist.get(1)));
+
+                                              for (ArrayList<Integer> pos : boardpiece.layPattern(mouseposlist.get(0), mouseposlist.get(1))) {
+                                                GreenClick(pos.get(0), pos.get(1));
+                                              }
+                                            }
                                             draggable.setX(event.getSceneX() - 32);
                                             draggable.setY(event.getSceneY() - 32);
                                         });
