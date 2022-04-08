@@ -45,7 +45,7 @@ public abstract class BasePiece {
         if (!(x < 8 && x >= 0) || !(y < 8 && y >= 0)) {
             System.out.println(x + y);
             throw new IllegalArgumentException("The piece is not in an available range.");
-        } 
+        }
         moved = true;
         pos.clear();
         pos.add(x);
