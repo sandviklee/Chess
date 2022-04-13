@@ -110,9 +110,7 @@ public class ChessInit {
                         BasePiece boardpiece = chessboard.getChessboardState().get(mouseposlist.get(1)).get(mouseposlist.get(0));
 
                         if (boardpiece != null) {
-                          System.out.println(boardpiece.layPattern(mouseposlist.get(0), mouseposlist.get(1)));
-
-                          for (ArrayList<Integer> pos : boardpiece.layPattern(mouseposlist.get(0), mouseposlist.get(1))) {
+                          for (ArrayList<Integer> pos : Move.validatePattern(mouseposlist.get(0), mouseposlist.get(1))) {
                             GreenClick(pos.get(0), pos.get(1));
                           
                           }
@@ -135,9 +133,7 @@ public class ChessInit {
                                     if (draggable != null) {
                                         gridPane.setOnMouseMoved(event -> {
                                             if (boardpiece != null) {
-                                              System.out.println(boardpiece.layPattern(mouseposlist.get(0), mouseposlist.get(1)));
-
-                                              for (ArrayList<Integer> pos : boardpiece.layPattern(mouseposlist.get(0), mouseposlist.get(1))) {
+                                              for (ArrayList<Integer> pos : Move.validatePattern(mouseposlist.get(0), mouseposlist.get(1))) {
                                                 GreenClick(pos.get(0), pos.get(1));
                                               
                                               }

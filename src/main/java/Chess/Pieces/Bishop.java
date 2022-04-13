@@ -15,7 +15,7 @@ public class Bishop extends BasePiece {
     }
 
     @Override
-    public ArrayList<ArrayList<Integer>>  layPattern(int x, int y) {
+    public ArrayList<ArrayList<Integer>> layPattern(int x, int y) {
         ArrayList<ArrayList<Integer>> pattern = new ArrayList<>();
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {

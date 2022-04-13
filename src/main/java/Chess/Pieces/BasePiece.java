@@ -5,7 +5,7 @@ import java.util.ArrayList;
 /*This is where my BasePiece abstract class is written, where all the underclasses (Pieces) are made out of this class */
 
 public abstract class BasePiece {
-    int pieceColor;
+    public int pieceColor;
     ArrayList<Integer> availColor = new ArrayList<>();
     ArrayList<Integer> pos = new ArrayList<>();
     static boolean moved = false;
