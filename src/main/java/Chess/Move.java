@@ -1,5 +1,6 @@
 package Chess;
 
+import Chess.Pieces.BasePiece;
 
 /* This class is for implementing moving on the main board, but also updating the Chessgame class */
 
@@ -16,27 +17,34 @@ public class Move {
         int x_2 = ChessInit.mouseposlist.get(2);
         int y_2 = ChessInit.mouseposlist.get(3);
 
-        if (!((ChessInit.chessboard.getChessboardState()).get(y_1).get(x_1) == null) && 
-        !((ChessInit.chessboard.getChessboardState()).get(y_1).get(x_1) == (ChessInit.chessboard.getChessboardState()).get(y_2).get(x_2))) {
-            if (ChessInit.chessboard.getChessboardState().get(y_2).get(x_2) == null) {
-                ChessInit.chessboard.Move(x_1, y_1, x_2, y_2);
-                System.out.println("Moved!");
-            } else {
-                if ((((ChessInit.chessboard.getChessboardState()).get(y_1).get(x_1).getPieceColor()).equals(ChessInit.chessboard.getChessboardState().get(y_2).get(x_2).getPieceColor()))) {
-                    System.out.println("Not a legal move!");
+        BasePiece piece = ChessInit.chessboard.getChessboardState().get(y_1).get(x_1);
+        BasePiece piece_2 = ChessInit.chessboard.getChessboardState().get(y_2).get(x_2);
+
+        if (!(piece == null) && !(piece == piece_2)) {
+            if (piece.legalMove(x_2, y_2)) {
+                if (piece_2 == null) {
+                    try {
+                        ChessInit.chessboard.Move(x_1, y_1, x_2, y_2);
+                        System.out.println("Moved!");
+                    } catch (Exception e) {
+                        System.out.println("BUGGGG");
+                    }
+
                 } else {
-                    ChessInit.chessboard.Move(x_1, y_1, x_2, y_2);
-                    System.out.println("Moved!");
+                    if (((piece.getPieceColor()).equals(piece_2.getPieceColor()))) {
+                        System.out.println("Not a legal move!");
+                    } else {
+                        ChessInit.chessboard.Move(x_1, y_1, x_2, y_2);
+                        System.out.println("Moved!");
+                    }
                 }
-            }
-            
-            
-        System.out.println(ChessInit.chessboard.getChessboardState());
-        } else {
-            
-            // throw new IllegalArgumentException("You can't do that move!" + " y1: " + ChessController.mouseposlist.get(1) + " x1: " + ChessController.mouseposlist.get(0));
+            System.out.println(ChessInit.chessboard.getChessboardState());
+            } 
         }
-        
+    }
+
+    public void validatePattern() {
+
     }
 
 }

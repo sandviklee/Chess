@@ -1,6 +1,7 @@
 package Chess.Chessboard;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -142,8 +143,11 @@ public class Chessboard {
 
     public void Move(int x_1, int y_1, int x_2, int y_2) {
         BasePiece piece = MainBoard.get(y_1).get(x_1);
-        try {
-            if (piece.legalMove(x_2, y_2)) {
+        BasePiece piece_2 = MainBoard.get(y_2).get(x_2);
+        System.out.println(x_1 + " " + y_1);
+        System.out.println(x_2 + " " + y_2);
+        
+            if (y_1 != y_2) {
                 MainBoard.get(y_2).remove(x_2);
                 MainBoard.get(y_2).add(x_2, piece);
                 MainBoard.get(y_1).remove(piece);
@@ -152,22 +156,26 @@ public class Chessboard {
                 piece = MainBoard.get(y_2).get(x_2);
                 
                 piece.setPiecePos(x_2, y_2);
-                
-            }
-            else {
-                System.out.println("Ikke mulig!");
-            }
-        } catch (Exception e) {
-            //TODO: FIKS EXCEPTION
-        }
+            } else if (y_1 == y_2) {
+                if (piece_2 == null) {
+                    Collections.swap(MainBoard.get(y_1), x_1, x_2);
+                    piece.setPiecePos(x_2, y_2);
 
-        
+                } else if (!(piece.getPieceColor().equals(piece_2.getPieceColor()))) {
+                    System.out.println("DU fette sug");
+                    Collections.swap(MainBoard.get(y_1), x_1, x_2);
+                    MainBoard.get(y_2).remove(x_1);
+                    MainBoard.get(y_2).add(x_1, null);
+                    piece.setPiecePos(x_2, y_2);
+                }
+            }
+        System.out.println(piece);
 
     }
     public static void main(String[] args) throws FileNotFoundException {
         Chessboard c1 = new Chessboard();
-        // System.out.println(c1.MatrixToFXML().size(
-        System.out.println(c1.getChessboardState());
+        c1.Move(0, 1, 0, 2);
+        System.out.println("" + "\n" + c1.getChessboardState());
         c1.Move(0, 1, 0, 2);
         System.out.println("" + "\n" + c1.getChessboardState());
     }

@@ -23,31 +23,13 @@ public class Knight extends BasePiece {
 
     @Override
     public ArrayList<ArrayList<Integer>> layPattern(int x, int y) {
-        ArrayList<ArrayList<Integer>> pattern = new ArrayList<>(); 
-        
-        if (legalMove(x + 1, y - 2*this.pieceColor)) {
-            pattern.add(new ArrayList<>(Arrays.asList(x + 1, y -2*this.pieceColor)));
-        }
-        if (legalMove(x - 1, y - 2*this.pieceColor)) {
-            pattern.add(new ArrayList<>(Arrays.asList(x - 1, y -2*this.pieceColor)));
-        }
-        if (legalMove(x + 1, y + 2*this.pieceColor)) {
-            pattern.add(new ArrayList<>(Arrays.asList(x + 1, y + 2*this.pieceColor)));
-        }
-        if (legalMove(x - 1, y + 2*this.pieceColor)) {
-            pattern.add(new ArrayList<>(Arrays.asList(x - 1, y + 2*this.pieceColor)));
-        }
-        if (legalMove(x - 2, y + 1)) {
-            pattern.add(new ArrayList<>(Arrays.asList(x - 2, y + 1)));
-        }
-        if (legalMove(x - 2, y - 1)) {
-            pattern.add(new ArrayList<>(Arrays.asList(x - 2, y - 1)));
-        }
-        if (legalMove(x + 2, y + 1)) {
-            pattern.add(new ArrayList<>(Arrays.asList(x + 2, y + 1)));
-        }
-        if (legalMove(x + 2, y - 1)) {
-            pattern.add(new ArrayList<>(Arrays.asList(x + 2, y - 1)));
+        ArrayList<ArrayList<Integer>> pattern = new ArrayList<>();
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                if (legalMove(j, i)) {
+                    pattern.add(new ArrayList<>(Arrays.asList(j, i)));
+                }
+            }
         }
         pattern.add(new ArrayList<>(Arrays.asList(x, y)));
         return pattern;

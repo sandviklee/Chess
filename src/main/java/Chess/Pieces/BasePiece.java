@@ -46,7 +46,10 @@ public abstract class BasePiece {
             System.out.println(x + y);
             throw new IllegalArgumentException("The piece is not in an available range.");
         }
-        moved = true;
+        if (this.getClass() == Pawn.class) {
+            moved = true;
+        }
+        
         pos.clear();
         pos.add(x);
         pos.add(y);

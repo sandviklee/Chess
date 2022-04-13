@@ -109,11 +109,14 @@ public class ChessInit {
 
                         BasePiece boardpiece = chessboard.getChessboardState().get(mouseposlist.get(1)).get(mouseposlist.get(0));
 
-                        System.out.println(boardpiece.layPattern(mouseposlist.get(0), mouseposlist.get(1)));
+                        if (boardpiece != null) {
+                          System.out.println(boardpiece.layPattern(mouseposlist.get(0), mouseposlist.get(1)));
 
-                        for (ArrayList<Integer> pos : boardpiece.layPattern(mouseposlist.get(0), mouseposlist.get(1))) {
-                          GreenClick(pos.get(0), pos.get(1));
-                        
+                          for (ArrayList<Integer> pos : boardpiece.layPattern(mouseposlist.get(0), mouseposlist.get(1))) {
+                            GreenClick(pos.get(0), pos.get(1));
+                          
+                          }
+
                         }
         
                         ImageView piece = (ImageView) root.getChildren().get(((xaxis)*8 + yaxis) + 1);
@@ -131,12 +134,13 @@ public class ChessInit {
                                 public void run() {
                                     if (draggable != null) {
                                         gridPane.setOnMouseMoved(event -> {
-                            
-                                            System.out.println(boardpiece.layPattern(mouseposlist.get(0), mouseposlist.get(1)));
+                                            if (boardpiece != null) {
+                                              System.out.println(boardpiece.layPattern(mouseposlist.get(0), mouseposlist.get(1)));
 
-                                            for (ArrayList<Integer> pos : boardpiece.layPattern(mouseposlist.get(0), mouseposlist.get(1))) {
-                                              GreenClick(pos.get(0), pos.get(1));
-                                            
+                                              for (ArrayList<Integer> pos : boardpiece.layPattern(mouseposlist.get(0), mouseposlist.get(1))) {
+                                                GreenClick(pos.get(0), pos.get(1));
+                                              
+                                              }
                                             }
                                             draggable.setX(event.getSceneX() - 32);
                                             draggable.setY(event.getSceneY() - 32);
@@ -160,7 +164,7 @@ public class ChessInit {
                         mouseposlist.add(yaxis);
                         mouseposlist.add(xaxis);
                         GreenClick(mouseposlist.get(2), mouseposlist.get(3));
-                        Move.MovePiece();
+                        Move.MovePiece();   
                         mouseposlist.clear();
                         }                
                 });  
