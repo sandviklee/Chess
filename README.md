@@ -7,8 +7,9 @@ Java Chess game made during the course **[TDT4100 - Object oriented programming]
 ## Yet to be implemented:
 
 - Pieces moving. ☑
+- Piece patterns and logic. ☑
+- Check game state (forcing draws and winning). □
 - IO system, storing and accessing files. (Fenstring) □
-- Piece patterns and logic. □
 - Player, switching between White and Black. □
 - Option to turn around the board. □
 - Garbage pieces stored. □
