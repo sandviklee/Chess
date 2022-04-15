@@ -160,8 +160,9 @@ public class ChessInit {
                         mouseposlist.add(yaxis);
                         mouseposlist.add(xaxis);
                         GreenClick(mouseposlist.get(2), mouseposlist.get(3));
-                        Move.MovePiece();   
+                        Move.MovePiece();
                         mouseposlist.clear();
+                        CheckGameState.inCheck();   
                         }                
                 });  
             }

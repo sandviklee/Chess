@@ -30,8 +30,6 @@ public class Pawn extends BasePiece{
         if (legalMove(x, y - 1*this.pieceColor)) {
             pattern.add(new ArrayList<>(Arrays.asList(x , y - 1*this.pieceColor)));
         }
-        pattern.add(new ArrayList<>(Arrays.asList(x, y)));
-
         return pattern;
     }
 

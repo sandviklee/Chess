@@ -52,274 +52,315 @@ public class Move {
         BasePiece piece = chessboardState.get(y).get(x);
         ArrayList<ArrayList<Integer>> pattern = piece.layPattern(x, y);
 
-        switch (piece.getPieceName()) {
-            case "Chess.Pieces.Pawn":
-                try {
-                    if (chessboardState.get(y-1*piece.pieceColor).get(x) != null) {
-                        pattern.remove(new ArrayList<>(Arrays.asList(x, y-1*piece.pieceColor)));
-                    }
-                } catch (Exception e) {
-                    //TODO: handle exception 
+        if (piece.getPieceName().equals("Chess.Pieces.Pawn")) {
+            try {
+                if (chessboardState.get(y-1*piece.pieceColor).get(x) != null) {
+                    pattern.remove(new ArrayList<>(Arrays.asList(x, y-1*piece.pieceColor)));
                 }
-                try {
-                    if (chessboardState.get(y+1).get(x+1) != null && !chessboardState.get(y+1).get(x+1).getPieceColor().equals(piece.getPieceColor())) {
-                        pattern.add(new ArrayList<>(Arrays.asList(x+1, y+1)));
-                    }
-                } catch (Exception e) {
-                    //TODO: handle exception
+            } catch (Exception e) {
+                //TODO: handle exception 
+            }
+            try {
+                if (chessboardState.get(y+1).get(x+1) != null && !chessboardState.get(y+1).get(x+1).getPieceColor().equals(piece.getPieceColor())) {
+                    pattern.add(new ArrayList<>(Arrays.asList(x+1, y+1)));
                 }
+            } catch (Exception e) {
+                //TODO: handle exception
+            }
 
-                try {
-                    if (chessboardState.get(y+1).get(x-1) != null && !chessboardState.get(y+1).get(x-1).getPieceColor().equals(piece.getPieceColor())) {
-                        pattern.add(new ArrayList<>(Arrays.asList(x-1, y+1)));
-                    }
-                } catch (Exception e) {
-                    //TODO: handle exception
+            try {
+                if (chessboardState.get(y+1).get(x-1) != null && !chessboardState.get(y+1).get(x-1).getPieceColor().equals(piece.getPieceColor())) {
+                    pattern.add(new ArrayList<>(Arrays.asList(x-1, y+1)));
                 }
-                try {
+            } catch (Exception e) {
+                //TODO: handle exception
+            }
+            try {
 
-                    if (chessboardState.get(y-1).get(x+1) != null && !chessboardState.get(y-1).get(x+1).getPieceColor().equals(piece.getPieceColor())) {
-                        pattern.add(new ArrayList<>(Arrays.asList(x+1, y-1)));
-                    }
-                    
-                } catch (Exception e) {
-                    //TODO: handle exception
-                }
-
-                try {
-                    if (chessboardState.get(y-1).get(x-1) != null && !chessboardState.get(y-1).get(x-1).getPieceColor().equals(piece.getPieceColor())) {
-                        pattern.add(new ArrayList<>(Arrays.asList(x-1, y-1)));
-                    }        
-                    
-                } catch (Exception e) {
-                    //TODO: handle exception
-                }
-                break;
-
-            case "Chess.Pieces.Bishop":
-                pattern.remove(new ArrayList<>(Arrays.asList(x , y)));
-                ArrayList<ArrayList<Integer>> allPiecesInFrontPos = new ArrayList<>();
-                ArrayList<ArrayList<Integer>> allInvalidPos = new ArrayList<>();
-
-                for (ArrayList<Integer> pos : pattern) {
-                    if (chessboardState.get(pos.get(1)).get(pos.get(0)) != null) {
-                        allPiecesInFrontPos.add(new ArrayList<Integer>(Arrays.asList(pos.get(0), pos.get(1))));
-                        if (chessboardState.get(pos.get(1)).get(pos.get(0)).getPieceColor().equals(piece.getPieceColor())) {
-                            allInvalidPos.add(new ArrayList<>(pos));
-                        }
-                    }
-                }
-
-                for (int i = 0; i < allPiecesInFrontPos.size(); i++) {
-
-                    if (allPiecesInFrontPos.get(i).get(1) > piece.getPiecePos().get(1)) {
-                        if (allPiecesInFrontPos.get(i).get(0) < piece.getPiecePos().get(0)) {
-                            for (int j = 1; j <= allPiecesInFrontPos.get(i).get(0); j++) {
-                                int posX = allPiecesInFrontPos.get(i).get(0) - j;
-                                int posY = allPiecesInFrontPos.get(i).get(1) + j;
-                                allInvalidPos.add(new ArrayList<>(Arrays.asList(posX, posY)));
-                            }
-                        } else if (allPiecesInFrontPos.get(i).get(0) > piece.getPiecePos().get(0)) 
-                            for (int j = 1; j <= 7 - allPiecesInFrontPos.get(i).get(0); j++) {
-                                int posX = allPiecesInFrontPos.get(i).get(0) + j;
-                                int posY = allPiecesInFrontPos.get(i).get(1) + j;
-                                allInvalidPos.add(new ArrayList<>(Arrays.asList(posX, posY)));
-                            }
-                    } else if (allPiecesInFrontPos.get(i).get(1) < piece.getPiecePos().get(1)) {
-
-                        if (allPiecesInFrontPos.get(i).get(0) < piece.getPiecePos().get(0)) {
-                            for (int j = 1; j <= allPiecesInFrontPos.get(i).get(0); j++) {
-                                int posX = allPiecesInFrontPos.get(i).get(0) - j;
-                                int posY = allPiecesInFrontPos.get(i).get(1) - j;
-                                allInvalidPos.add(new ArrayList<>(Arrays.asList(posX, posY)));
-                            }
-                        } else if (allPiecesInFrontPos.get(i).get(0) > piece.getPiecePos().get(0)) 
-                            for (int j = 1; j <= 7 - allPiecesInFrontPos.get(i).get(0); j++) {
-                                int posX = allPiecesInFrontPos.get(i).get(0) + j;
-                                int posY = allPiecesInFrontPos.get(i).get(1) - j;
-                                allInvalidPos.add(new ArrayList<>(Arrays.asList(posX, posY)));
-                        }
-                    }
-                }
-
-                for (ArrayList<Integer> pos : allInvalidPos) {
-                    pattern.remove(pos);
-                }
-                break;
-            case "Chess.Pieces.Rook":
-                pattern.remove(new ArrayList<>(Arrays.asList(x , y)));
-                allPiecesInFrontPos = new ArrayList<>();
-                allInvalidPos = new ArrayList<>();
-
-                for (ArrayList<Integer> pos : pattern) {
-                    if (chessboardState.get(pos.get(1)).get(pos.get(0)) != null) {
-                        allPiecesInFrontPos.add(new ArrayList<Integer>(Arrays.asList(pos.get(0), pos.get(1))));
-                        if (chessboardState.get(pos.get(1)).get(pos.get(0)).getPieceColor().equals(piece.getPieceColor())) {
-                            allInvalidPos.add(new ArrayList<>(pos));
-                        }
-                    }
-                }
-
-                for (int i = 0; i < allPiecesInFrontPos.size(); i++) {
-                    if (allPiecesInFrontPos.get(i).get(1) > piece.getPiecePos().get(1)) {
-                        for (int j = 1; j <= 7 - allPiecesInFrontPos.get(i).get(1); j++) {
-                            int posX = allPiecesInFrontPos.get(i).get(0);
-                            int posY = allPiecesInFrontPos.get(i).get(1) + j;
-                            allInvalidPos.add(new ArrayList<>(Arrays.asList(posX, posY)));
-                            
-                        }
-                    } else if (allPiecesInFrontPos.get(i).get(1) < piece.getPiecePos().get(1)) {
-                        for (int j = 1; j <= allPiecesInFrontPos.get(i).get(1); j++) {
-                            int posX = allPiecesInFrontPos.get(i).get(0);
-                            int posY = allPiecesInFrontPos.get(i).get(1) - j;
-                            allInvalidPos.add(new ArrayList<>(Arrays.asList(posX, posY)));
-                            
-                        }
-                    } else if (allPiecesInFrontPos.get(i).get(0) > piece.getPiecePos().get(0)) {
-                        for (int j = 1; j <= 7 - allPiecesInFrontPos.get(i).get(0); j++) {
-                            int posX = allPiecesInFrontPos.get(i).get(0) + j;
-                            int posY = allPiecesInFrontPos.get(i).get(1);
-                            allInvalidPos.add(new ArrayList<>(Arrays.asList(posX, posY)));
-                            
-                        }
-                    } else if (allPiecesInFrontPos.get(i).get(0) < piece.getPiecePos().get(0)) {
-                        for (int j = 1; j <= allPiecesInFrontPos.get(i).get(0); j++) {
-                            int posX = allPiecesInFrontPos.get(i).get(0) - j;
-                            int posY = allPiecesInFrontPos.get(i).get(1);
-                            allInvalidPos.add(new ArrayList<>(Arrays.asList(posX, posY)));
-                            
-                        }
-                    }
+                if (chessboardState.get(y-1).get(x+1) != null && !chessboardState.get(y-1).get(x+1).getPieceColor().equals(piece.getPieceColor())) {
+                    pattern.add(new ArrayList<>(Arrays.asList(x+1, y-1)));
                 }
                 
-                for (ArrayList<Integer> pos : allInvalidPos) {
-                    pattern.remove(pos);
+            } catch (Exception e) {
+                //TODO: handle exception
+            }
+
+            try {
+                if (chessboardState.get(y-1).get(x-1) != null && !chessboardState.get(y-1).get(x-1).getPieceColor().equals(piece.getPieceColor())) {
+                    pattern.add(new ArrayList<>(Arrays.asList(x-1, y-1)));
+                }        
+                
+            } catch (Exception e) {
+                //TODO: handle exception
+            }
+        }
+
+        else if (piece.getPieceName().equals("Chess.Pieces.Bishop")) {
+            pattern.remove(new ArrayList<>(Arrays.asList(x , y)));
+            ArrayList<ArrayList<Integer>> allPiecesInFrontPos = new ArrayList<>();
+            ArrayList<ArrayList<Integer>> allInvalidPos = new ArrayList<>();
+
+            for (ArrayList<Integer> pos : pattern) {
+                if (chessboardState.get(pos.get(1)).get(pos.get(0)) != null) {
+                    allPiecesInFrontPos.add(new ArrayList<Integer>(Arrays.asList(pos.get(0), pos.get(1))));
+                    if (chessboardState.get(pos.get(1)).get(pos.get(0)).getPieceColor().equals(piece.getPieceColor())) {
+                        allInvalidPos.add(new ArrayList<>(pos));
+                    }
                 }
-                break;
-            case "Chess.Pieces.Knight":
-                allInvalidPos = new ArrayList<>();
-                for (ArrayList<Integer> pos : pattern) {
-                    if (chessboardState.get(pos.get(1)).get(pos.get(0)) != null) {
-                        if (chessboardState.get(pos.get(1)).get(pos.get(0)).getPieceColor().equals(piece.getPieceColor())) {
-                            allInvalidPos.add(pos);
+            }
+
+            for (int i = 0; i < allPiecesInFrontPos.size(); i++) {
+
+                if (allPiecesInFrontPos.get(i).get(1) > piece.getPiecePos().get(1)) {
+                    if (allPiecesInFrontPos.get(i).get(0) < piece.getPiecePos().get(0)) {
+                        for (int j = 1; j <= allPiecesInFrontPos.get(i).get(0); j++) {
+                            int posX = allPiecesInFrontPos.get(i).get(0) - j;
+                            int posY = allPiecesInFrontPos.get(i).get(1) + j;
+                            allInvalidPos.add(new ArrayList<>(Arrays.asList(posX, posY)));
+                        }
+                    } else if (allPiecesInFrontPos.get(i).get(0) > piece.getPiecePos().get(0)) 
+                        for (int j = 1; j <= 7 - allPiecesInFrontPos.get(i).get(0); j++) {
+                            int posX = allPiecesInFrontPos.get(i).get(0) + j;
+                            int posY = allPiecesInFrontPos.get(i).get(1) + j;
+                            allInvalidPos.add(new ArrayList<>(Arrays.asList(posX, posY)));
+                        }
+                } else if (allPiecesInFrontPos.get(i).get(1) < piece.getPiecePos().get(1)) {
+
+                    if (allPiecesInFrontPos.get(i).get(0) < piece.getPiecePos().get(0)) {
+                        for (int j = 1; j <= allPiecesInFrontPos.get(i).get(0); j++) {
+                            int posX = allPiecesInFrontPos.get(i).get(0) - j;
+                            int posY = allPiecesInFrontPos.get(i).get(1) - j;
+                            allInvalidPos.add(new ArrayList<>(Arrays.asList(posX, posY)));
+                        }
+                    } else if (allPiecesInFrontPos.get(i).get(0) > piece.getPiecePos().get(0)) 
+                        for (int j = 1; j <= 7 - allPiecesInFrontPos.get(i).get(0); j++) {
+                            int posX = allPiecesInFrontPos.get(i).get(0) + j;
+                            int posY = allPiecesInFrontPos.get(i).get(1) - j;
+                            allInvalidPos.add(new ArrayList<>(Arrays.asList(posX, posY)));
+                    }
+                }
+            }
+
+            for (ArrayList<Integer> pos : allInvalidPos) {
+                pattern.remove(pos);
+            }
+        }
+        else if (piece.getPieceName().equals("Chess.Pieces.Rook")) {
+            pattern.remove(new ArrayList<>(Arrays.asList(x , y)));
+            ArrayList<ArrayList<Integer>> allPiecesInFrontPos = new ArrayList<>();
+            ArrayList<ArrayList<Integer>> allInvalidPos = new ArrayList<>();
+
+            for (ArrayList<Integer> pos : pattern) {
+                if (chessboardState.get(pos.get(1)).get(pos.get(0)) != null) {
+                    allPiecesInFrontPos.add(new ArrayList<Integer>(Arrays.asList(pos.get(0), pos.get(1))));
+                    if (chessboardState.get(pos.get(1)).get(pos.get(0)).getPieceColor().equals(piece.getPieceColor())) {
+                        allInvalidPos.add(new ArrayList<>(pos));
+                    }
+                }
+            }
+
+            for (int i = 0; i < allPiecesInFrontPos.size(); i++) {
+                if (allPiecesInFrontPos.get(i).get(1) > piece.getPiecePos().get(1)) {
+                    for (int j = 1; j <= 7 - allPiecesInFrontPos.get(i).get(1); j++) {
+                        int posX = allPiecesInFrontPos.get(i).get(0);
+                        int posY = allPiecesInFrontPos.get(i).get(1) + j;
+                        allInvalidPos.add(new ArrayList<>(Arrays.asList(posX, posY)));
+                        
+                    }
+                } else if (allPiecesInFrontPos.get(i).get(1) < piece.getPiecePos().get(1)) {
+                    for (int j = 1; j <= allPiecesInFrontPos.get(i).get(1); j++) {
+                        int posX = allPiecesInFrontPos.get(i).get(0);
+                        int posY = allPiecesInFrontPos.get(i).get(1) - j;
+                        allInvalidPos.add(new ArrayList<>(Arrays.asList(posX, posY)));
+                        
+                    }
+                } else if (allPiecesInFrontPos.get(i).get(0) > piece.getPiecePos().get(0)) {
+                    for (int j = 1; j <= 7 - allPiecesInFrontPos.get(i).get(0); j++) {
+                        int posX = allPiecesInFrontPos.get(i).get(0) + j;
+                        int posY = allPiecesInFrontPos.get(i).get(1);
+                        allInvalidPos.add(new ArrayList<>(Arrays.asList(posX, posY)));
+                        
+                    }
+                } else if (allPiecesInFrontPos.get(i).get(0) < piece.getPiecePos().get(0)) {
+                    for (int j = 1; j <= allPiecesInFrontPos.get(i).get(0); j++) {
+                        int posX = allPiecesInFrontPos.get(i).get(0) - j;
+                        int posY = allPiecesInFrontPos.get(i).get(1);
+                        allInvalidPos.add(new ArrayList<>(Arrays.asList(posX, posY)));
+                        
+                    }
+                }
+            }
+            
+            for (ArrayList<Integer> pos : allInvalidPos) {
+                pattern.remove(pos);
+            }
+        }
+        else if (piece.getPieceName().equals("Chess.Pieces.Knight")) {
+            
+            ArrayList<ArrayList<Integer>> allInvalidPos = new ArrayList<>();
+            for (ArrayList<Integer> pos : pattern) {
+                if (chessboardState.get(pos.get(1)).get(pos.get(0)) != null) {
+                    if (chessboardState.get(pos.get(1)).get(pos.get(0)).getPieceColor().equals(piece.getPieceColor())) {
+                        allInvalidPos.add(pos);
+                    }
+                } 
+            }
+
+            for (ArrayList<Integer> pos : allInvalidPos) {
+                pattern.remove(pos);
+            }
+        }
+        else if (piece.getPieceName().equals("Chess.Pieces.Queen")) {
+            pattern.remove(new ArrayList<>(Arrays.asList(x , y)));
+            ArrayList<ArrayList<Integer>> allPiecesInFrontPos = new ArrayList<>();
+            ArrayList<ArrayList<Integer>> allInvalidPos = new ArrayList<>();
+
+            for (ArrayList<Integer> pos : pattern) {
+                if (chessboardState.get(pos.get(1)).get(pos.get(0)) != null) {
+                    allPiecesInFrontPos.add(new ArrayList<Integer>(Arrays.asList(pos.get(0), pos.get(1))));
+                    if (chessboardState.get(pos.get(1)).get(pos.get(0)).getPieceColor().equals(piece.getPieceColor())) {
+                        allInvalidPos.add(new ArrayList<>(pos));
+                    }
+                }
+            }
+
+            //Rook logic
+            for (int i = 0; i < allPiecesInFrontPos.size(); i++) {
+                if (allPiecesInFrontPos.get(i).get(1) > piece.getPiecePos().get(1)) {
+                    for (int j = 1; j <= 7 - allPiecesInFrontPos.get(i).get(1); j++) {
+                        int posX = allPiecesInFrontPos.get(i).get(0);
+                        int posY = allPiecesInFrontPos.get(i).get(1) + j;
+                        allInvalidPos.add(new ArrayList<>(Arrays.asList(posX, posY)));
+                        
+                    }
+                } else if (allPiecesInFrontPos.get(i).get(1) < piece.getPiecePos().get(1)) {
+                    for (int j = 1; j <= allPiecesInFrontPos.get(i).get(1); j++) {
+                        int posX = allPiecesInFrontPos.get(i).get(0);
+                        int posY = allPiecesInFrontPos.get(i).get(1) - j;
+                        allInvalidPos.add(new ArrayList<>(Arrays.asList(posX, posY)));
+                        
+                    }
+                } else if (allPiecesInFrontPos.get(i).get(0) > piece.getPiecePos().get(0)) {
+                    for (int j = 1; j <= 7 - allPiecesInFrontPos.get(i).get(0); j++) {
+                        int posX = allPiecesInFrontPos.get(i).get(0) + j;
+                        int posY = allPiecesInFrontPos.get(i).get(1);
+                        allInvalidPos.add(new ArrayList<>(Arrays.asList(posX, posY)));
+                        
+                    }
+                } else if (allPiecesInFrontPos.get(i).get(0) < piece.getPiecePos().get(0)) {
+                    for (int j = 1; j <= allPiecesInFrontPos.get(i).get(0); j++) {
+                        int posX = allPiecesInFrontPos.get(i).get(0) - j;
+                        int posY = allPiecesInFrontPos.get(i).get(1);
+                        allInvalidPos.add(new ArrayList<>(Arrays.asList(posX, posY)));
+                        
+                    }
+                }
+            }
+
+            //Bishop logic
+            for (int i = 0; i < allPiecesInFrontPos.size(); i++) {
+
+                if (allPiecesInFrontPos.get(i).get(1) > piece.getPiecePos().get(1)) {
+                    if (allPiecesInFrontPos.get(i).get(0) < piece.getPiecePos().get(0)) {
+                        for (int j = 1; j <= allPiecesInFrontPos.get(i).get(0); j++) {
+                            int posX = allPiecesInFrontPos.get(i).get(0) - j;
+                            int posY = allPiecesInFrontPos.get(i).get(1) + j;
+                            allInvalidPos.add(new ArrayList<>(Arrays.asList(posX, posY)));
+                        }
+                    } else if (allPiecesInFrontPos.get(i).get(0) > piece.getPiecePos().get(0)) 
+                        for (int j = 1; j <= 7 - allPiecesInFrontPos.get(i).get(0); j++) {
+                            int posX = allPiecesInFrontPos.get(i).get(0) + j;
+                            int posY = allPiecesInFrontPos.get(i).get(1) + j;
+                            allInvalidPos.add(new ArrayList<>(Arrays.asList(posX, posY)));
+                        }
+                } else if (allPiecesInFrontPos.get(i).get(1) < piece.getPiecePos().get(1)) {
+
+                    if (allPiecesInFrontPos.get(i).get(0) < piece.getPiecePos().get(0)) {
+                        for (int j = 1; j <= allPiecesInFrontPos.get(i).get(0); j++) {
+                            int posX = allPiecesInFrontPos.get(i).get(0) - j;
+                            int posY = allPiecesInFrontPos.get(i).get(1) - j;
+                            allInvalidPos.add(new ArrayList<>(Arrays.asList(posX, posY)));
+                        }
+                    } else if (allPiecesInFrontPos.get(i).get(0) > piece.getPiecePos().get(0)) 
+                        for (int j = 1; j <= 7 - allPiecesInFrontPos.get(i).get(0); j++) {
+                            int posX = allPiecesInFrontPos.get(i).get(0) + j;
+                            int posY = allPiecesInFrontPos.get(i).get(1) - j;
+                            allInvalidPos.add(new ArrayList<>(Arrays.asList(posX, posY)));
+                    }
+                }
+            }
+            
+            for (ArrayList<Integer> pos : allInvalidPos) {
+                pattern.remove(pos);
+            }
+
+        }
+        else if (piece.getPieceName().equals("Chess.Pieces.King")) {
+            pattern.remove(new ArrayList<>(Arrays.asList(x , y)));
+            
+            ArrayList<ArrayList<Integer>> allInvalidPos = new ArrayList<>();
+
+            for (ArrayList<Integer> pos : pattern) {
+                if (chessboardState.get(pos.get(1)).get(pos.get(0)) != null) {
+                    if (chessboardState.get(pos.get(1)).get(pos.get(0)).getPieceColor().equals(piece.getPieceColor())) {
+                        allInvalidPos.add(new ArrayList<>(pos));
+                    }
+                    else if (pos.equals(Arrays.asList(x - 1, y)) || pos.equals(Arrays.asList(x + 1, y))) {
+                        if (chessboardState.get(pos.get(1)).get(pos.get(0)).getPieceName().equals("Chess.Pieces.Pawn")) {
+                            allInvalidPos.add(new ArrayList<>(Arrays.asList(x, y + 1)));
+                            allInvalidPos.add(new ArrayList<>(Arrays.asList(x, y - 1)));
                         }
                     } 
                 }
+            }
 
-                for (ArrayList<Integer> pos : allInvalidPos) {
-                    pattern.remove(pos);
-                }
-                break;
-            case "Chess.Pieces.Queen":
-                pattern.remove(new ArrayList<>(Arrays.asList(x , y)));
-                allPiecesInFrontPos = new ArrayList<>();
-                allInvalidPos = new ArrayList<>();
 
-                for (ArrayList<Integer> pos : pattern) {
-                    if (chessboardState.get(pos.get(1)).get(pos.get(0)) != null) {
-                        allPiecesInFrontPos.add(new ArrayList<Integer>(Arrays.asList(pos.get(0), pos.get(1))));
-                        if (chessboardState.get(pos.get(1)).get(pos.get(0)).getPieceColor().equals(piece.getPieceColor())) {
-                            allInvalidPos.add(new ArrayList<>(pos));
-                        }
-                    }
-                }
+                    
+            for (ArrayList<BasePiece> row : chessboardState) {
+                for (BasePiece pieces : row) {
+                    if (pieces != null) {
+                        if (!pieces.getPieceColor().equals(piece.getPieceColor())) {
+                            if (!pieces.getPieceName().equals("Chess.Pieces.King") && !pieces.getPieceName().equals("Chess.Pieces.Pawn")) {
 
-                //Rook logic
-                for (int i = 0; i < allPiecesInFrontPos.size(); i++) {
-                    if (allPiecesInFrontPos.get(i).get(1) > piece.getPiecePos().get(1)) {
-                        for (int j = 1; j <= 7 - allPiecesInFrontPos.get(i).get(1); j++) {
-                            int posX = allPiecesInFrontPos.get(i).get(0);
-                            int posY = allPiecesInFrontPos.get(i).get(1) + j;
-                            allInvalidPos.add(new ArrayList<>(Arrays.asList(posX, posY)));
-                            
-                        }
-                    } else if (allPiecesInFrontPos.get(i).get(1) < piece.getPiecePos().get(1)) {
-                        for (int j = 1; j <= allPiecesInFrontPos.get(i).get(1); j++) {
-                            int posX = allPiecesInFrontPos.get(i).get(0);
-                            int posY = allPiecesInFrontPos.get(i).get(1) - j;
-                            allInvalidPos.add(new ArrayList<>(Arrays.asList(posX, posY)));
-                            
-                        }
-                    } else if (allPiecesInFrontPos.get(i).get(0) > piece.getPiecePos().get(0)) {
-                        for (int j = 1; j <= 7 - allPiecesInFrontPos.get(i).get(0); j++) {
-                            int posX = allPiecesInFrontPos.get(i).get(0) + j;
-                            int posY = allPiecesInFrontPos.get(i).get(1);
-                            allInvalidPos.add(new ArrayList<>(Arrays.asList(posX, posY)));
-                            
-                        }
-                    } else if (allPiecesInFrontPos.get(i).get(0) < piece.getPiecePos().get(0)) {
-                        for (int j = 1; j <= allPiecesInFrontPos.get(i).get(0); j++) {
-                            int posX = allPiecesInFrontPos.get(i).get(0) - j;
-                            int posY = allPiecesInFrontPos.get(i).get(1);
-                            allInvalidPos.add(new ArrayList<>(Arrays.asList(posX, posY)));
-                            
-                        }
-                    }
-                }
+                                if (pieces.getPieceName().equals("Chess.Pieces.Bishop")) {
+                                    
+                                    if (validatePattern(pieces.getPiecePos().get(0), pieces.getPiecePos().get(1)).contains(pattern)) {
+                                        for (ArrayList<Integer> piecepos : pieces.layPattern(x, y)) {
+                                            allInvalidPos.add(piecepos);
+                                        }
+                                    } 
+                                   
+                                }
 
-                //Bishop logic
-                for (int i = 0; i < allPiecesInFrontPos.size(); i++) {
+                                else if (pieces.getPieceName().equals("Chess.Pieces.Knight")) {
+                                    for (ArrayList<Integer> piecepos : pieces.layPattern(x, y)) {
+                                        allInvalidPos.add(new ArrayList<>(piecepos));
+                                    }
+                                }
 
-                    if (allPiecesInFrontPos.get(i).get(1) > piece.getPiecePos().get(1)) {
-                        if (allPiecesInFrontPos.get(i).get(0) < piece.getPiecePos().get(0)) {
-                            for (int j = 1; j <= allPiecesInFrontPos.get(i).get(0); j++) {
-                                int posX = allPiecesInFrontPos.get(i).get(0) - j;
-                                int posY = allPiecesInFrontPos.get(i).get(1) + j;
-                                allInvalidPos.add(new ArrayList<>(Arrays.asList(posX, posY)));
+                                else {
+                                    for (ArrayList<Integer> piecepos : validatePattern(pieces.getPiecePos().get(0), pieces.getPiecePos().get(1))) {
+                                        allInvalidPos.add(new ArrayList<>(piecepos));
+                                    }
+                    
+                                }
+                                
+                                    
+
                             }
-                        } else if (allPiecesInFrontPos.get(i).get(0) > piece.getPiecePos().get(0)) 
-                            for (int j = 1; j <= 7 - allPiecesInFrontPos.get(i).get(0); j++) {
-                                int posX = allPiecesInFrontPos.get(i).get(0) + j;
-                                int posY = allPiecesInFrontPos.get(i).get(1) + j;
-                                allInvalidPos.add(new ArrayList<>(Arrays.asList(posX, posY)));
-                            }
-                    } else if (allPiecesInFrontPos.get(i).get(1) < piece.getPiecePos().get(1)) {
-
-                        if (allPiecesInFrontPos.get(i).get(0) < piece.getPiecePos().get(0)) {
-                            for (int j = 1; j <= allPiecesInFrontPos.get(i).get(0); j++) {
-                                int posX = allPiecesInFrontPos.get(i).get(0) - j;
-                                int posY = allPiecesInFrontPos.get(i).get(1) - j;
-                                allInvalidPos.add(new ArrayList<>(Arrays.asList(posX, posY)));
-                            }
-                        } else if (allPiecesInFrontPos.get(i).get(0) > piece.getPiecePos().get(0)) 
-                            for (int j = 1; j <= 7 - allPiecesInFrontPos.get(i).get(0); j++) {
-                                int posX = allPiecesInFrontPos.get(i).get(0) + j;
-                                int posY = allPiecesInFrontPos.get(i).get(1) - j;
-                                allInvalidPos.add(new ArrayList<>(Arrays.asList(posX, posY)));
                         }
                     }
                 }
-                
-                for (ArrayList<Integer> pos : allInvalidPos) {
-                    pattern.remove(pos);
-                }
+            }
+            //System.out.println(allInvalidPos + ": InvalidPos");
+            for (ArrayList<Integer> pos : allInvalidPos) {
+                pattern.remove(pos);
+            }
 
-                break;
-                
-            case "Chess.Pieces.King":
-                pattern.remove(new ArrayList<>(Arrays.asList(x , y)));
-                allPiecesInFrontPos = new ArrayList<>();
-                allInvalidPos = new ArrayList<>();
+        } 
 
-                for (ArrayList<Integer> pos : pattern) {
-                    if (chessboardState.get(pos.get(1)).get(pos.get(0)) != null) {
-                        allPiecesInFrontPos.add(new ArrayList<Integer>(Arrays.asList(pos.get(0), pos.get(1))));
-                        if (chessboardState.get(pos.get(1)).get(pos.get(0)).getPieceColor().equals(piece.getPieceColor())) {
-                            allInvalidPos.add(new ArrayList<>(pos));
-                        }
-                    }
-                }
+return pattern;
 
-                for (ArrayList<Integer> pos : allInvalidPos) {
-                    pattern.remove(pos);
-                }
-
-                break;
-            
-            } 
-
-        return pattern;
-
-    }
+}
 
 }

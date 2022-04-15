@@ -31,7 +31,7 @@ public class Knight extends BasePiece {
                 }
             }
         }
-        pattern.add(new ArrayList<>(Arrays.asList(x, y)));
+        
         return pattern;
     }
     
