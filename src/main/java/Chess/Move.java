@@ -94,7 +94,6 @@ public class Move {
                 //TODO: handle exception
             }
         }
-
         else if (piece.getPieceName().equals("Chess.Pieces.Bishop")) {
             pattern.remove(new ArrayList<>(Arrays.asList(x , y)));
             ArrayList<ArrayList<Integer>> allPiecesInFrontPos = new ArrayList<>();
@@ -313,28 +312,109 @@ public class Move {
                     } 
                 }
             }
-
-
-                    
+            
             for (ArrayList<BasePiece> row : chessboardState) {
                 for (BasePiece pieces : row) {
                     if (pieces != null) {
-                        if (!pieces.getPieceColor().equals(piece.getPieceColor())) {
-                            if (!pieces.getPieceName().equals("Chess.Pieces.King") && !pieces.getPieceName().equals("Chess.Pieces.Pawn")) {
+                        int posX = pieces.getPiecePos().get(0);
+                        int posY = pieces.getPiecePos().get(1);
 
-                                if (pieces.getPieceName().equals("Chess.Pieces.Bishop")) {
-                                    
-                                    if (validatePattern(pieces.getPiecePos().get(0), pieces.getPiecePos().get(1)).contains(pattern)) {
-                                        for (ArrayList<Integer> piecepos : pieces.layPattern(x, y)) {
-                                            allInvalidPos.add(piecepos);
+                        if (!pieces.getPieceColor().equals(piece.getPieceColor())) {
+                            if (!pieces.getPieceName().equals("Chess.Pieces.King")) {
+                                if (pieces.getPieceName().equals("Chess.Pieces.Bishop") || pieces.getPieceName().equals("Chess.Pieces.Queen")) {
+
+                                    if (validatePattern(posX, posY).contains(Arrays.asList(x, y))) {
+                                        for (ArrayList<Integer> piecepos : pieces.layPattern(posX, posY)) {
+                                            allInvalidPos.add(new ArrayList<>(piecepos));
                                         }
-                                    } 
-                                   
+                                    } else {
+                                        for (ArrayList<Integer> piecepos : validatePattern(posX, posY)) {
+                                            allInvalidPos.add(new ArrayList<>(piecepos));
+                                        }
+                                    }
+
+                                    for (ArrayList<Integer> patternpos : pattern) {
+                                        int patternX = patternpos.get(0);
+                                        int patternY = patternpos.get(1);
+                                        if (pieces.layPattern(posX, posY).contains(patternpos)) {
+                                            if (chessboardState.get(patternY).get(patternX) != null) {
+                                                if (!chessboardState.get(patternY).get(patternX).equals(pieces)) {
+                                                    if (validatePattern(posX, posY).contains(Arrays.asList(patternX - 1, patternY + 1)) ||
+                                                    validatePattern(posX, posY).contains(Arrays.asList(patternX + 1, patternY + 1)) ||
+                                                    validatePattern(posX, posY).contains(Arrays.asList(patternX - 1, patternY - 1)) ||
+                                                    validatePattern(posX, posY).contains(Arrays.asList(patternX + 1, patternY - 1)) ||
+                                                    pieces.getPiecePos().equals(Arrays.asList(patternX - 1, patternY + 1)) ||
+                                                    pieces.getPiecePos().equals(Arrays.asList(patternX + 1, patternY + 1)) ||
+                                                    pieces.getPiecePos().equals(Arrays.asList(patternX - 1, patternY - 1)) ||
+                                                    pieces.getPiecePos().equals(Arrays.asList(patternX + 1, patternY - 1))) {
+                                                       allInvalidPos.add(new ArrayList<>(patternpos));
+                                                    }
+   
+                                                }
+
+                                            }
+                                        }
+                                    }
+                                }
+
+                                else if (pieces.getPieceName().equals("Chess.Pieces.Pawn")) {
+                                    allInvalidPos.add(new ArrayList<>(Arrays.asList(posX + 1, posY + 1)));
+                                    allInvalidPos.add(new ArrayList<>(Arrays.asList(posX - 1, posY + 1)));
+                                    allInvalidPos.add(new ArrayList<>(Arrays.asList(posX - 1, posY - 1)));
+                                    allInvalidPos.add(new ArrayList<>(Arrays.asList(posX + 1, posY - 1)));
+
+                                    for (ArrayList<Integer> patternpos : pattern) {
+                                        int patternX = patternpos.get(0);
+                                        int patternY = patternpos.get(1);
+                        
+                                        if (chessboardState.get(patternY).get(patternX) != null) {
+                                            if (
+                                                pieces.getPiecePos().equals(Arrays.asList(patternX - 1, patternY + 1)) ||
+                                                pieces.getPiecePos().equals(Arrays.asList(patternX + 1, patternY + 1)) ||
+                                                pieces.getPiecePos().equals(Arrays.asList(patternX - 1, patternY - 1)) ||
+                                                pieces.getPiecePos().equals(Arrays.asList(patternX + 1, patternY - 1))) {
+                                                allInvalidPos.add(new ArrayList<>(patternpos));
+                                                }
+                                        }
+                                        
+                                    }
+                                
                                 }
 
                                 else if (pieces.getPieceName().equals("Chess.Pieces.Knight")) {
                                     for (ArrayList<Integer> piecepos : pieces.layPattern(x, y)) {
                                         allInvalidPos.add(new ArrayList<>(piecepos));
+                                    }
+                                }
+
+                                else if (pieces.getPieceName().equals("Chess.Pieces.Rook")) {
+                                    if (validatePattern(posX, posY).contains(Arrays.asList(x, y))) {
+                                        for (ArrayList<Integer> piecepos : pieces.layPattern(posX, posY)) {
+                                            allInvalidPos.add(new ArrayList<>(piecepos));
+                                        }
+                                    } else {
+                                        for (ArrayList<Integer> piecepos : validatePattern(posX, posY)) {
+                                            allInvalidPos.add(new ArrayList<>(piecepos));
+                                        }
+                                    }
+
+                                    for (ArrayList<Integer> patternpos : pattern) {
+                                        int patternX = patternpos.get(0);
+                                        int patternY = patternpos.get(1);
+                                        if (pieces.layPattern(posX, posY).contains(patternpos)) {
+                                            if (chessboardState.get(patternY).get(patternX) != null) {
+                                                if (validatePattern(posX, posY).contains(Arrays.asList(patternX, patternY + 1)) ||
+                                                 validatePattern(posX, posY).contains(Arrays.asList(patternX, patternY - 1)) ||
+                                                 validatePattern(posX, posY).contains(Arrays.asList(patternX - 1, patternY)) ||
+                                                 validatePattern(posX, posY).contains(Arrays.asList(patternX + 1, patternY)) ||
+                                                 pieces.getPiecePos().equals(Arrays.asList(patternX, patternY + 1)) ||
+                                                 pieces.getPiecePos().equals(Arrays.asList(patternX, patternY - 1)) ||
+                                                 pieces.getPiecePos().equals(Arrays.asList(patternX - 1, patternY)) ||
+                                                 pieces.getPiecePos().equals(Arrays.asList(patternX + 1, patternY))) {
+                                                    allInvalidPos.add(new ArrayList<>(patternpos));
+                                                 }
+                                            }
+                                        }
                                     }
                                 }
 

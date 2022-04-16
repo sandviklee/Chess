@@ -24,7 +24,7 @@ public class CheckGameState {
         for (ArrayList<BasePiece> row : chessboardState) {
             for (BasePiece piece : row) {
                 if (piece != null) {
-                    if (piece.getPieceColor().equals("w") && !(piece.getPieceName().equals("Chess.Pieces.Pawn"))) {
+                    if (piece.getPieceColor().equals("w")) {
                         ArrayList<ArrayList<Integer>> piecePatterns = Move.validatePattern(piece.getPiecePos().get(0), piece.getPiecePos().get(1));
                         if (piecePatterns.contains(kingPos)) {
                             System.out.println("Black king in check! by " + piece);
