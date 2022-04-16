@@ -52,7 +52,7 @@
       <ButtonBar layoutX="565.0" layoutY="461.0" prefHeight="41.0" prefWidth="237.0">
         <buttons>
             <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="85.0" text="Save" />
-            <Button mnemonicParsing="false" text="Quit" />
+            <Button mnemonicParsing="false" onAction="#quitClick" text="Quit" />
         </buttons>
       </ButtonBar>
       <Text fill="WHITE" layoutX="617.0" layoutY="56.0" strokeType="OUTSIDE" strokeWidth="0.0" text="CHESSPIECES " textAlignment="CENTER" wrappingWidth="153.14452362060547">

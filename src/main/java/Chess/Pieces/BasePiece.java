@@ -61,7 +61,7 @@ public abstract class BasePiece {
 
     @Override
     public String toString() {
-        return "" + this.getPieceName() + this.getPiecePos() + "" + this.getPieceColor();
+        return "" + this.getPieceName() + "";
     }
 
 }

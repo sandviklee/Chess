@@ -20,9 +20,6 @@ while moving, or initializing when the main chessboard is done. */
 
 public class ChessInit {
 
-    // INITIALIZING A STATIC "GLOBAL" CHESS INITIALIZER
-    public static ChessInit ChessInitialize = new ChessInit();
-
     // FIELDS
     private Pane[][] paneArray;
     public static List<Integer> mouseposlist = new ArrayList<>();
@@ -30,10 +27,19 @@ public class ChessInit {
     private int msecupdate = 10;
     
     // INITIALIZING A STATIC "GLOBAL" CHESSBOARD AVAILABLE TO EVERY CLASS
-    public static Chessboard chessboard = new Chessboard();
+    public static Chessboard chessboard;
 
+    // CONSTRUCTOR
+    public ChessInit(Chessboard chessboard) {
+      ChessInit.chessboard = chessboard;
+    }
+
+    public Group getRoot() {
+      return root;
+    }
+    
     // "GLOBAL" GROUP FOR ALL IMAGES ON THE CHESSBOARD
-    public static Group root = new Group();
+    private Group root = new Group();
     
     public void ChessPlay() throws IOException {
         root = new Group();
@@ -110,9 +116,12 @@ public class ChessInit {
                         BasePiece boardpiece = chessboard.getChessboardState().get(mouseposlist.get(1)).get(mouseposlist.get(0));
 
                         if (boardpiece != null) {
-                          for (ArrayList<Integer> pos : Move.validatePattern(mouseposlist.get(0), mouseposlist.get(1))) {
-                            GreenClick(pos.get(0), pos.get(1));
-                          
+                          if ((boardpiece.getPieceColor().equals("w") && Move.whiteTurn) || (boardpiece.getPieceColor().equals("b") && Move.blackTurn))  {
+                            for (ArrayList<Integer> pos : Move.validatePattern(mouseposlist.get(0), mouseposlist.get(1))) {
+                              GreenClick(pos.get(0), pos.get(1));
+                            
+                            }
+
                           }
 
                         }
@@ -133,9 +142,10 @@ public class ChessInit {
                                     if (draggable != null) {
                                         gridPane.setOnMouseMoved(event -> {
                                             if (boardpiece != null) {
-                                              for (ArrayList<Integer> pos : Move.validatePattern(mouseposlist.get(0), mouseposlist.get(1))) {
-                                                GreenClick(pos.get(0), pos.get(1));
-                                              
+                                              if ((boardpiece.getPieceColor().equals("w") && Move.whiteTurn) || (boardpiece.getPieceColor().equals("b") && Move.blackTurn))  {
+                                                for (ArrayList<Integer> pos : Move.validatePattern(mouseposlist.get(0), mouseposlist.get(1))) {
+                                                  GreenClick(pos.get(0), pos.get(1));
+                                                }
                                               }
                                             }
                                             draggable.setX(event.getSceneX() - 32);

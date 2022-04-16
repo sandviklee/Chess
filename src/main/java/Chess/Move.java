@@ -9,13 +9,16 @@ import Chess.Pieces.BasePiece;
 /* This class is for implementing moving on the main board, but also updating the Chessgame class */
 
 public class Move {
-
     public static boolean Moving = false;
+    public static boolean whiteTurn = true;
+    public static boolean blackTurn = false;
+    private static boolean statement = false;
 
     public static void MovePiece() {
         //TODO: ADD MORE FUNCTIONALITY
         //NEED BASIC PIECE LOGIC AND MOVING FROM THE SAME SPACE TO THE OTHER IS NOT AN AVAILABLE MOVE.
         Moving = true;
+
         int x_1 = ChessInit.mouseposlist.get(0);
         int y_1 = ChessInit.mouseposlist.get(1);
         int x_2 = ChessInit.mouseposlist.get(2);
@@ -25,11 +28,26 @@ public class Move {
         BasePiece piece_2 = ChessInit.chessboard.getChessboardState().get(y_2).get(x_2);
 
         if (!(piece == null) && !(piece == piece_2)) {
-            if (validatePattern(x_1, y_1).contains(new ArrayList<>(Arrays.asList(x_2, y_2)))) {
+            if (whiteTurn) {
+                statement = piece.getPieceColor().equals("w");
+
+            } else if (blackTurn) {
+                statement = piece.getPieceColor().equals("b");
+
+            }
+
+            if (statement && validatePattern(x_1, y_1).contains(new ArrayList<>(Arrays.asList(x_2, y_2)))) {
                 if (piece_2 == null) {
                     try {
                         ChessInit.chessboard.Move(x_1, y_1, x_2, y_2);
                         System.out.println("Moved!");
+                        if (whiteTurn) {
+                            whiteTurn = false;
+                            blackTurn = true;
+                        } else {
+                            whiteTurn = true;
+                            blackTurn = false;
+                        }
                     } catch (Exception e) {
                         System.out.println("BUG:" + " " + e);
                     }
@@ -339,17 +357,16 @@ public class Move {
                                         if (pieces.layPattern(posX, posY).contains(patternpos)) {
                                             if (chessboardState.get(patternY).get(patternX) != null) {
                                                 if (!chessboardState.get(patternY).get(patternX).equals(pieces)) {
-                                                    if (validatePattern(posX, posY).contains(Arrays.asList(patternX - 1, patternY + 1)) ||
-                                                    validatePattern(posX, posY).contains(Arrays.asList(patternX + 1, patternY + 1)) ||
-                                                    validatePattern(posX, posY).contains(Arrays.asList(patternX - 1, patternY - 1)) ||
-                                                    validatePattern(posX, posY).contains(Arrays.asList(patternX + 1, patternY - 1)) ||
-                                                    pieces.getPiecePos().equals(Arrays.asList(patternX - 1, patternY + 1)) ||
-                                                    pieces.getPiecePos().equals(Arrays.asList(patternX + 1, patternY + 1)) ||
-                                                    pieces.getPiecePos().equals(Arrays.asList(patternX - 1, patternY - 1)) ||
-                                                    pieces.getPiecePos().equals(Arrays.asList(patternX + 1, patternY - 1))) {
-                                                       allInvalidPos.add(new ArrayList<>(patternpos));
-                                                    }
-   
+                                                if (validatePattern(posX, posY).contains(Arrays.asList(patternX - 1, patternY + 1)) ||
+                                                 validatePattern(posX, posY).contains(Arrays.asList(patternX + 1, patternY + 1)) ||
+                                                 validatePattern(posX, posY).contains(Arrays.asList(patternX - 1, patternY - 1)) ||
+                                                 validatePattern(posX, posY).contains(Arrays.asList(patternX + 1, patternY - 1)) ||
+                                                 pieces.getPiecePos().equals(Arrays.asList(patternX - 1, patternY + 1)) ||
+                                                 pieces.getPiecePos().equals(Arrays.asList(patternX + 1, patternY + 1)) ||
+                                                 pieces.getPiecePos().equals(Arrays.asList(patternX - 1, patternY - 1)) ||
+                                                 pieces.getPiecePos().equals(Arrays.asList(patternX + 1, patternY - 1))) {
+                                                    allInvalidPos.add(new ArrayList<>(patternpos));
+                                                 }
                                                 }
 
                                             }

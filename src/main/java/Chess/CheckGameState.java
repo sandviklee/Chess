@@ -3,8 +3,11 @@ package Chess;
 import java.util.ArrayList;
 
 import Chess.Pieces.BasePiece;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 
 public class CheckGameState {
+
     public static ArrayList<ArrayList<Integer>> CheckPiecePatterns = new ArrayList<>();
 
     public static void inCheck() {
@@ -28,7 +31,12 @@ public class CheckGameState {
                         ArrayList<ArrayList<Integer>> piecePatterns = Move.validatePattern(piece.getPiecePos().get(0), piece.getPiecePos().get(1));
                         if (piecePatterns.contains(kingPos)) {
                             System.out.println("Black king in check! by " + piece);
-                
+                            Alert a = new Alert(AlertType.NONE);
+                            a.setAlertType(AlertType.WARNING);
+                            a.setHeaderText("Black King in check!");
+                            a.setContentText("Black king in check! by " + piece);
+                            
+                            a.show();
                         }
                         
                     }

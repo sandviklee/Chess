@@ -11,12 +11,12 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 public class Chessboard {
-    private ArrayList<ArrayList<BasePiece>> MainBoard;
+    private ArrayList<ArrayList<BasePiece>> chessboard;
 
     public Chessboard() {
-        PiecePlacer MainBoard = new PiecePlacer();
-        MainBoard.addPieces();
-        this.MainBoard = MainBoard.getOuter();
+        PiecePlacer chessboard = new PiecePlacer();
+        chessboard.addPieces();
+        this.chessboard = chessboard.getOuter();
     }
 
     public ImageView ChessboardView() throws FileNotFoundException {
@@ -54,7 +54,7 @@ public class Chessboard {
 
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
-                BasePiece piece = MainBoard.get(i).get(j);
+                BasePiece piece = chessboard.get(i).get(j);
                 if (!(piece == null)) {
                     switch (piece.getPieceName()) {
                         case "Chess.Pieces.Bishop":
@@ -134,35 +134,35 @@ public class Chessboard {
     }
 
     public ArrayList<ArrayList<BasePiece>> getChessboardState() {
-        return MainBoard;
+        return chessboard;
     }
 
     public ArrayList<ArrayList<BasePiece>> setChessboardState() {
-        return MainBoard;
+        return chessboard;
     }
 
     public void Move(int x_1, int y_1, int x_2, int y_2) {
-        BasePiece piece = MainBoard.get(y_1).get(x_1);
-        BasePiece piece_2 = MainBoard.get(y_2).get(x_2);
+        BasePiece piece = chessboard.get(y_1).get(x_1);
+        BasePiece piece_2 = chessboard.get(y_2).get(x_2);
         //System.out.println(x_1 + " " + y_1);
         //System.out.println(x_2 + " " + y_2);
         if (y_1 != y_2) {
-            MainBoard.get(y_2).remove(x_2);
-            MainBoard.get(y_2).add(x_2, piece);
-            MainBoard.get(y_1).remove(piece);
-            MainBoard.get(y_1).add(x_1, null);
-            piece = MainBoard.get(y_2).get(x_2);
+            chessboard.get(y_2).remove(x_2);
+            chessboard.get(y_2).add(x_2, piece);
+            chessboard.get(y_1).remove(piece);
+            chessboard.get(y_1).add(x_1, null);
+            piece = chessboard.get(y_2).get(x_2);
             piece.setPiecePos(x_2, y_2);
             
         } else if (y_1 == y_2) {
             if (piece_2 == null) {
-                Collections.swap(MainBoard.get(y_1), x_1, x_2);
+                Collections.swap(chessboard.get(y_1), x_1, x_2);
                 piece.setPiecePos(x_2, y_2);
 
             } else if (!(piece.getPieceColor().equals(piece_2.getPieceColor()))) {
-                Collections.swap(MainBoard.get(y_1), x_1, x_2);
-                MainBoard.get(y_2).remove(x_1);
-                MainBoard.get(y_2).add(x_1, null);
+                Collections.swap(chessboard.get(y_1), x_1, x_2);
+                chessboard.get(y_2).remove(x_1);
+                chessboard.get(y_2).add(x_1, null);
                 piece.setPiecePos(x_2, y_2);
             }
         }
