@@ -147,7 +147,7 @@ public class Move {
                     }
                 }
             }
-            
+
             for (ArrayList<Integer> pos : allInvalidPos) {
                 pattern.remove(pos);
             }
@@ -353,6 +353,11 @@ public class Move {
                                     for (ArrayList<Integer> piecepos : pieces.layPattern(x, y)) {
                                         allInvalidPos.add(new ArrayList<>(piecepos));
                                     }
+                                }
+                            }
+                            else {
+                                for (ArrayList<Integer> piecepos : pieces.layPattern(posX, posY)) {
+                                    allInvalidPos.add(new ArrayList<>(piecepos));
                                 }
                             }
                         }
