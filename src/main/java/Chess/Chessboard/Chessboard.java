@@ -137,11 +137,7 @@ public class Chessboard {
         return chessboard;
     }
 
-    public ArrayList<ArrayList<BasePiece>> setChessboardState() {
-        return chessboard;
-    }
-
-    public void Move(int x_1, int y_1, int x_2, int y_2) {
+    public void setChessboardState(int x_1, int y_1, int x_2, int y_2) {
         BasePiece piece = chessboard.get(y_1).get(x_1);
         BasePiece piece_2 = chessboard.get(y_2).get(x_2);
         //System.out.println(x_1 + " " + y_1);
