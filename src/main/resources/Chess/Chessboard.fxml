@@ -6,6 +6,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ButtonBar?>
 <?import javafx.scene.effect.Bloom?>
+<?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -16,7 +17,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="552.0" prefWidth="834.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Chess.ChessController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="834.0" scaleShape="false" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Chess.ChessController">
    <children>
       <ImageView fitHeight="552.0" fitWidth="321.0" layoutX="513.0" pickOnBounds="true" smooth="false">
          <image>
@@ -32,7 +33,7 @@
             <Bloom threshold="0.11" />
          </effect>
       </ImageView>
-      <ImageView fitHeight="562.0" fitWidth="563.0" layoutX="-10.0" layoutY="-10.0" pickOnBounds="true" smooth="false">
+      <ImageView fitHeight="562.0" fitWidth="577.0" layoutX="-10.0" layoutY="-10.0" pickOnBounds="true" smooth="false">
          <image>
             <Image url="@images/Chessboard_pos.png" />
          </image>
@@ -45,25 +46,43 @@
       </ImageView>
       <ButtonBar layoutX="565.0" layoutY="386.0" prefHeight="65.0" prefWidth="237.0">
          <buttons>
-            <Button mnemonicParsing="false" prefHeight="48.0" prefWidth="132.0" text="Offer Draw" />
-            <Button mnemonicParsing="false" prefHeight="45.0" text="Claim Draw" />
+            <Button mnemonicParsing="false" prefHeight="48.0" prefWidth="132.0" text="Offer Draw">
+               <effect>
+                  <DropShadow />
+               </effect></Button>
+            <Button defaultButton="true" mnemonicParsing="false" prefHeight="48.0" text="Claim Draw">
+               <effect>
+                  <DropShadow />
+               </effect></Button>
          </buttons>
       </ButtonBar>
-      <ButtonBar layoutX="565.0" layoutY="461.0" prefHeight="41.0" prefWidth="237.0">
+      <ButtonBar layoutX="577.0" layoutY="459.0" prefHeight="41.0" prefWidth="207.0">
         <buttons>
-            <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="85.0" text="Save" />
-            <Button mnemonicParsing="false" onAction="#quitClick" text="Quit" />
+            <Button mnemonicParsing="false" onAction="#saveClick" prefHeight="30.0" prefWidth="85.0" text="Save">
+               <effect>
+                  <DropShadow />
+               </effect></Button>
+            <Button mnemonicParsing="false" onAction="#quitClick" prefHeight="30.0" prefWidth="85.0" text="Quit">
+               <effect>
+                  <DropShadow />
+               </effect></Button>
         </buttons>
       </ButtonBar>
       <Text fill="WHITE" layoutX="617.0" layoutY="56.0" strokeType="OUTSIDE" strokeWidth="0.0" text="CHESSPIECES " textAlignment="CENTER" wrappingWidth="153.14452362060547">
          <font>
-            <Font name="Californian FB Bold" size="22.0" />
+            <Font name="Typography Times" size="20.0" />
          </font>
+         <effect>
+            <DropShadow />
+         </effect>
       </Text>
       <SubScene height="143.0" layoutX="586.0" layoutY="237.0" width="216.0">
         <root>
           <Region />
         </root>
+         <effect>
+            <DropShadow />
+         </effect>
       </SubScene>
       <GridPane fx:id="gridPane" blendMode="SCREEN" prefHeight="512.0" prefWidth="512.0">
         <columnConstraints>
@@ -91,6 +110,9 @@
          <root>
             <Region />
          </root>
+         <effect>
+            <DropShadow />
+         </effect>
       </SubScene>
    </children>
 </AnchorPane>

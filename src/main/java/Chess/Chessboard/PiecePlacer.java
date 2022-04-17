@@ -1,5 +1,7 @@
 package Chess.Chessboard;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -9,18 +11,13 @@ import Chess.Pieces.*;
 public class PiecePlacer {
     private ArrayList<ArrayList<BasePiece>> outer = new ArrayList<>();
     private ArrayList<BasePiece> inner = new ArrayList<>();
+    public List<String> PieceList;
 
-    private String[] string = 
-    {"R", "H", "B", "Q", "K", "B", "H", "R",
-     "P", "P", "P", "P", "P", "P", "P", "P",
-      "0","0", "0", "0", "0", "0", "0", "0",
-      "0","0", "0", "0", "0", "0", "0", "0",
-      "0","0", "0", "0", "0", "0", "0", "0",
-      "0","0", "0", "0", "0", "0", "0", "0",
-      "p", "p", "p", "p", "p", "p", "p", "p",
-      "r", "h", "b", "q", "k", "b", "h", "r"};
-    public List<String> PieceList = Arrays.asList(string);
-
+    public PiecePlacer(File filename) throws FileNotFoundException  {
+        IO IOload = new IO();
+        this.PieceList = Arrays.asList(IOload.load(filename));
+    }
+    
     public void addPieces() {
         int counterx = 0;
         int countery = 0;
@@ -133,10 +130,11 @@ public class PiecePlacer {
         return new ArrayList<ArrayList<BasePiece>>(this.outer);
     }
 
-    public static void main(String[] args) {
-        PiecePlacer placer = new PiecePlacer();
-        // System.out.println(placer.PieceList);
-        placer.addPieces();
+    public static void main(String[] args) throws FileNotFoundException {
+        File file = new File("newGameState.txt");
+        PiecePlacer placer = new PiecePlacer(file);
+        System.out.println(placer.PieceList);
+        //placer.addPieces();
         // System.out.println(placer.getOuter());
     
     }

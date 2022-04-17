@@ -8,7 +8,7 @@ public abstract class BasePiece {
     public int pieceColor;
     ArrayList<Integer> availColor = new ArrayList<>();
     ArrayList<Integer> pos = new ArrayList<>();
-    static boolean moved = false;
+    public static boolean moved = false;
 
     public BasePiece(int pieceColor, int x, int y) {
         availColor.add(-1);
@@ -61,7 +61,9 @@ public abstract class BasePiece {
 
     @Override
     public String toString() {
-        return "" + this.getPieceName() + "";
+        String[] pieceNameList = getPieceName().split("\\.");
+        String pieceName = pieceNameList[2];
+        return pieceName;
     }
 
 }

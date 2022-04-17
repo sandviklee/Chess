@@ -2,6 +2,7 @@ package Chess.Chessboard;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -13,8 +14,16 @@ import javafx.scene.image.ImageView;
 public class Chessboard {
     private ArrayList<ArrayList<BasePiece>> chessboard;
 
-    public Chessboard() {
-        PiecePlacer chessboard = new PiecePlacer();
+    public Chessboard() throws FileNotFoundException {
+        File newGameFile = new File("src/main/resources/Chess/SaveFiles/newGameState.txt");
+        PiecePlacer chessboard = new PiecePlacer(newGameFile);
+        chessboard.addPieces();
+        this.chessboard = chessboard.getOuter();
+    }
+
+    
+    public Chessboard(File filename) throws FileNotFoundException {
+        PiecePlacer chessboard = new PiecePlacer(filename);
         chessboard.addPieces();
         this.chessboard = chessboard.getOuter();
     }
@@ -165,11 +174,18 @@ public class Chessboard {
         //System.out.println(piece);
 
     }
+
+    public void PawnToQueen(int pieceColor, int x_1, int y_1) {
+        BasePiece piece = new Queen(pieceColor, x_1, y_1);
+        chessboard.get(y_1).remove(x_1);
+        chessboard.get(y_1).add(x_1, piece);
+    }
+
     public static void main(String[] args) throws FileNotFoundException {
         Chessboard c1 = new Chessboard();
-        c1.Move(0, 1, 0, 2);
+        c1.setChessboardState(0, 1, 0, 2);
         System.out.println("" + "\n" + c1.getChessboardState());
-        c1.Move(0, 1, 0, 2);
+        c1.setChessboardState(0, 1, 0, 2);
         System.out.println("" + "\n" + c1.getChessboardState());
     }
 }

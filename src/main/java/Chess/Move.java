@@ -6,7 +6,6 @@ import java.util.Arrays;
 import Chess.Chessboard.Chessboard;
 import Chess.Pieces.BasePiece;
 
-
 /* This class is for implementing moving on the main board, but also updating the Chessgame class */
 
 public class Move {
@@ -44,7 +43,9 @@ public class Move {
                 if (piece_2 == null) {
                     try {
                         chessboard.setChessboardState(x_1, y_1, x_2, y_2);
+                        SpecialMove(piece, x_2, y_2);
                         System.out.println("Moved!");
+                        
                         /*
                         if (whiteTurn) {
                             whiteTurn = false;
@@ -55,7 +56,7 @@ public class Move {
                         }
                         */
                     } catch (Exception e) {
-                        System.out.println("BUG:" + " " + e);
+                        System.out.println("Bug:" + e);
                     }
 
                 } else {
@@ -63,11 +64,27 @@ public class Move {
                         System.out.println("Not a legal move!");
                     } else {
                         chessboard.setChessboardState(x_1, y_1, x_2, y_2);
+                        SpecialMove(piece, x_2, y_2);
                         System.out.println("Moved!");
                     }
                 }
             //System.out.println(chessboard.getChessboardState());
             } 
+        }
+    }
+
+    public void SpecialMove(BasePiece piece, int x, int y) { // Movement which is special in game
+        if (piece.getPieceName().equals("Chess.Pieces.Pawn")) {
+            if (piece.getPieceColor().equals("w")) {
+                if (piece.getPiecePos().equals(Arrays.asList(piece.getPiecePos().get(0), 0))) {
+                    chessboard.PawnToQueen(piece.pieceColor, x, y);
+                }
+            }
+            else {
+                if (piece.getPiecePos().equals(Arrays.asList(piece.getPiecePos().get(0), 7))) {
+                    chessboard.PawnToQueen(piece.pieceColor, x, y);
+                }
+            }
         }
     }
 
@@ -117,6 +134,24 @@ public class Move {
             } catch (Exception e) {
                 //TODO: handle exception
             }
+
+
+        }
+        else if (piece.getPieceName().equals("Chess.Pieces.Knight")) {
+            ArrayList<ArrayList<Integer>> allInvalidPos = new ArrayList<>();
+
+            for (ArrayList<Integer> pos : pattern) {
+                if (chessboardState.get(pos.get(1)).get(pos.get(0)) != null) {
+                    if (chessboardState.get(pos.get(1)).get(pos.get(0)).getPieceColor().equals(piece.getPieceColor())) {
+                        allInvalidPos.add(new ArrayList<>(pos));
+                    }
+                }
+            }
+            
+            for (ArrayList<Integer> pos : allInvalidPos) {
+                pattern.remove(pos);
+            }
+
         }
         else if (piece.getPieceName().equals("Chess.Pieces.Queen") || piece.getPieceName().equals("Chess.Pieces.Bishop") 
         || piece.getPieceName().equals("Chess.Pieces.Rook")) {
@@ -332,3 +367,5 @@ public class Move {
     return pattern;
     }
 }
+
+

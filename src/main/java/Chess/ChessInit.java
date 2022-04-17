@@ -31,15 +31,14 @@ public class ChessInit {
     public Move ChessMove;
     public CheckGameState checkGameState;
     
-
     // CONSTRUCTOR
-    public ChessInit(Chessboard chessboard) {
+    public ChessInit(Chessboard chessboard, boolean pawnDoubleMove) {
       this.chessboard = chessboard;
       this.ChessMove = new Move(chessboard);
       this.checkGameState = new CheckGameState(chessboard, ChessMove);
+      BasePiece.moved = pawnDoubleMove; // Pawn double move available ?
     }
     
-
     // GROUP FOR ALL IMAGES ON THE CHESSBOARD
     private Group root = new Group();
 
