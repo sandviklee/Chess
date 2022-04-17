@@ -9,7 +9,6 @@ import javafx.scene.control.Alert.AlertType;
 
 public class CheckGameState {
 
-    private static ArrayList<ArrayList<Integer>> CheckPiecePatterns = new ArrayList<>();
     private Chessboard chessboard;
     private Move ChessMove;
 
@@ -20,13 +19,16 @@ public class CheckGameState {
     
     public void inCheck() {
         ArrayList<ArrayList<BasePiece>> chessboardState = chessboard.getChessboardState();
-        ArrayList<Integer> kingPos = new ArrayList<>();
+        ArrayList<Integer> kingPosB = new ArrayList<>();
+        ArrayList<Integer> kingPosW = new ArrayList<>();
 
         for (ArrayList<BasePiece> row : chessboardState) {
             for (BasePiece piece : row) {
                 if (piece != null) {
                     if (piece.getPieceName().equals("Chess.Pieces.King") && piece.getPieceColor().equals("b")) {
-                        kingPos = new ArrayList<>(piece.getPiecePos());
+                        kingPosB = new ArrayList<>(piece.getPiecePos());
+                    } else if (piece.getPieceName().equals("Chess.Pieces.King") && piece.getPieceColor().equals("w")) {
+                        kingPosW = new ArrayList<>(piece.getPiecePos());
                     }
                 }
             }
@@ -37,24 +39,28 @@ public class CheckGameState {
                 if (piece != null) {
                     if (piece.getPieceColor().equals("w")) {
                         ArrayList<ArrayList<Integer>> piecePatterns = ChessMove.validatePattern(piece.getPiecePos().get(0), piece.getPiecePos().get(1));
-                        if (piecePatterns.contains(kingPos)) {
-                            System.out.println("Black king in check! by " + piece);
+                        if (piecePatterns.contains(kingPosB)) {
                             Alert a = new Alert(AlertType.NONE);
                             a.setAlertType(AlertType.WARNING);
                             a.setHeaderText("Black King in check!");
-                            a.setContentText("Black king in check! by " + piece);
-                            
+                            a.setContentText("Black king in check! by White " + piece);
                             a.show();
+
                         }
                         
+                    } else {
+                        ArrayList<ArrayList<Integer>> piecePatterns = ChessMove.validatePattern(piece.getPiecePos().get(0), piece.getPiecePos().get(1));
+                        if (piecePatterns.contains(kingPosW)) {
+                            Alert a = new Alert(AlertType.NONE);
+                            a.setAlertType(AlertType.WARNING);
+                            a.setHeaderText("White King in check!");
+                            a.setContentText("White king in check! by White " + piece);
+                            a.show();
+                            
+                        }
                     }
                 }
-
             }
         }
-
-        
-
-    }
-    
+    }  
 }
