@@ -8,7 +8,7 @@ public abstract class BasePiece {
     public int pieceColor;
     ArrayList<Integer> availColor = new ArrayList<>();
     ArrayList<Integer> pos = new ArrayList<>();
-    public static boolean moved = false;
+    private static boolean moved = false;
 
     public BasePiece(int pieceColor, int x, int y) {
         availColor.add(-1);
@@ -57,6 +57,14 @@ public abstract class BasePiece {
 
     public ArrayList<Integer> getPiecePos() {
         return new ArrayList<>(pos);
+    }
+    
+    public static void setMoved(boolean moved) {
+        BasePiece.moved = moved;
+    }
+
+    public boolean getMoved() {
+        return moved;
     }
 
     @Override

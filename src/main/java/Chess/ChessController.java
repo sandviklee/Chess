@@ -1,14 +1,16 @@
 package Chess;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 import Chess.Chessboard.Chessboard;
 import Chess.Chessboard.IO;
-import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
@@ -40,8 +42,9 @@ public class ChessController implements Initializable{
     }
 
     @FXML
-    public void quitClick() {
-        Platform.exit();
+    public void quitClick() throws IOException {
+        MainmenuController.primaryStage.setScene(new Scene(FXMLLoader.load(getClass().getResource("Mainmenu.fxml"))));
+        MainmenuController.primaryStage.show();
     }
 
 

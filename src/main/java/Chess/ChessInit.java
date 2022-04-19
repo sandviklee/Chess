@@ -16,27 +16,25 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 
 /* This is where the "Main" stuff is gonna go on, where the most important functions like updating the game
-while moving, or initializing when the main chessboard is done. */
+while moving. This is the Initialization of the chess game. */
 
 public class ChessInit {
 
     // FIELDS
     private Pane[][] paneArray;
-    public List<Integer> mouseposlist = new ArrayList<>();
+    private List<Integer> mouseposlist = new ArrayList<>();
     private ImageView draggable;
     private int msecupdate = 10;
-    public Chessboard chessboard;
-
-    // IMPORTANT FIELDS
-    public Move ChessMove;
-    public CheckGameState checkGameState;
+    private Chessboard chessboard;
+    private Move ChessMove;
+    private CheckGameState checkGameState;
     
     // CONSTRUCTOR
     public ChessInit(Chessboard chessboard, boolean pawnDoubleMove) {
       this.chessboard = chessboard;
       this.ChessMove = new Move(chessboard);
       this.checkGameState = new CheckGameState(chessboard, ChessMove);
-      BasePiece.moved = pawnDoubleMove; // Pawn double move available ?
+      BasePiece.setMoved(pawnDoubleMove); // Pawn double move available ?
     }
     
     // GROUP FOR ALL IMAGES ON THE CHESSBOARD
@@ -69,9 +67,9 @@ public class ChessInit {
                   Thread.sleep(msecupdate);
                 } catch (InterruptedException e) {
                   }
-                  if (ChessMove.Moving) {
+                  if (ChessMove.getMoving()) {
                     Platform.runLater(updater);
-                    ChessMove.Moving = false;
+                    ChessMove.setMoving(false);
                   } 
               }
             }
@@ -160,7 +158,12 @@ public class ChessInit {
                     mouseposlist.add(xaxis);
                     ChessMove.MovePiece(mouseposlist.get(0), mouseposlist.get(1), mouseposlist.get(2), mouseposlist.get(3));
                     mouseposlist.clear();
-                    checkGameState.inCheck();   
+                    try {
+                      checkGameState.inCheck();
+                    } catch (FileNotFoundException e1) {
+                      e1.printStackTrace();
+                      }
+                    checkGameState.inCheckMate();   
                     }                
                 });  
             }
@@ -169,7 +172,7 @@ public class ChessInit {
 
     private void availPattern(BasePiece piece, int x, int y) {
       if (piece != null) {
-        if ((piece.getPieceColor().equals("w") && ChessMove.whiteTurn) || (piece.getPieceColor().equals("b") && ChessMove.blackTurn))  {
+        if ((piece.getPieceColor().equals("w") && ChessMove.getWhiteTurn()) || (piece.getPieceColor().equals("b") && ChessMove.getBlackTurn()))  {
           for (ArrayList<Integer> pos : ChessMove.validatePattern(x, y)) {
             GreenClick(pos.get(0), pos.get(1));
           }

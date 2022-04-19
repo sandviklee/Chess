@@ -16,8 +16,8 @@ public class IO implements IIO {
             for (ArrayList<BasePiece> row : chessboard.getChessboardState()) {
                 for (BasePiece piece : row) {
                     if (piece != null) {
-                        switch (piece.getPieceName()) {
-                            case "Chess.Pieces.Rook":
+                        switch (piece.toString()) {
+                            case "Rook":
                                 switch (piece.getPieceColor()) {
                                     case "w":
                                         writer.print("r,");
@@ -27,7 +27,7 @@ public class IO implements IIO {
                                         break;
                                 }
                                 break;
-                            case "Chess.Pieces.Knight":
+                            case "Knight":
                                 switch (piece.getPieceColor()) {
                                     case "w":
                                         writer.print("h,");
@@ -37,7 +37,7 @@ public class IO implements IIO {
                                         break;
                                 }
                                 break;
-                            case "Chess.Pieces.Bishop":
+                            case "Bishop":
                                 switch (piece.getPieceColor()) {
                                     case "w":
                                         writer.print("b,");
@@ -47,7 +47,7 @@ public class IO implements IIO {
                                         break;
                                 }
                                 break;
-                            case "Chess.Pieces.Queen":
+                            case "Queen":
                                 switch (piece.getPieceColor()) {
                                     case "w":
                                         writer.print("q,");
@@ -57,7 +57,7 @@ public class IO implements IIO {
                                         break;
                                 }
                                 break;
-                            case "Chess.Pieces.King":
+                            case "King":
                                 switch (piece.getPieceColor()) {
                                     case "w":
                                         writer.print("k,");
@@ -67,7 +67,7 @@ public class IO implements IIO {
                                         break;
                                 }    
                                 break;
-                            case "Chess.Pieces.Pawn":
+                            case "Pawn":
                                 switch (piece.getPieceColor()) {
                                     case "w":
                                         writer.print("p,");

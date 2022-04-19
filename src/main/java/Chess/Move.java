@@ -5,19 +5,37 @@ import java.util.Arrays;
 
 import Chess.Chessboard.Chessboard;
 import Chess.Pieces.BasePiece;
+import Chess.Pieces.King;
 
 /* This class is for implementing moving on the main board, but also updating the Chessgame class */
 
 public class Move {
-    public boolean Moving = false;
-    public boolean whiteTurn = true;
-    public boolean blackTurn = true;
+    private boolean Moving = false;
+    private boolean whiteTurn = true;
+    private boolean blackTurn = true;
     private boolean statement = true;
+    public boolean KingNotCheck = true;
     private Chessboard chessboard;
 
 
     public Move(Chessboard chessboard) {
         this.chessboard = chessboard;
+    }
+
+    public boolean getMoving() {
+        return Moving;
+    }
+
+    public void setMoving(boolean Moving) {
+        this.Moving = Moving;
+    }
+
+    public boolean getWhiteTurn() {
+        return whiteTurn;
+    }
+
+    public boolean getBlackTurn() {
+        return blackTurn;
     }
 
     public void MovePiece(int x_1, int y_1, int x_2, int y_2) {
@@ -38,13 +56,18 @@ public class Move {
 
             }
             */
+            if (!KingNotCheck) {
+                KingNotCheck = piece.toString().equals("King");
+            }
 
-            if (statement && validatePattern(x_1, y_1).contains(new ArrayList<>(Arrays.asList(x_2, y_2)))) {
+            if (statement && validatePattern(x_1, y_1).contains(new ArrayList<>(Arrays.asList(x_2, y_2)))
+            && KingNotCheck) {
                 if (piece_2 == null) {
                     try {
                         chessboard.setChessboardState(x_1, y_1, x_2, y_2);
                         SpecialMove(piece, x_2, y_2);
                         System.out.println("Moved!");
+                        KingNotCheck = true;
                         
                         /*
                         if (whiteTurn) {
@@ -73,17 +96,19 @@ public class Move {
         }
     }
 
-    public void SpecialMove(BasePiece piece, int x, int y) { // Movement which is special in game
-        if (piece.getPieceName().equals("Chess.Pieces.Pawn")) {
-            if (piece.getPieceColor().equals("w")) {
-                if (piece.getPiecePos().equals(Arrays.asList(piece.getPiecePos().get(0), 0))) {
-                    chessboard.PawnToQueen(piece.pieceColor, x, y);
-                }
-            }
-            else {
-                if (piece.getPiecePos().equals(Arrays.asList(piece.getPiecePos().get(0), 7))) {
-                    chessboard.PawnToQueen(piece.pieceColor, x, y);
-                }
+    private void SpecialMove(BasePiece piece, int x, int y) { // Movement which is special in game
+        if (piece.toString().equals("Pawn")) {
+            switch (piece.getPieceColor()) {
+                case "w":
+                    if (piece.getPiecePos().equals(Arrays.asList(piece.getPiecePos().get(0), 0))) {
+                        chessboard.PawnToQueen(piece.pieceColor, x, y);
+                    }
+                    break;
+                case "b":
+                    if (piece.getPiecePos().equals(Arrays.asList(piece.getPiecePos().get(0), 7))) {
+                        chessboard.PawnToQueen(piece.pieceColor, x, y);
+                    }
+                    break;
             }
         }
     }
@@ -93,7 +118,7 @@ public class Move {
         BasePiece piece = chessboardState.get(y).get(x);
         ArrayList<ArrayList<Integer>> pattern = piece.layPattern(x, y);
 
-        if (piece.getPieceName().equals("Chess.Pieces.Pawn")) {
+        if (piece.toString().equals("Pawn")) {
             try {
                 if (chessboardState.get(y-1*piece.pieceColor).get(x) != null) {
                     pattern.remove(new ArrayList<>(Arrays.asList(x, y-1*piece.pieceColor)));
@@ -137,7 +162,7 @@ public class Move {
 
 
         }
-        else if (piece.getPieceName().equals("Chess.Pieces.Knight")) {
+        else if (piece.toString().equals("Knight")) {
             ArrayList<ArrayList<Integer>> allInvalidPos = new ArrayList<>();
 
             for (ArrayList<Integer> pos : pattern) {
@@ -153,8 +178,8 @@ public class Move {
             }
 
         }
-        else if (piece.getPieceName().equals("Chess.Pieces.Queen") || piece.getPieceName().equals("Chess.Pieces.Bishop") 
-        || piece.getPieceName().equals("Chess.Pieces.Rook")) {
+        else if (piece.toString().equals("Queen") || piece.toString().equals("Bishop") 
+        || piece.toString().equals("Rook")) {
             pattern.remove(new ArrayList<>(Arrays.asList(x , y)));
             ArrayList<ArrayList<Integer>> allPiecesInFrontPos = new ArrayList<>();
             ArrayList<ArrayList<Integer>> allInvalidPos = new ArrayList<>();
@@ -168,7 +193,7 @@ public class Move {
                 }
             }
 
-            if (piece.getPieceName().equals("Chess.Pieces.Queen") || piece.getPieceName().equals("Chess.Pieces.Rook")) {
+            if (piece.toString().equals("Queen") || piece.toString().equals("Rook")) {
                 //Rook logic
                 for (int i = 0; i < allPiecesInFrontPos.size(); i++) {
                     if (allPiecesInFrontPos.get(i).get(1) > piece.getPiecePos().get(1)) {
@@ -203,7 +228,7 @@ public class Move {
                 }
             }
 
-            if (piece.getPieceName().equals("Chess.Pieces.Queen") || piece.getPieceName().equals("Chess.Pieces.Bishop")) {
+            if (piece.toString().equals("Queen") || piece.toString().equals("Bishop")) {
                 //Bishop logic
                 for (int i = 0; i < allPiecesInFrontPos.size(); i++) {
 
@@ -241,7 +266,7 @@ public class Move {
                 pattern.remove(pos);
             }
         }
-        else if (piece.getPieceName().equals("Chess.Pieces.King")) {
+        else if (piece.toString().equals("King")) {
             pattern.remove(new ArrayList<>(Arrays.asList(x , y)));
             ArrayList<ArrayList<Integer>> allInvalidPos = new ArrayList<>();
 
@@ -251,7 +276,7 @@ public class Move {
                         allInvalidPos.add(new ArrayList<>(pos));
                     }
                     else if (pos.equals(Arrays.asList(x - 1, y)) || pos.equals(Arrays.asList(x + 1, y))) {
-                        if (chessboardState.get(pos.get(1)).get(pos.get(0)).getPieceName().equals("Chess.Pieces.Pawn")) {
+                        if (chessboardState.get(pos.get(1)).get(pos.get(0)).toString().equals("Pawn")) {
                             allInvalidPos.add(new ArrayList<>(Arrays.asList(x, y + 1)));
                             allInvalidPos.add(new ArrayList<>(Arrays.asList(x, y - 1)));
                         }
@@ -265,13 +290,14 @@ public class Move {
                         int posX = pieces.getPiecePos().get(0);
                         int posY = pieces.getPiecePos().get(1);
 
-                        if (!pieces.getPieceColor().equals(piece.getPieceColor())) {
+                        if (!pieces.getPieceColor().equals(piece.getPieceColor())) { //Not the same color.
 
-                            if (!pieces.getPieceName().equals("Chess.Pieces.King")) {
+                            if (!pieces.toString().equals("King")) {
 
-                                if (pieces.getPieceName().equals("Chess.Pieces.Bishop") || pieces.getPieceName().equals("Chess.Pieces.Rook") || pieces.getPieceName().equals("Chess.Pieces.Queen")) {
+                                if (pieces.toString().equals("Bishop") || pieces.toString().equals("Rook") || pieces.toString().equals("Queen")) {
+                                    
 
-                                    if (validatePattern(posX, posY).contains(Arrays.asList(x, y))) {
+                                    if (validatePattern(posX, posY).contains(Arrays.asList(x, y)) && !piece.layPattern(x, y).contains(Arrays.asList(posX, posY))) {
                                         for (ArrayList<Integer> piecepos : pieces.layPattern(posX, posY)) {
                                             allInvalidPos.add(new ArrayList<>(piecepos));
                                         }
@@ -281,8 +307,8 @@ public class Move {
                                         }
                                     }
 
-                                    if (pieces.getPieceName().equals("Chess.Pieces.Bishop") || pieces.getPieceName().equals("Chess.Pieces.Queen")) {
-
+                                    if (pieces.toString().equals("Bishop") || pieces.toString().equals("Queen")) {
+                                        
                                         for (ArrayList<Integer> patternpos : pattern) {
                                             int patternX = patternpos.get(0);
                                             int patternY = patternpos.get(1);
@@ -305,22 +331,24 @@ public class Move {
                                         }
                                     }
 
-                                    if (pieces.getPieceName().equals("Chess.Pieces.Rook") || pieces.getPieceName().equals("Chess.Pieces.Queen")) {
+                                    if (pieces.toString().equals("Rook") || pieces.toString().equals("Queen")) {
 
                                         for (ArrayList<Integer> patternpos : pattern) {
                                             int patternX = patternpos.get(0);
                                             int patternY = patternpos.get(1);
                                             if (pieces.layPattern(posX, posY).contains(patternpos)) {
                                                 if (chessboardState.get(patternY).get(patternX) != null) {
-                                                    if (validatePattern(posX, posY).contains(Arrays.asList(patternX, patternY + 1)) ||
-                                                    validatePattern(posX, posY).contains(Arrays.asList(patternX, patternY - 1)) ||
-                                                    validatePattern(posX, posY).contains(Arrays.asList(patternX - 1, patternY)) ||
-                                                    validatePattern(posX, posY).contains(Arrays.asList(patternX + 1, patternY)) ||
-                                                    pieces.getPiecePos().equals(Arrays.asList(patternX, patternY + 1)) ||
-                                                    pieces.getPiecePos().equals(Arrays.asList(patternX, patternY - 1)) ||
-                                                    pieces.getPiecePos().equals(Arrays.asList(patternX - 1, patternY)) ||
-                                                    pieces.getPiecePos().equals(Arrays.asList(patternX + 1, patternY))) {
-                                                        allInvalidPos.add(new ArrayList<>(patternpos));
+                                                    if (!chessboardState.get(patternY).get(patternX).equals(pieces)) {
+                                                        if (validatePattern(posX, posY).contains(Arrays.asList(patternX, patternY + 1)) ||
+                                                        validatePattern(posX, posY).contains(Arrays.asList(patternX, patternY - 1)) ||
+                                                        validatePattern(posX, posY).contains(Arrays.asList(patternX - 1, patternY)) ||
+                                                        validatePattern(posX, posY).contains(Arrays.asList(patternX + 1, patternY)) ||
+                                                        pieces.getPiecePos().equals(Arrays.asList(patternX, patternY + 1)) ||
+                                                        pieces.getPiecePos().equals(Arrays.asList(patternX, patternY - 1)) ||
+                                                        pieces.getPiecePos().equals(Arrays.asList(patternX - 1, patternY)) ||
+                                                        pieces.getPiecePos().equals(Arrays.asList(patternX + 1, patternY))) {
+                                                            allInvalidPos.add(new ArrayList<>(patternpos));
+                                                        }
                                                     }
                                                 }
                                             }
@@ -328,7 +356,7 @@ public class Move {
                                     }
                                 }
 
-                                else if (pieces.getPieceName().equals("Chess.Pieces.Pawn")) {
+                                else if (pieces.toString().equals("Pawn")) {
                                     allInvalidPos.add(new ArrayList<>(Arrays.asList(posX + 1, posY + 1)));
                                     allInvalidPos.add(new ArrayList<>(Arrays.asList(posX - 1, posY + 1)));
                                     allInvalidPos.add(new ArrayList<>(Arrays.asList(posX - 1, posY - 1)));
@@ -349,7 +377,7 @@ public class Move {
                                     }
                                 }
 
-                                else if (pieces.getPieceName().equals("Chess.Pieces.Knight")) {
+                                else if (pieces.toString().equals("Knight")) {
                                     for (ArrayList<Integer> piecepos : pieces.layPattern(x, y)) {
                                         allInvalidPos.add(new ArrayList<>(piecepos));
                                     }

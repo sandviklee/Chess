@@ -14,7 +14,7 @@ public class Pawn extends BasePiece{
         if (this.pos.get(0) - x != 0) {
             return false;
         } 
-        if (!(BasePiece.moved)) {
+        if (!(getMoved())) {
             return ((this.pos.get(1)-y) * this.pieceColor) >= 1 && ((this.pos.get(1)-y) * this.pieceColor) <= 2;
         }
         return ((this.pos.get(1)-y) * this.pieceColor) == 1;

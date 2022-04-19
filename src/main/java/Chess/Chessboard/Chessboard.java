@@ -21,7 +21,7 @@ public class Chessboard {
         this.chessboard = chessboard.getOuter();
     }
 
-    
+
     public Chessboard(File filename) throws FileNotFoundException {
         PiecePlacer chessboard = new PiecePlacer(filename);
         chessboard.addPieces();
@@ -35,7 +35,7 @@ public class Chessboard {
         return boardView;
     }
 
-    private Image addChessImage(String s) throws FileNotFoundException {
+    public Image addChessImage(String s) throws FileNotFoundException {
         InputStream file = new FileInputStream("src/main/resources/Chess/images/" + (String) s + "_png_shadow_128px.png");
         Image image = new Image(file);
         return (Image) image;
@@ -65,8 +65,8 @@ public class Chessboard {
             for (int j = 0; j < 8; j++) {
                 BasePiece piece = chessboard.get(i).get(j);
                 if (!(piece == null)) {
-                    switch (piece.getPieceName()) {
-                        case "Chess.Pieces.Bishop":
+                    switch (piece.toString()) {
+                        case "Bishop":
                             switch (piece.getPieceColor()) {
                                 case "b":
                                     ImageView = new ImageView(bbImage);
@@ -76,7 +76,7 @@ public class Chessboard {
                                     break;                            
                             }
                             break;
-                        case "Chess.Pieces.Knight":
+                        case "Knight":
                             switch (piece.getPieceColor()) {
                                 case "b":
                                     ImageView = new ImageView(hbImage);
@@ -86,7 +86,7 @@ public class Chessboard {
                                     break;                            
                             }
                             break;
-                        case "Chess.Pieces.Rook":
+                        case "Rook":
                             switch (piece.getPieceColor()) {
                                 case "b":
                                     ImageView = new ImageView(rbImage);
@@ -96,7 +96,7 @@ public class Chessboard {
                                     break;                            
                             }
                             break;
-                        case "Chess.Pieces.King":
+                        case "King":
                             switch (piece.getPieceColor()) {
                                 case "b":
                                     ImageView = new ImageView(kbImage);
@@ -106,7 +106,7 @@ public class Chessboard {
                                     break;                            
                             }
                             break;
-                        case "Chess.Pieces.Queen":
+                        case "Queen":
                             switch (piece.getPieceColor()) {
                                 case "b":
                                     ImageView = new ImageView(qbImage);
@@ -116,7 +116,7 @@ public class Chessboard {
                                     break;                            
                             }
                             break;
-                        case "Chess.Pieces.Pawn":
+                        case "Pawn":
                             switch (piece.getPieceColor()) {
                                 case "b":
                                     ImageView = new ImageView(pbImage);
@@ -143,7 +143,7 @@ public class Chessboard {
     }
 
     public ArrayList<ArrayList<BasePiece>> getChessboardState() {
-        return chessboard;
+        return new ArrayList<>(chessboard);
     }
 
     public void setChessboardState(int x_1, int y_1, int x_2, int y_2) {
