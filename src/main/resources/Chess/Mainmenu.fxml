@@ -12,7 +12,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="552.0" prefWidth="834.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Chess.MainmenuController">
    <children>
-      <ImageView blendMode="DARKEN" cacheHint="SPEED" fitHeight="623.0" fitWidth="938.0" layoutX="-40.0" layoutY="-33.0" pickOnBounds="true" preserveRatio="true" smooth="false">
+      <ImageView blendMode="DARKEN" cacheHint="SPEED" fitHeight="559.0" fitWidth="851.0" layoutX="-11.0" pickOnBounds="true" preserveRatio="true" smooth="false">
          <image>
             <Image url="@images/MainMenu.gif" />
          </image>
@@ -20,31 +20,31 @@
             <Rectangle2D />
          </viewport>
       </ImageView>
-      <Button contentDisplay="CENTER" layoutX="340.0" layoutY="311.0" mnemonicParsing="false" onAction="#newgameClick" prefHeight="57.0" prefWidth="184.0" text="New Game" textOverrun="LEADING_ELLIPSIS">
+      <Button contentDisplay="CENTER" layoutX="333.0" layoutY="311.0" mnemonicParsing="false" onAction="#newgameClick" prefHeight="57.0" prefWidth="184.0" text="New Game" textAlignment="CENTER" textOverrun="LEADING_ELLIPSIS">
          <effect>
             <DropShadow />
          </effect>
          <font>
-            <Font name="Typography Times" size="16.0" />
+            <Font name="MS Gothic" size="16.0" />
          </font></Button>
-      <Button layoutX="340.0" layoutY="400.0" mnemonicParsing="false" onAction="#loadClick" prefHeight="57.0" prefWidth="184.0" text="Load Game">
+      <Button layoutX="333.0" layoutY="400.0" mnemonicParsing="false" onAction="#loadClick" prefHeight="57.0" prefWidth="184.0" text="Load Game">
          <effect>
             <DropShadow radius="23.265" width="74.06" />
          </effect>
          <font>
-            <Font name="Typography Times" size="15.0" />
+            <Font name="MS Gothic" size="15.0" />
          </font></Button>
-      <Text fill="WHITE" layoutX="253.0" layoutY="120.0" strokeType="OUTSIDE" strokeWidth="0.0" text="CHESS">
+      <Text fill="WHITE" layoutX="274.0" layoutY="121.0" strokeType="OUTSIDE" strokeWidth="0.0" text="CHESS">
          <font>
-            <Font name="Typography Times" size="92.0" />
+            <Font name="Times New Roman" size="92.0" />
          </font>
          <effect>
             <DropShadow spread="0.2" />
          </effect>
       </Text>
-      <Text fill="WHITE" layoutX="295.0" layoutY="162.0" strokeType="OUTSIDE" strokeWidth="0.0" text="A simple chess game." textAlignment="CENTER">
+      <Text fill="WHITE" layoutX="290.0" layoutY="150.0" strokeType="OUTSIDE" strokeWidth="0.0" text="A simple chess game." textAlignment="CENTER">
          <font>
-            <Font name="Typography Times" size="27.0" />
+            <Font name="FangSong" size="27.0" />
          </font>
          <effect>
             <Reflection topOpacity="0.13" />

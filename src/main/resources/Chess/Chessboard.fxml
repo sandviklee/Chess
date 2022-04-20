@@ -70,7 +70,7 @@
       </ButtonBar>
       <Text fill="WHITE" layoutX="617.0" layoutY="56.0" strokeType="OUTSIDE" strokeWidth="0.0" text="CHESSPIECES " textAlignment="CENTER" wrappingWidth="153.14452362060547">
          <font>
-            <Font name="Typography Times" size="20.0" />
+            <Font name="Garamond" size="20.0" />
          </font>
          <effect>
             <DropShadow />

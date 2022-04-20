@@ -117,15 +117,16 @@ public class ChessInit {
                     mouseposlist.add(yaxis);
                     mouseposlist.add(xaxis);
                     
-                    BasePiece boardpiece = chessboard.getChessboardState().get(xaxis).get(yaxis);
-                    availPattern(boardpiece, mouseposlist.get(0), mouseposlist.get(1));
-    
+                    
+
                     ImageView piece = (ImageView) root.getChildren().get(((xaxis)*8 + yaxis) + 1);
                     root.getChildren().remove(piece);
                     root.getChildren().add(root.getChildren().size()-1, piece);
                     this.draggable = (ImageView) root.getChildren().get(root.getChildren().size()-2);
                     root.getChildren().remove(piece);
                     root.getChildren().add(root.getChildren().size()-1, piece);
+
+                    BasePiece boardpiece = chessboard.getChessboardState().get(xaxis).get(yaxis);
 
                     Thread thread = new Thread(new Runnable() {
                       @Override
@@ -135,7 +136,10 @@ public class ChessInit {
                           public void run() {
                               if (draggable != null) {
                                 gridPane.setOnMouseMoved(event -> {
-                                  availPattern(boardpiece, mouseposlist.get(0), mouseposlist.get(1));
+                                  if (piece != null && !checkGameState.getCheckMate()) {
+                                    availPattern(boardpiece, yaxis, xaxis);
+                                  }
+                                  
                                   draggable.setX(event.getSceneX() - 32);
                                   draggable.setY(event.getSceneY() - 32);
                                 });
@@ -160,10 +164,11 @@ public class ChessInit {
                     mouseposlist.clear();
                     try {
                       checkGameState.inCheck();
+                      checkGameState.inCheckMate();   
                     } catch (FileNotFoundException e1) {
                       e1.printStackTrace();
                       }
-                    checkGameState.inCheckMate();   
+                    
                     }                
                 });  
             }
@@ -171,11 +176,9 @@ public class ChessInit {
     }
 
     private void availPattern(BasePiece piece, int x, int y) {
-      if (piece != null) {
-        if ((piece.getPieceColor().equals("w") && ChessMove.getWhiteTurn()) || (piece.getPieceColor().equals("b") && ChessMove.getBlackTurn()))  {
-          for (ArrayList<Integer> pos : ChessMove.validatePattern(x, y)) {
-            GreenClick(pos.get(0), pos.get(1));
-          }
+      if ((piece.getPieceColor() == 'w' && ChessMove.getWhiteTurn()) || (piece.getPieceColor() == 'b' && ChessMove.getBlackTurn()))  {
+        for (ArrayList<Integer> pos : ChessMove.validatePattern(x, y)) {
+          GreenClick(pos.get(0), pos.get(1));
         }
       }
     }

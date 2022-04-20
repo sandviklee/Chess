@@ -16,6 +16,10 @@ public class CheckGameState {
     private boolean kingWCheck;
     private boolean kingBCheck;
     private boolean checkMate = false;
+    private BasePiece pieceWCheck;
+    private BasePiece pieceBCheck;
+    private ArrayList<ArrayList<Integer>> piecePosWCheck = new ArrayList<>();
+    private ArrayList<ArrayList<Integer>> piecePosBCheck = new ArrayList<>();
 
     public CheckGameState(Chessboard chessboard, Move ChessMove) {
         this.chessboard = chessboard;
@@ -33,6 +37,14 @@ public class CheckGameState {
     public boolean getCheckMate() {
         return checkMate;
     }
+
+    private void AlertGameState(String header, String Text, String ChessImg, BasePiece piece) throws FileNotFoundException {
+        Alert a = new Alert(AlertType.WARNING);
+        a.setHeaderText(header);
+        a.setGraphic(new ImageView(chessboard.addChessImage(ChessImg)));
+        a.setContentText(Text + piece);
+        a.show(); 
+    }
     
     public void inCheck() throws FileNotFoundException {
         ArrayList<ArrayList<BasePiece>> chessboardState = chessboard.getChessboardState();
@@ -45,10 +57,10 @@ public class CheckGameState {
                     switch (piece.toString()) {
                         case "King":
                             switch (piece.getPieceColor()) {
-                                case "w":
+                                case 'w':
                                     kingPosW = new ArrayList<>(piece.getPiecePos());
                                     break;
-                                case "b":
+                                case 'b':
                                     kingPosB = new ArrayList<>(piece.getPiecePos());
                                     break;
                             }
@@ -62,39 +74,26 @@ public class CheckGameState {
         for (ArrayList<BasePiece> row : chessboardState) {
             for (BasePiece piece : row) {
                 if (piece != null) {
-                    if (piece.getPieceColor().equals("w")) {
+                    if (piece.getPieceColor() == 'w') {
                         int posX = piece.getPiecePos().get(0);
                         int posY = piece.getPiecePos().get(1);
-                        ArrayList<ArrayList<Integer>> piecePatterns = ChessMove.validatePattern(posX, posY);
-                        if (piecePatterns.contains(kingPosB)) {
+                        if (ChessMove.validatePattern(posX, posY).contains(kingPosB)) {
                             checkState += 1;
                             kingBCheck = true;
-                            ChessMove.KingNotCheck = false;
-                            
-                            Alert a = new Alert(AlertType.NONE);
-                            a.setAlertType(AlertType.WARNING);
-                            a.setHeaderText("Black King in check!");
-                            a.setGraphic(new ImageView(chessboard.addChessImage("cpb/b_king")));
-                            a.setContentText("Black king in check! by White " + piece);
-                            a.show(); 
-
+                            ChessMove.setKingNotCheck(false);
+                            piecePosBCheck.add(piece.getPiecePos());
+                            pieceBCheck = piece;      
                         }
                         
-                    } else if (piece.getPieceColor().equals("b")) {
+                    } else if (piece.getPieceColor() == 'b') {
                         int posX = piece.getPiecePos().get(0);
                         int posY = piece.getPiecePos().get(1);
                         if (ChessMove.validatePattern(posX, posY).contains(kingPosW)) {
                             checkState += 1;
                             kingWCheck = true;
-                            ChessMove.KingNotCheck = false;
-
-                            Alert a = new Alert(AlertType.NONE);
-                            a.setAlertType(AlertType.WARNING);
-                            a.setGraphic(new ImageView(chessboard.addChessImage("cpw/w_king")));
-                            a.setHeaderText("White King in check!");
-                            a.setContentText("White king in check! by Black " + piece);
-                            a.show(); 
-
+                            ChessMove.setKingNotCheck(false);
+                            piecePosWCheck.add(piece.getPiecePos());
+                            pieceWCheck = piece;               
                         } 
                     }
                 }
@@ -106,7 +105,7 @@ public class CheckGameState {
         }
     }
     
-    public void inCheckMate() {
+    public void inCheckMate() throws FileNotFoundException {
         ArrayList<ArrayList<BasePiece>> chessboardState = chessboard.getChessboardState();
         ArrayList<Integer> kingPosB = new ArrayList<>();
         ArrayList<Integer> kingPosW = new ArrayList<>();
@@ -117,13 +116,11 @@ public class CheckGameState {
                     switch (piece.toString()) {
                         case "King":
                             switch (piece.getPieceColor()) {
-                                case "w":
-                                    kingPosW = new ArrayList<>(piece.getPiecePos());
-                                    
+                                case 'w':
+                                    kingPosW = new ArrayList<>(piece.getPiecePos());                     
                                     break;
-                                case "b":
+                                case 'b':
                                     kingPosB = new ArrayList<>(piece.getPiecePos());
-                                    
                                     break;
                             }
                             break;
@@ -137,10 +134,14 @@ public class CheckGameState {
             int posY = kingPosW.get(1);
             if (ChessMove.validatePattern(posX, posY).isEmpty()) {
                 ArrayList<ArrayList<Integer>> allBlockedMoves = new ArrayList<>(chessboardState.get(posY).get(posX).layPattern(posX, posY));
-                if ((allBlockedMoves.stream().filter(b -> chessboardState.get(b.get(1)).get(b.get(0)) != null)).allMatch(a -> chessboardState.get(a.get(1)).get(a.get(0)).getPieceColor().equals("w"))) {
-                    System.out.println("No available pattern.");
-                    if (allBlockedMoves.stream().filter(b -> chessboardState.get(b.get(1)).get(b.get(0)) != null).allMatch(a -> ChessMove.validatePattern(a.get(0), a.get(1)).stream().filter(c -> chessboardState.get(c.get(1))))) {
-
+                if ((allBlockedMoves.stream().filter(b -> chessboardState.get(b.get(1)).get(b.get(0)) != null)).allMatch(a -> chessboardState.get(a.get(1)).get(a.get(0)).getPieceColor() == 'w')) {
+                    System.out.println("Pattern blocked by White piece");
+                    if (allBlockedMoves.stream().filter(b -> chessboardState.get(b.get(1)).get(b.get(0)) != null).anyMatch(a -> ChessMove.validatePattern(a.get(0), a.get(1)).stream().anyMatch(c -> c.equals(piecePosWCheck.get(0))))) {
+                        System.out.println("Du kan fortsatt bevege deg.");
+                    }
+                    else {
+                        checkMate = true;
+                        System.out.println("DU E CHECKED!!");
                     }
                 } else {
                     checkMate = true;
@@ -148,6 +149,45 @@ public class CheckGameState {
                 } 
             } 
         }
+
+        if (getKingBCheck()) {
+            int posX = kingPosB.get(0);
+            int posY = kingPosB.get(1);
+            if (ChessMove.validatePattern(posX, posY).isEmpty()) {
+                ArrayList<ArrayList<Integer>> allBlockedMoves = new ArrayList<>(chessboardState.get(posY).get(posX).layPattern(posX, posY));
+                if ((allBlockedMoves.stream().filter(b -> chessboardState.get(b.get(1)).get(b.get(0)) != null)).allMatch(a -> chessboardState.get(a.get(1)).get(a.get(0)).getPieceColor() == 'b')) {
+                    System.out.println("Pattern blocked by Black piece");
+                    if (allBlockedMoves.stream().filter(b -> chessboardState.get(b.get(1)).get(b.get(0)) != null).anyMatch(a -> ChessMove.validatePattern(a.get(0), a.get(1)).stream().anyMatch(c -> c.equals(piecePosWCheck.get(0))))) {
+                        System.out.println("Du kan fortsatt bevege deg.");
+                    }
+                    else {
+                        checkMate = true;
+                        System.out.println("DU E CHECKED!!");
+                    }
+                } else {
+                    checkMate = true;
+                    System.out.println("DU E CHECKED!!");
+                } 
+            } 
+        }
+
+        ChessMove.setGameOver(checkMate);
+
+        if (getKingWCheck()) {
+            if (checkMate) {
+                AlertGameState("Black Won!", "Checked by ", "cpb/b_" + pieceWCheck + "".toLowerCase(), pieceWCheck);
+            } else {
+                AlertGameState("White King in check!", "Checked by Black ", "cpw/w_king", pieceWCheck);
+            }          
+        } else if (getKingBCheck()) {
+            if (checkMate) {
+                AlertGameState("White Won!", "Checked by ", "cpw/w_" + pieceBCheck + "".toLowerCase(), pieceBCheck);
+            } else {
+                AlertGameState("Black King in check!", "Checked by White ", "cpb/b_king", pieceBCheck);
+            }          
+        }
+        
+        
         
     }
 

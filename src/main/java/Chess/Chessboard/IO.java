@@ -19,60 +19,60 @@ public class IO implements IIO {
                         switch (piece.toString()) {
                             case "Rook":
                                 switch (piece.getPieceColor()) {
-                                    case "w":
+                                    case 'w':
                                         writer.print("r,");
                                         break;
-                                    case "b":
+                                    case 'b':
                                         writer.print("R,");
                                         break;
                                 }
                                 break;
                             case "Knight":
                                 switch (piece.getPieceColor()) {
-                                    case "w":
+                                    case 'w':
                                         writer.print("h,");
                                         break;
-                                    case "b":
+                                    case 'b':
                                         writer.print("H,");
                                         break;
                                 }
                                 break;
                             case "Bishop":
                                 switch (piece.getPieceColor()) {
-                                    case "w":
+                                    case 'w':
                                         writer.print("b,");
                                         break;
-                                    case "b":
+                                    case 'b':
                                         writer.print("B,");
                                         break;
                                 }
                                 break;
                             case "Queen":
                                 switch (piece.getPieceColor()) {
-                                    case "w":
+                                    case 'w':
                                         writer.print("q,");
                                         break;
-                                    case "b":
+                                    case 'b':
                                         writer.print("Q,");
                                         break;
                                 }
                                 break;
                             case "King":
                                 switch (piece.getPieceColor()) {
-                                    case "w":
+                                    case 'w':
                                         writer.print("k,");
                                         break;
-                                    case "b":
+                                    case 'b':
                                         writer.print("K,");
                                         break;
                                 }    
                                 break;
                             case "Pawn":
                                 switch (piece.getPieceColor()) {
-                                    case "w":
+                                    case 'w':
                                         writer.print("p,");
                                         break;
-                                    case "b":
+                                    case 'b':
                                         writer.print("P,");
                                         break;
                                 }

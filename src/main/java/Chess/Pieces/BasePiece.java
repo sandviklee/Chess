@@ -35,10 +35,10 @@ public abstract class BasePiece {
         return "" + this.getClass().getName() + "";
     }
 
-    public String getPieceColor() {
+    public char getPieceColor() {
         if (pieceColor == -1) {
-            return "b";
-        } return "w";
+            return 'b';
+        } return 'w';
     }
 
     public void setPiecePos(int x, int y) {

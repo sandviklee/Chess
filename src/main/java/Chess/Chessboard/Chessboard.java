@@ -68,60 +68,60 @@ public class Chessboard {
                     switch (piece.toString()) {
                         case "Bishop":
                             switch (piece.getPieceColor()) {
-                                case "b":
+                                case 'b':
                                     ImageView = new ImageView(bbImage);
                                     break;
-                                case "w":
+                                case 'w':
                                     ImageView = new ImageView(bwImage);
                                     break;                            
                             }
                             break;
                         case "Knight":
                             switch (piece.getPieceColor()) {
-                                case "b":
+                                case 'b':
                                     ImageView = new ImageView(hbImage);
                                     break;
-                                case "w":
+                                case 'w':
                                     ImageView = new ImageView(hwImage);
                                     break;                            
                             }
                             break;
                         case "Rook":
                             switch (piece.getPieceColor()) {
-                                case "b":
+                                case 'b':
                                     ImageView = new ImageView(rbImage);
                                     break;
-                                case "w":
+                                case 'w':
                                     ImageView = new ImageView(rwImage);
                                     break;                            
                             }
                             break;
                         case "King":
                             switch (piece.getPieceColor()) {
-                                case "b":
+                                case 'b':
                                     ImageView = new ImageView(kbImage);
                                     break;
-                                case "w":
+                                case 'w':
                                     ImageView = new ImageView(kwImage);
                                     break;                            
                             }
                             break;
                         case "Queen":
                             switch (piece.getPieceColor()) {
-                                case "b":
+                                case 'b':
                                     ImageView = new ImageView(qbImage);
                                     break;
-                                case "w":
+                                case 'w':
                                     ImageView = new ImageView(qwImage);
                                     break;                            
                             }
                             break;
                         case "Pawn":
                             switch (piece.getPieceColor()) {
-                                case "b":
+                                case 'b':
                                     ImageView = new ImageView(pbImage);
                                     break;
-                                case "w":
+                                case 'w':
                                     ImageView = new ImageView(pwImage);
                                     break;                            
                             }
@@ -164,7 +164,7 @@ public class Chessboard {
                 Collections.swap(chessboard.get(y_1), x_1, x_2);
                 piece.setPiecePos(x_2, y_2);
 
-            } else if (!(piece.getPieceColor().equals(piece_2.getPieceColor()))) {
+            } else if (!(piece.getPieceColor() == (piece_2.getPieceColor()))) {
                 Collections.swap(chessboard.get(y_1), x_1, x_2);
                 chessboard.get(y_2).remove(x_1);
                 chessboard.get(y_2).add(x_1, null);

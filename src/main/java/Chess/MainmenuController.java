@@ -40,6 +40,7 @@ public class MainmenuController {
         fileChooser.getExtensionFilters().addAll(
             new FileChooser.ExtensionFilter("Text files", "*.txt")
         );
+        fileChooser.setInitialDirectory(new File("src/main/resources/Chess/SaveFiles"));
         File selectedFile = fileChooser.showOpenDialog(primaryStage);
 
         chessboard = new Chessboard(selectedFile); 
