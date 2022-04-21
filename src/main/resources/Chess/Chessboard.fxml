@@ -12,6 +12,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
@@ -68,7 +69,7 @@
                </effect></Button>
         </buttons>
       </ButtonBar>
-      <Text fill="WHITE" layoutX="617.0" layoutY="56.0" strokeType="OUTSIDE" strokeWidth="0.0" text="CHESSPIECES " textAlignment="CENTER" wrappingWidth="153.14452362060547">
+      <Text fill="WHITE" layoutX="603.0" layoutY="58.0" strokeType="OUTSIDE" strokeWidth="0.0" text="CHESSPIECES OUT" textAlignment="CENTER" wrappingWidth="178.14452362060547">
          <font>
             <Font name="Garamond" size="20.0" />
          </font>
@@ -76,7 +77,7 @@
             <DropShadow />
          </effect>
       </Text>
-      <SubScene height="143.0" layoutX="586.0" layoutY="237.0" width="216.0">
+      <SubScene height="160.0" layoutX="586.0" layoutY="220.0" width="216.0">
         <root>
           <Region />
         </root>
@@ -106,7 +107,7 @@
             <RowConstraints maxHeight="64.0" minHeight="10.0" prefHeight="64.0" vgrow="SOMETIMES" />
         </rowConstraints>
       </GridPane>
-      <SubScene height="143.0" layoutX="586.0" layoutY="71.0" width="216.0">
+      <SubScene height="132.0" layoutX="586.0" layoutY="71.0" width="216.0">
          <root>
             <Region />
          </root>
@@ -114,5 +115,6 @@
             <DropShadow />
          </effect>
       </SubScene>
+      <Pane fx:id="grd" layoutX="584.0" layoutY="71.0" prefHeight="132.0" prefWidth="216.0" />
    </children>
 </AnchorPane>

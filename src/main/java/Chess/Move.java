@@ -11,12 +11,13 @@ import Chess.Pieces.BasePiece;
 public class Move {
     private boolean Moving = false;
     private boolean whiteTurn = true;
-    private boolean blackTurn = true;
-    private boolean statement = true;
+    private boolean blackTurn = false;
+    private boolean statement = false;
     private boolean KingNotCheck = true;
     private boolean gameOver = false;
     private Chessboard chessboard;
 
+    public ArrayList<BasePiece> piecesOut = new ArrayList<>();
 
     public Move(Chessboard chessboard) {
         this.chessboard = chessboard;
@@ -54,16 +55,17 @@ public class Move {
         BasePiece piece = chessboard.getChessboardState().get(y_1).get(x_1);
         BasePiece piece_2 = chessboard.getChessboardState().get(y_2).get(x_2);
 
+    
         if (!(piece == null) && !(piece == piece_2)) {
-            /*
+
             if (whiteTurn) {
-                statement = piece.getPieceColor().equals("w");
+                statement = (piece.getPieceColor() == 'w');
 
             } else if (blackTurn) {
-                statement = piece.getPieceColor().equals("b");
+                statement = (piece.getPieceColor() == 'b');
 
             }
-            */
+
             // if (!KingNotCheck) {
             //     KingNotCheck = piece.toString().equals("King");
             // }
@@ -77,7 +79,6 @@ public class Move {
                         System.out.println("Moved!");
                         KingNotCheck = true;
                         
-                        /*
                         if (whiteTurn) {
                             whiteTurn = false;
                             blackTurn = true;
@@ -85,7 +86,7 @@ public class Move {
                             whiteTurn = true;
                             blackTurn = false;
                         }
-                        */
+
                     } catch (Exception e) {
                         System.out.println("Bug:" + e);
                     }
@@ -93,10 +94,24 @@ public class Move {
                 } else {
                     if ((piece.getPieceColor() == piece_2.getPieceColor())) {
                         System.out.println("Not a legal move!");
+
                     } else {
+                        
+                        if (whiteTurn) {
+                            whiteTurn = false;
+                            blackTurn = true;
+                        } else {
+                            whiteTurn = true;
+                            blackTurn = false;
+                        }
+
+                        piecesOut.clear();
+                        piecesOut.add(piece_2);
                         chessboard.setChessboardState(x_1, y_1, x_2, y_2);
                         SpecialMove(piece, x_2, y_2);
+
                         System.out.println("Moved!");
+                        System.out.println(piecesOut);
                     }
                 }
             //System.out.println(chessboard.getChessboardState());

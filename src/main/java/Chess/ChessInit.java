@@ -11,6 +11,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Cursor;
 import javafx.scene.Group;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
@@ -28,6 +29,10 @@ public class ChessInit {
     private Chessboard chessboard;
     private Move ChessMove;
     private CheckGameState checkGameState;
+    private Pane pane;
+    private ArrayList<BasePiece> piecesList = new ArrayList<>();
+    private int pieceOutY;
+    private int pieceOutX;
     
     // CONSTRUCTOR
     public ChessInit(Chessboard chessboard, boolean pawnDoubleMove) {
@@ -35,6 +40,7 @@ public class ChessInit {
       this.ChessMove = new Move(chessboard);
       this.checkGameState = new CheckGameState(chessboard, ChessMove);
       BasePiece.setMoved(pawnDoubleMove); // Pawn double move available ?
+      
     }
     
     // GROUP FOR ALL IMAGES ON THE CHESSBOARD
@@ -42,6 +48,130 @@ public class ChessInit {
 
     public Group getRoot() {
       return root;
+    }
+
+    // GROUP FOR IMAGES: ALL PIECES OUT
+    private Group piecesOutGroup = new Group();
+
+    public void setPane(Pane pane) {
+      this.pane = pane;
+    }
+
+    public void updatePiecesOut(Pane pane) throws FileNotFoundException {
+
+      BasePiece piece = null;
+
+      Image bbImage = chessboard.addChessImage("cpb/b_bishop");
+      Image hbImage = chessboard.addChessImage("cpb/b_knight");
+      Image rbImage = chessboard.addChessImage("cpb/b_rook");
+      Image kbImage = chessboard.addChessImage("cpb/b_king");
+      Image qbImage = chessboard.addChessImage("cpb/b_queen");
+      Image pbImage = chessboard.addChessImage("cpb/b_pawn");
+
+      Image bwImage = chessboard.addChessImage("cpw/w_bishop");
+      Image hwImage = chessboard.addChessImage("cpw/w_knight");
+      Image rwImage = chessboard.addChessImage("cpw/w_rook");
+      Image kwImage = chessboard.addChessImage("cpw/w_king");
+      Image qwImage = chessboard.addChessImage("cpw/w_queen");
+      Image pwImage = chessboard.addChessImage("cpw/w_pawn");
+
+      ImageView ImageView = new ImageView();
+      if (!ChessMove.piecesOut.isEmpty()) {
+        piece = ChessMove.piecesOut.get(0);
+      }
+      
+      if (piece != null) {
+        piecesList.add(piece);
+        switch (piece.toString()) {
+          case "Bishop":
+              switch (piece.getPieceColor()) {
+                  case 'b':
+                      ImageView = new ImageView(bbImage);
+                      break;
+                  case 'w':
+                      ImageView = new ImageView(bwImage);
+                      break;                            
+              }
+              break;
+          case "Knight":
+              switch (piece.getPieceColor()) {
+                  case 'b':
+                      ImageView = new ImageView(hbImage);
+                      break;
+                  case 'w':
+                      ImageView = new ImageView(hwImage);
+                      break;                            
+              }
+              break;
+          case "Rook":
+              switch (piece.getPieceColor()) {
+                  case 'b':
+                      ImageView = new ImageView(rbImage);
+                      break;
+                  case 'w':
+                      ImageView = new ImageView(rwImage);
+                      break;                            
+              }
+              break;
+          case "King":
+              switch (piece.getPieceColor()) {
+                  case 'b':
+                      ImageView = new ImageView(kbImage);
+                      break;
+                  case 'w':
+                      ImageView = new ImageView(kwImage);
+                      break;                            
+              }
+              break;
+          case "Queen":
+              switch (piece.getPieceColor()) {
+                  case 'b':
+                      ImageView = new ImageView(qbImage);
+                      break;
+                  case 'w':
+                      ImageView = new ImageView(qwImage);
+                      break;                            
+              }
+              break;
+          case "Pawn":
+              switch (piece.getPieceColor()) {
+                  case 'b':
+                      ImageView = new ImageView(pbImage);
+                      break;
+                  case 'w':
+                      ImageView = new ImageView(pwImage);
+                      break;                            
+              }
+              break; 
+        }
+
+        ImageView.setScaleX(0.30);
+        ImageView.setScaleY(0.30);
+        ImageView.setX(pieceOutX*25 - 10);
+        ImageView.setY(pieceOutY*25 - 10);
+
+        if (piecesList.size() >= 2) {
+          if (!piecesList.get(piecesList.size() - 2).equals(piece)) {
+            piecesOutGroup.getChildren().addAll(ImageView);
+
+            if ((piecesOutGroup.getChildren().size())%8 == 0) {
+              pieceOutY++;
+              pieceOutX = 0;
+            } else {
+              pieceOutX++;
+            }
+
+          } else {
+            piecesList.remove(piecesList.size() - 1);
+          }
+        } else {
+          piecesOutGroup.getChildren().addAll(ImageView);
+          pieceOutX++;
+        }
+        pane.getChildren().addAll(piecesOutGroup);
+
+        System.out.println(piecesList);
+      }
     }
     
     public void ChessPlay() throws IOException {
@@ -57,6 +187,8 @@ public class ChessInit {
               public void run() {
                 try {
                   ChessPlayUpdate(root);
+                  updatePiecesOut(pane);
+                  
                 } catch (FileNotFoundException e) {
                   e.printStackTrace();
                 }
@@ -117,8 +249,6 @@ public class ChessInit {
                     mouseposlist.add(yaxis);
                     mouseposlist.add(xaxis);
                     
-                    
-
                     ImageView piece = (ImageView) root.getChildren().get(((xaxis)*8 + yaxis) + 1);
                     root.getChildren().remove(piece);
                     root.getChildren().add(root.getChildren().size()-1, piece);
@@ -137,7 +267,12 @@ public class ChessInit {
                               if (draggable != null) {
                                 gridPane.setOnMouseMoved(event -> {
                                   if (piece != null && !checkGameState.getCheckMate()) {
-                                    availPattern(boardpiece, yaxis, xaxis);
+                                    try {
+                                      availPattern(boardpiece, yaxis, xaxis);
+                                    } catch (Exception e) {
+                                      //TODO: handle exception
+                                    }
+                                    
                                   }
                                   
                                   draggable.setX(event.getSceneX() - 32);
@@ -182,6 +317,8 @@ public class ChessInit {
         }
       }
     }
+
+
 
     private void GreenClick(int x, int y) {
         changeColorToGreen(paneArray[x][y]);
