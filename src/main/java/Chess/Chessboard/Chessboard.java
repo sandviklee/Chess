@@ -41,24 +41,22 @@ public class Chessboard {
         return (Image) image;
     }
 
+    //Adding all images.
+    public Image bbImage = addChessImage("cpb/b_bishop");
+    public Image hbImage = addChessImage("cpb/b_knight");
+    public Image rbImage = addChessImage("cpb/b_rook");
+    public Image kbImage = addChessImage("cpb/b_king");
+    public Image qbImage = addChessImage("cpb/b_queen");
+    public Image pbImage = addChessImage("cpb/b_pawn");
+    public Image bwImage = addChessImage("cpw/w_bishop");
+    public Image hwImage = addChessImage("cpw/w_knight");
+    public Image rwImage = addChessImage("cpw/w_rook");
+    public Image kwImage = addChessImage("cpw/w_king");
+    public Image qwImage = addChessImage("cpw/w_queen");
+    public Image pwImage = addChessImage("cpw/w_pawn");
+
     public ArrayList<ImageView> MatrixToFXML() throws FileNotFoundException {
-        //Adding all images.
-        Image bbImage = addChessImage("cpb/b_bishop");
-        Image hbImage = addChessImage("cpb/b_knight");
-        Image rbImage = addChessImage("cpb/b_rook");
-        Image kbImage = addChessImage("cpb/b_king");
-        Image qbImage = addChessImage("cpb/b_queen");
-        Image pbImage = addChessImage("cpb/b_pawn");
-
-        Image bwImage = addChessImage("cpw/w_bishop");
-        Image hwImage = addChessImage("cpw/w_knight");
-        Image rwImage = addChessImage("cpw/w_rook");
-        Image kwImage = addChessImage("cpw/w_king");
-        Image qwImage = addChessImage("cpw/w_queen");
-        Image pwImage = addChessImage("cpw/w_pawn");
-
         ArrayList<ImageView> ImageArray = new ArrayList<>();
-
         ImageView ImageView = new ImageView();
 
         for (int i = 0; i < 8; i++) {

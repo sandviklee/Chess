@@ -22,7 +22,7 @@ public class MainmenuController {
     public static Chessboard chessboard;
 
     @FXML
-    public void newgameClick(ActionEvent event) throws Exception {
+    private void newgameClick(ActionEvent event) throws Exception {
         chessboard = new Chessboard();
         ChessInititalize = new ChessInit(chessboard, false);
         ChessInititalize.ChessPlay();
@@ -35,7 +35,7 @@ public class MainmenuController {
     }
 
     @FXML
-    public void loadClick(ActionEvent event) throws Exception {
+    private void loadClick(ActionEvent event) throws Exception {
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().addAll(
             new FileChooser.ExtensionFilter("Text files", "*.txt")

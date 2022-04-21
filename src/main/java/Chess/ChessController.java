@@ -31,7 +31,7 @@ public class ChessController implements Initializable{
     }    
 
     @FXML
-    public void saveClick() {
+    private void saveClick() {
         try {
             FileChooser fileChooser = new FileChooser();
             fileChooser.setTitle("Save");
@@ -46,7 +46,7 @@ public class ChessController implements Initializable{
     }
 
     @FXML
-    public void quitClick() throws IOException {
+    private void quitClick() throws IOException {
         MainmenuController.primaryStage.setScene(new Scene(FXMLLoader.load(getClass().getResource("Mainmenu.fxml"))));
         MainmenuController.primaryStage.show();
     }

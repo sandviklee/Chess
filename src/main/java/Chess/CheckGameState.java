@@ -128,7 +128,8 @@ public class CheckGameState {
                 }
             }
         }
-        System.out.println("White king checked: " + getKingWCheck());
+        //System.out.println("White king checked: " + getKingWCheck());
+        //System.out.println("Black king checked: " + getKingBCheck());
         if (getKingWCheck()) {
             int posX = kingPosW.get(0);
             int posY = kingPosW.get(1);
@@ -186,8 +187,6 @@ public class CheckGameState {
                 AlertGameState("Black King in check!", "Checked by White ", "cpb/b_king", pieceBCheck);
             }          
         }
-        
-        
         
     }
 

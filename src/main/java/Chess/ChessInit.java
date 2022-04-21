@@ -11,7 +11,6 @@ import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Cursor;
 import javafx.scene.Group;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
@@ -60,21 +59,6 @@ public class ChessInit {
     public void updatePiecesOut(Pane pane) throws FileNotFoundException {
 
       BasePiece piece = null;
-
-      Image bbImage = chessboard.addChessImage("cpb/b_bishop");
-      Image hbImage = chessboard.addChessImage("cpb/b_knight");
-      Image rbImage = chessboard.addChessImage("cpb/b_rook");
-      Image kbImage = chessboard.addChessImage("cpb/b_king");
-      Image qbImage = chessboard.addChessImage("cpb/b_queen");
-      Image pbImage = chessboard.addChessImage("cpb/b_pawn");
-
-      Image bwImage = chessboard.addChessImage("cpw/w_bishop");
-      Image hwImage = chessboard.addChessImage("cpw/w_knight");
-      Image rwImage = chessboard.addChessImage("cpw/w_rook");
-      Image kwImage = chessboard.addChessImage("cpw/w_king");
-      Image qwImage = chessboard.addChessImage("cpw/w_queen");
-      Image pwImage = chessboard.addChessImage("cpw/w_pawn");
-
       ImageView ImageView = new ImageView();
       if (!ChessMove.piecesOut.isEmpty()) {
         piece = ChessMove.piecesOut.get(0);
@@ -86,60 +70,60 @@ public class ChessInit {
           case "Bishop":
               switch (piece.getPieceColor()) {
                   case 'b':
-                      ImageView = new ImageView(bbImage);
+                      ImageView = new ImageView(chessboard.bbImage);
                       break;
                   case 'w':
-                      ImageView = new ImageView(bwImage);
+                      ImageView = new ImageView(chessboard.bwImage);
                       break;                            
               }
               break;
           case "Knight":
               switch (piece.getPieceColor()) {
                   case 'b':
-                      ImageView = new ImageView(hbImage);
+                      ImageView = new ImageView(chessboard.hbImage);
                       break;
                   case 'w':
-                      ImageView = new ImageView(hwImage);
+                      ImageView = new ImageView(chessboard.hwImage);
                       break;                            
               }
               break;
           case "Rook":
               switch (piece.getPieceColor()) {
                   case 'b':
-                      ImageView = new ImageView(rbImage);
+                      ImageView = new ImageView(chessboard.rbImage);
                       break;
                   case 'w':
-                      ImageView = new ImageView(rwImage);
+                      ImageView = new ImageView(chessboard.rwImage);
                       break;                            
               }
               break;
           case "King":
               switch (piece.getPieceColor()) {
                   case 'b':
-                      ImageView = new ImageView(kbImage);
+                      ImageView = new ImageView(chessboard.kbImage);
                       break;
                   case 'w':
-                      ImageView = new ImageView(kwImage);
+                      ImageView = new ImageView(chessboard.kwImage);
                       break;                            
               }
               break;
           case "Queen":
               switch (piece.getPieceColor()) {
                   case 'b':
-                      ImageView = new ImageView(qbImage);
+                      ImageView = new ImageView(chessboard.qbImage);
                       break;
                   case 'w':
-                      ImageView = new ImageView(qwImage);
+                      ImageView = new ImageView(chessboard.qwImage);
                       break;                            
               }
               break;
           case "Pawn":
               switch (piece.getPieceColor()) {
                   case 'b':
-                      ImageView = new ImageView(pbImage);
+                      ImageView = new ImageView(chessboard.pbImage);
                       break;
                   case 'w':
-                      ImageView = new ImageView(pwImage);
+                      ImageView = new ImageView(chessboard.pwImage);
                       break;                            
               }
               break; 
@@ -174,7 +158,18 @@ public class ChessInit {
       }
     }
     
+    int gameStart = -1;
+
     public void ChessPlay() throws IOException {
+        if (gameStart != 0) {
+          try {
+            checkGameState.inCheck();
+            checkGameState.inCheckMate();
+            gameStart++;   
+          } catch (FileNotFoundException e1) {
+            e1.printStackTrace();
+            }
+        }
         root = new Group();
         root.getChildren().add(chessboard.ChessboardView());
         root.getChildren().addAll(chessboard.MatrixToFXML());
