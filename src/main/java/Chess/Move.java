@@ -57,7 +57,6 @@ public class Move {
         //TODO: ADD MORE FUNCTIONALITY
         //NEED BASIC PIECE LOGIC AND MOVING FROM THE SAME SPACE TO THE OTHER IS NOT AN AVAILABLE MOVE.
         Moving = true;
-        knockedOut = false;
 
         BasePiece piece = chessboard.getChessboardState().get(y_1).get(x_1);
         BasePiece piece_2 = chessboard.getChessboardState().get(y_2).get(x_2);
@@ -85,7 +84,6 @@ public class Move {
                         SpecialMove(piece, x_2, y_2);
                         System.out.println("Moved!");
                         // KingNotCheck = true;
-                        knockedOut = false;
                         piece.pawnDoubleMove = false;
                         
                         if (whiteTurn) {

@@ -34,7 +34,6 @@ public class ChessInit {
     private int pieceOutY;
     private int pieceOutX;
     private List<String> piecesOutList = new ArrayList<>();
-    private boolean pieceKnockedOut = false;
     
     // CONSTRUCTOR
     public ChessInit(Chessboard chessboard, boolean pawnDoubleMove) {
@@ -60,79 +59,76 @@ public class ChessInit {
       this.pane = pane;
     }
 
-    public void setKnockedOut(boolean statement) {
-      this.pieceKnockedOut = statement;
-    }
-
     public ArrayList<BasePiece> getpiecesList() {
       return piecesList;
     }
 
-    public void loadAllPiecesOut(Pane pane, boolean statement) throws FileNotFoundException {
-      for (String pieceStr : piecesOutList) {
-        ImageView ImageView = new ImageView();
-        switch (pieceStr) {
-          case "B":
-            ImageView = new ImageView(chessboard.bbImage);
-            break;
-          case "b":
-            ImageView = new ImageView(chessboard.bwImage);
-            break;
-          case "H":
-            ImageView = new ImageView(chessboard.hbImage);
-            break;
-          case "h":
-            ImageView = new ImageView(chessboard.hwImage);
-            break;
-          case "R":
-            ImageView = new ImageView(chessboard.rbImage);
-            break;
-          case "r":
-            ImageView = new ImageView(chessboard.rwImage);
-            break;
-          case "K":
-            ImageView = new ImageView(chessboard.kbImage);
-            break;
-          case "k":
-            ImageView = new ImageView(chessboard.kwImage);
-            break;
-          case "Q":
-            ImageView = new ImageView(chessboard.qbImage);
-            break;
-          case "q":
-            ImageView = new ImageView(chessboard.qwImage);
-            break;
-          case "P":
-            ImageView = new ImageView(chessboard.pbImage);
-            break;
-          case "p":
-            ImageView = new ImageView(chessboard.pwImage);
-            break;   
-        }
-        ImageView.setScaleX(0.30);
-        ImageView.setScaleY(0.30);
-        ImageView.setX(pieceOutX*25 - 10);
-        ImageView.setY(pieceOutY*25 - 10);
-
-        if (statement) {
-          piecesOutGroup.getChildren().addAll(ImageView);
-        }
-        
-        if ((piecesOutGroup.getChildren().size())%8 == 0) {
-          pieceOutY++;
-          pieceOutX = 0;
-        } else {
-          pieceOutX++;
-        }
-        
-      }
-      if (!statement) {
-        pane.getChildren().clear();
-      }
-      pane.getChildren().addAll(piecesOutGroup);
-    }
-
+    int done = -1;
+    boolean statement = true;
     public void updatePiecesOut(Pane pane) throws FileNotFoundException {
+      
+      if (piecesOutList != null && !ChessMove.knockedOut) {
+        System.out.println("true");
+        for (String pieceStr : piecesOutList) {
+          ImageView ImageView = new ImageView();
+          switch (pieceStr) {
+            case "B":
+              ImageView = new ImageView(chessboard.bbImage);
+              break;
+            case "b":
+              ImageView = new ImageView(chessboard.bwImage);
+              break;
+            case "H":
+              ImageView = new ImageView(chessboard.hbImage);
+              break;
+            case "h":
+              ImageView = new ImageView(chessboard.hwImage);
+              break;
+            case "R":
+              ImageView = new ImageView(chessboard.rbImage);
+              break;
+            case "r":
+              ImageView = new ImageView(chessboard.rwImage);
+              break;
+            case "K":
+              ImageView = new ImageView(chessboard.kbImage);
+              break;
+            case "k":
+              ImageView = new ImageView(chessboard.kwImage);
+              break;
+            case "Q":
+              ImageView = new ImageView(chessboard.qbImage);
+              break;
+            case "q":
+              ImageView = new ImageView(chessboard.qwImage);
+              break;
+            case "P":
+              ImageView = new ImageView(chessboard.pbImage);
+              break;
+            case "p":
+              ImageView = new ImageView(chessboard.pwImage);
+              break;   
+          }
+          if (done == -1) {
+            ImageView.setScaleX(0.30);
+            ImageView.setScaleY(0.30);
+            ImageView.setX(pieceOutX*25 - 10);
+            ImageView.setY(pieceOutY*25 - 10);
+            
+            piecesOutGroup.getChildren().addAll(ImageView);
+
+            if ((piecesOutGroup.getChildren().size())%8 == 0) {
+              pieceOutY++;
+              pieceOutX = 0;
+            } else {
+              pieceOutX++;
+            }
+          }
+        }
+        pane.getChildren().addAll(piecesOutGroup);
+        done++;
+      }
+
       BasePiece piece = null;
       ImageView ImageView = new ImageView();
       if (!ChessMove.piecesOut.isEmpty()) {
@@ -209,27 +205,44 @@ public class ChessInit {
         ImageView.setX(pieceOutX*25 - 10);
         ImageView.setY(pieceOutY*25 - 10);
 
-        if (piecesList.size() >= 2) {
-          if (!piecesList.get(piecesList.size() - 2).equals(piece)) {
-            piecesOutGroup.getChildren().addAll(ImageView);
+        statement = piecesList.size() >= 2;
+        if (piecesOutList != null) {
+          statement = piecesOutList.size() > 0;
+        }
 
-            if ((piecesOutGroup.getChildren().size())%8 == 0) {
-              pieceOutY++;
-              pieceOutX = 0;
+        if (statement) {
+            if (piecesList.size() >= 2) {
+              if (!piecesList.get(piecesList.size() - 2).equals(piece)) {
+                piecesOutGroup.getChildren().addAll(ImageView);
+
+                if ((piecesOutGroup.getChildren().size())%8 == 0) {
+                  pieceOutY++;
+                  pieceOutX = 0;
+                } else {
+                  pieceOutX++;
+                }
+
+              } else {
+                piecesList.remove(piecesList.size() - 1);
+              }
             } else {
               pieceOutX++;
+              if ((pieceOutX)%8 == 0) {
+                pieceOutY++;
+                pieceOutX = 0;
+              } else {
+                pieceOutX++;
+              }
+
+              piecesOutGroup.getChildren().addAll(ImageView);
             }
-
           } else {
-            piecesList.remove(piecesList.size() - 1);
+            piecesOutGroup.getChildren().addAll(ImageView);
+            pieceOutX++;
           }
-        } else {
-          piecesOutGroup.getChildren().addAll(ImageView);
-          pieceOutX++;
-        }
+        
         pane.getChildren().addAll(piecesOutGroup);
-
-        System.out.println(piecesList);
+        
       }
     }
     
@@ -244,20 +257,13 @@ public class ChessInit {
             e1.printStackTrace();
             }
         }
+
         root = new Group();
         root.getChildren().add(chessboard.ChessboardView());
         root.getChildren().addAll(chessboard.MatrixToFXML());
         root.getChildren().add(FXMLLoader.load(ChessApp.class.getResource("Chessboard.fxml")));
-        
-        try {
-          if (piecesOutList != null) {
-            loadAllPiecesOut(pane, true);
-          }
-            
-        } catch (FileNotFoundException e1) {
-          e1.printStackTrace();
-        }
-        
+        updatePiecesOut(pane); //To show all piecesOut
+
         Thread thread = new Thread(new Runnable() {
           @Override
           public void run() {
@@ -265,9 +271,7 @@ public class ChessInit {
               @Override
               public void run() {
                 try {
-                  System.out.println(ChessMove.knockedOut);
                   ChessPlayUpdate(root);
-                  
                   updatePiecesOut(pane);
                   
                 } catch (FileNotFoundException e) {
@@ -301,6 +305,7 @@ public class ChessInit {
         } catch (IOException e) {
           e.printStackTrace();
         }
+      
     }
 
     public void ChessPlayInit(GridPane gridPane) {
@@ -345,16 +350,15 @@ public class ChessInit {
                         Runnable updater = new Runnable() {
                         @Override
                           public void run() {
+                            
                               if (draggable != null) {
                                 gridPane.setOnMouseMoved(event -> {
                                   if (piece != null && !checkGameState.getCheckMate()) {
                                     try {
                                       availPattern(boardpiece, yaxis, xaxis);
-
+                                      
                                     } catch (Exception e) {
-                                      //TODO: handle exception
-                                    }
-                                    
+                                      }
                                   }
                                   
                                   draggable.setX(event.getSceneX() - 32);
@@ -379,8 +383,7 @@ public class ChessInit {
                     mouseposlist.add(xaxis);
                     ChessMove.MovePiece(mouseposlist.get(0), mouseposlist.get(1), mouseposlist.get(2), mouseposlist.get(3));
                     mouseposlist.clear();
-                  
-
+                
                     try {
                       checkGameState.inCheck();
                       checkGameState.inCheckMate();   

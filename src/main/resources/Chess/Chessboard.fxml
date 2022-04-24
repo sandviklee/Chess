@@ -86,12 +86,12 @@
             <DropShadow />
          </effect>
       </SubScene>
-      <ImageView fitHeight="65.0" fitWidth="71.0" layoutX="611.0" layoutY="250.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="65.0" fitWidth="71.0" layoutX="606.0" layoutY="250.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@images/cpw/w_king_png_shadow_128px.png" />
          </image>
       </ImageView>
-      <ImageView fitHeight="65.0" fitWidth="65.0" layoutX="713.0" layoutY="250.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="65.0" fitWidth="65.0" layoutX="717.0" layoutY="250.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@images/cpb/b_king_png_shadow_128px.png" />
          </image>

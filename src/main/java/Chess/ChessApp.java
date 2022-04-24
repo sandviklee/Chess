@@ -11,6 +11,7 @@ public class ChessApp extends Application {
   public void start(Stage primaryStage) throws Exception { 
     primaryStage.setTitle("Chess Game");
     primaryStage.setScene(new Scene(FXMLLoader.load(getClass().getResource("Mainmenu.fxml"))));
+    primaryStage.setResizable(false);
     primaryStage.show();
   }
 
