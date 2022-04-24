@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import Chess.Chessboard.Chessboard;
+import Chess.Chessboard.PiecePlacer;
 import Chess.Pieces.*;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -25,23 +26,26 @@ public class ChessInit {
     private List<Integer> mouseposlist = new ArrayList<>();
     private ImageView draggable;
     private int msecupdate = 10;
-    private Chessboard chessboard;
-    private Move ChessMove;
-    private CheckGameState checkGameState;
+    public Chessboard chessboard;
+    public Move ChessMove;
+    public CheckGameState checkGameState;
     private Pane pane;
     private ArrayList<BasePiece> piecesList = new ArrayList<>();
     private int pieceOutY;
     private int pieceOutX;
+    private List<String> piecesOutList = new ArrayList<>();
+    private boolean pieceKnockedOut = false;
     
     // CONSTRUCTOR
     public ChessInit(Chessboard chessboard, boolean pawnDoubleMove) {
       this.chessboard = chessboard;
       this.ChessMove = new Move(chessboard);
       this.checkGameState = new CheckGameState(chessboard, ChessMove);
-      BasePiece.setMoved(pawnDoubleMove); // Pawn double move available ?
+      this.piecesOutList = PiecePlacer.IOload.getPiecesOut();
+      //BasePiece.setMoved(pawnDoubleMove); // Pawn double move available ?
       
     }
-    
+
     // GROUP FOR ALL IMAGES ON THE CHESSBOARD
     private Group root = new Group();
 
@@ -56,14 +60,85 @@ public class ChessInit {
       this.pane = pane;
     }
 
-    public void updatePiecesOut(Pane pane) throws FileNotFoundException {
+    public void setKnockedOut(boolean statement) {
+      this.pieceKnockedOut = statement;
+    }
 
+    public ArrayList<BasePiece> getpiecesList() {
+      return piecesList;
+    }
+
+    public void loadAllPiecesOut(Pane pane, boolean statement) throws FileNotFoundException {
+      for (String pieceStr : piecesOutList) {
+        ImageView ImageView = new ImageView();
+        switch (pieceStr) {
+          case "B":
+            ImageView = new ImageView(chessboard.bbImage);
+            break;
+          case "b":
+            ImageView = new ImageView(chessboard.bwImage);
+            break;
+          case "H":
+            ImageView = new ImageView(chessboard.hbImage);
+            break;
+          case "h":
+            ImageView = new ImageView(chessboard.hwImage);
+            break;
+          case "R":
+            ImageView = new ImageView(chessboard.rbImage);
+            break;
+          case "r":
+            ImageView = new ImageView(chessboard.rwImage);
+            break;
+          case "K":
+            ImageView = new ImageView(chessboard.kbImage);
+            break;
+          case "k":
+            ImageView = new ImageView(chessboard.kwImage);
+            break;
+          case "Q":
+            ImageView = new ImageView(chessboard.qbImage);
+            break;
+          case "q":
+            ImageView = new ImageView(chessboard.qwImage);
+            break;
+          case "P":
+            ImageView = new ImageView(chessboard.pbImage);
+            break;
+          case "p":
+            ImageView = new ImageView(chessboard.pwImage);
+            break;   
+        }
+        ImageView.setScaleX(0.30);
+        ImageView.setScaleY(0.30);
+        ImageView.setX(pieceOutX*25 - 10);
+        ImageView.setY(pieceOutY*25 - 10);
+
+        if (statement) {
+          piecesOutGroup.getChildren().addAll(ImageView);
+        }
+        
+        if ((piecesOutGroup.getChildren().size())%8 == 0) {
+          pieceOutY++;
+          pieceOutX = 0;
+        } else {
+          pieceOutX++;
+        }
+        
+      }
+      if (!statement) {
+        pane.getChildren().clear();
+      }
+      pane.getChildren().addAll(piecesOutGroup);
+    }
+
+    public void updatePiecesOut(Pane pane) throws FileNotFoundException {
       BasePiece piece = null;
       ImageView ImageView = new ImageView();
       if (!ChessMove.piecesOut.isEmpty()) {
         piece = ChessMove.piecesOut.get(0);
       }
-      
+
       if (piece != null) {
         piecesList.add(piece);
         switch (piece.toString()) {
@@ -159,7 +234,6 @@ public class ChessInit {
     }
     
     int gameStart = -1;
-
     public void ChessPlay() throws IOException {
         if (gameStart != 0) {
           try {
@@ -174,6 +248,16 @@ public class ChessInit {
         root.getChildren().add(chessboard.ChessboardView());
         root.getChildren().addAll(chessboard.MatrixToFXML());
         root.getChildren().add(FXMLLoader.load(ChessApp.class.getResource("Chessboard.fxml")));
+        
+        try {
+          if (piecesOutList != null) {
+            loadAllPiecesOut(pane, true);
+          }
+            
+        } catch (FileNotFoundException e1) {
+          e1.printStackTrace();
+        }
+        
         Thread thread = new Thread(new Runnable() {
           @Override
           public void run() {
@@ -181,7 +265,9 @@ public class ChessInit {
               @Override
               public void run() {
                 try {
+                  System.out.println(ChessMove.knockedOut);
                   ChessPlayUpdate(root);
+                  
                   updatePiecesOut(pane);
                   
                 } catch (FileNotFoundException e) {
@@ -264,6 +350,7 @@ public class ChessInit {
                                   if (piece != null && !checkGameState.getCheckMate()) {
                                     try {
                                       availPattern(boardpiece, yaxis, xaxis);
+
                                     } catch (Exception e) {
                                       //TODO: handle exception
                                     }
@@ -292,6 +379,8 @@ public class ChessInit {
                     mouseposlist.add(xaxis);
                     ChessMove.MovePiece(mouseposlist.get(0), mouseposlist.get(1), mouseposlist.get(2), mouseposlist.get(3));
                     mouseposlist.clear();
+                  
+
                     try {
                       checkGameState.inCheck();
                       checkGameState.inCheckMate();   
@@ -306,14 +395,14 @@ public class ChessInit {
     }
 
     private void availPattern(BasePiece piece, int x, int y) {
-      if ((piece.getPieceColor() == 'w' && ChessMove.getWhiteTurn()) || (piece.getPieceColor() == 'b' && ChessMove.getBlackTurn()))  {
-        for (ArrayList<Integer> pos : ChessMove.validatePattern(x, y)) {
-          GreenClick(pos.get(0), pos.get(1));
+      if (!ChessMove.getGameOver()) {
+        if ((piece.getPieceColor() == 'w' && ChessMove.getWhiteTurn()) || (piece.getPieceColor() == 'b' && ChessMove.getBlackTurn()))  {
+          for (ArrayList<Integer> pos : ChessMove.validatePattern(x, y)) {
+            GreenClick(pos.get(0), pos.get(1));
+          }
         }
       }
     }
-
-
 
     private void GreenClick(int x, int y) {
         changeColorToGreen(paneArray[x][y]);

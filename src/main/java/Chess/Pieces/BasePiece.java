@@ -8,7 +8,7 @@ public abstract class BasePiece {
     public int pieceColor;
     ArrayList<Integer> availColor = new ArrayList<>();
     ArrayList<Integer> pos = new ArrayList<>();
-    private static boolean moved = false;
+    public boolean pawnDoubleMove = true;
 
     public BasePiece(int pieceColor, int x, int y) {
         availColor.add(-1);
@@ -46,9 +46,6 @@ public abstract class BasePiece {
             System.out.println(x + y);
             throw new IllegalArgumentException("The piece is not in an available range.");
         }
-        if (this.getClass() == Pawn.class) {
-            moved = true;
-        }
         
         pos.clear();
         pos.add(x);
@@ -57,14 +54,6 @@ public abstract class BasePiece {
 
     public ArrayList<Integer> getPiecePos() {
         return new ArrayList<>(pos);
-    }
-    
-    public static void setMoved(boolean moved) {
-        BasePiece.moved = moved;
-    }
-
-    public boolean getMoved() {
-        return moved;
     }
 
     @Override

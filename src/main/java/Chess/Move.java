@@ -4,18 +4,19 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import Chess.Chessboard.Chessboard;
-
+import Chess.Chessboard.IO;
 import Chess.Pieces.*;
 
 /* This class is for implementing moving on the main board, but also updating the Chessgame class */
 
 public class Move {
     private boolean Moving = false;
-    private boolean whiteTurn = true;
-    private boolean blackTurn = true;
-    private boolean statement = true;
-    private boolean KingNotCheck = true;
+    private boolean whiteTurn = IO.whiteTurn;
+    private boolean blackTurn = IO.blackTurn;
+    private boolean statement = false;
+    //private boolean KingNotCheck = true;
     private boolean gameOver = false;
+    public boolean knockedOut = false;
     private Chessboard chessboard;
 
     public ArrayList<BasePiece> piecesOut = new ArrayList<>();
@@ -40,32 +41,36 @@ public class Move {
         return blackTurn;
     }
 
-    public void setKingNotCheck(boolean KingNotCheck) {
-        this.KingNotCheck = KingNotCheck;
-    }
+    // public void setKingNotCheck(boolean KingNotCheck) {
+    //     this.KingNotCheck = KingNotCheck;
+    // }
 
     public void setGameOver(boolean gameOver) {
         this.gameOver = gameOver;
+    }
+
+    public boolean getGameOver() {
+        return gameOver;
     }
 
     public void MovePiece(int x_1, int y_1, int x_2, int y_2) {
         //TODO: ADD MORE FUNCTIONALITY
         //NEED BASIC PIECE LOGIC AND MOVING FROM THE SAME SPACE TO THE OTHER IS NOT AN AVAILABLE MOVE.
         Moving = true;
+        knockedOut = false;
 
         BasePiece piece = chessboard.getChessboardState().get(y_1).get(x_1);
         BasePiece piece_2 = chessboard.getChessboardState().get(y_2).get(x_2);
-
     
         if (!(piece == null) && !(piece == piece_2)) {
 
-            // if (whiteTurn) {
-            //     statement = (piece.getPieceColor() == 'w');
+            if (whiteTurn) {
+                statement = (piece.getPieceColor() == 'w');
 
-            // } else if (blackTurn) {
-            //     statement = (piece.getPieceColor() == 'b');
+            } else if (blackTurn) {
+                statement = (piece.getPieceColor() == 'b');
 
-            // }
+            }
 
             // if (!KingNotCheck) {
             //     KingNotCheck = piece.toString().equals("King");
@@ -75,18 +80,21 @@ public class Move {
             /*&& KingNotCheck*/ && !gameOver) {
                 if (piece_2 == null) {
                     try {
+
                         chessboard.setChessboardState(x_1, y_1, x_2, y_2);
                         SpecialMove(piece, x_2, y_2);
                         System.out.println("Moved!");
-                        KingNotCheck = true;
+                        // KingNotCheck = true;
+                        knockedOut = false;
+                        piece.pawnDoubleMove = false;
                         
-                        // if (whiteTurn) {
-                        //     whiteTurn = false;
-                        //     blackTurn = true;
-                        // } else {
-                        //     whiteTurn = true;
-                        //     blackTurn = false;
-                        // }
+                        if (whiteTurn) {
+                            whiteTurn = false;
+                            blackTurn = true;
+                        } else {
+                            whiteTurn = true;
+                            blackTurn = false;
+                        }
 
                     } catch (Exception e) {
                         System.out.println("Bug:" + e);
@@ -98,14 +106,15 @@ public class Move {
 
                     } else {
                         
-                        // if (whiteTurn) {
-                        //     whiteTurn = false;
-                        //     blackTurn = true;
-                        // } else {
-                        //     whiteTurn = true;
-                        //     blackTurn = false;
-                        // }
+                        if (whiteTurn) {
+                            whiteTurn = false;
+                            blackTurn = true;
+                        } else {
+                            whiteTurn = true;
+                            blackTurn = false;
+                        }
 
+                        knockedOut = true;
                         piecesOut.clear();
                         piecesOut.add(piece_2);
                         chessboard.setChessboardState(x_1, y_1, x_2, y_2);
@@ -121,7 +130,7 @@ public class Move {
     }
 
     private void SpecialMove(BasePiece piece, int x, int y) { // Movement which is special in game
-        if (piece.toString().equals("Pawn")) {
+        if (piece instanceof Pawn) {
             switch (piece.getPieceColor()) {
                 case 'w':
                     if (piece.getPiecePos().equals(Arrays.asList(piece.getPiecePos().get(0), 0))) {
@@ -206,7 +215,7 @@ public class Move {
             }
 
         }
-        else if (piece instanceof Queen || piece instanceof Rook || piece instanceof Rook) {
+        else if (piece instanceof Queen || piece instanceof Rook || piece instanceof Bishop) {
             pattern.remove(new ArrayList<>(Arrays.asList(x , y)));
             ArrayList<ArrayList<Integer>> allPiecesInFrontPos = new ArrayList<>();
             ArrayList<ArrayList<Integer>> allInvalidPos = new ArrayList<>();
@@ -255,7 +264,7 @@ public class Move {
                 }
             }
 
-            if (piece instanceof Queen || piece instanceof Rook) {
+            if (piece instanceof Queen || piece instanceof Bishop) {
                 //Bishop logic
                 for (int i = 0; i < allPiecesInFrontPos.size(); i++) {
 

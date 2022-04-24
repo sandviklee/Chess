@@ -3,8 +3,7 @@ package Chess.Pieces;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class Pawn extends BasePiece{
-
+public class Pawn extends BasePiece {
     public Pawn(int pieceColor, int x, int y) {
         super(pieceColor, x, y);
     }
@@ -14,7 +13,7 @@ public class Pawn extends BasePiece{
         if (this.pos.get(0) - x != 0) {
             return false;
         } 
-        if (!(getMoved())) {
+        if (pawnDoubleMove && pieceColor == 1) {
             return ((this.pos.get(1)-y) * this.pieceColor) >= 1 && ((this.pos.get(1)-y) * this.pieceColor) <= 2;
         }
         return ((this.pos.get(1)-y) * this.pieceColor) == 1;

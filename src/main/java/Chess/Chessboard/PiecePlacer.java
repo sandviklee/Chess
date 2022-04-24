@@ -12,9 +12,11 @@ public class PiecePlacer {
     private ArrayList<ArrayList<BasePiece>> outer = new ArrayList<>();
     private ArrayList<BasePiece> inner = new ArrayList<>();
     public List<String> PieceList;
+    public static IO IOload;
 
     public PiecePlacer(File filename) throws FileNotFoundException  {
         IO IOload = new IO();
+        PiecePlacer.IOload = IOload;
         this.PieceList = Arrays.asList(IOload.load(filename));
     }
     
