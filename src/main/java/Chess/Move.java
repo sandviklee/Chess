@@ -4,16 +4,17 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import Chess.Chessboard.Chessboard;
-import Chess.Chessboard.IO;
 import Chess.Pieces.*;
 
-/* This class is for implementing moving on the main board, but also updating the Chessgame class */
+/* This class is for implementing moving on the main board, but also validating piece patterns. */
 
 public class Move {
     private boolean Moving = false;
-    private boolean whiteTurn = IO.whiteTurn;
-    private boolean blackTurn = IO.blackTurn;
-    private boolean statement = false;
+    // private boolean whiteTurn = IO.whiteTurn;
+    // private boolean blackTurn = IO.blackTurn;
+    private boolean whiteTurn = true;
+    private boolean blackTurn = true;
+    private boolean statement = true;
     private boolean gameOver = false;
     private Chessboard chessboard;
     public boolean knockedOut = false;
@@ -56,28 +57,27 @@ public class Move {
         BasePiece piece_2 = chessboard.getChessboardState().get(y_2).get(x_2);
     
         if (!(piece == null) && !(piece == piece_2)) {
-            if (whiteTurn) {
-                statement = (piece.getPieceColor() == 'w');
-            } else if (blackTurn) {
-                statement = (piece.getPieceColor() == 'b');
-            }
+            // if (whiteTurn) {
+            //     statement = (piece.getPieceColor() == 'w');
+            // } else if (blackTurn) {
+            //     statement = (piece.getPieceColor() == 'b');
+            // }
 
             if (statement && validatePattern(x_1, y_1).contains(new ArrayList<>(Arrays.asList(x_2, y_2))) && !gameOver) {
                 if (piece_2 == null) {
                     try {
                         chessboard.setChessboardState(x_1, y_1, x_2, y_2);
                         SpecialMove(piece, x_2, y_2);
-                        System.out.println("Moved!");
                        
                         piece.pawnDoubleMove = false;
                         
-                        if (whiteTurn) {
-                            whiteTurn = false;
-                            blackTurn = true;
-                        } else {
-                            whiteTurn = true;
-                            blackTurn = false;
-                        }
+                        // if (whiteTurn) {
+                        //     whiteTurn = false;
+                        //     blackTurn = true;
+                        // } else {
+                        //     whiteTurn = true;
+                        //     blackTurn = false;
+                        // }
 
                     } catch (Exception e) {
                         System.out.println("Bug:" + e);
@@ -89,22 +89,19 @@ public class Move {
 
                     } else {
                         
-                        if (whiteTurn) {
-                            whiteTurn = false;
-                            blackTurn = true;
-                        } else {
-                            whiteTurn = true;
-                            blackTurn = false;
-                        }
+                        // if (whiteTurn) {
+                        //     whiteTurn = false;
+                        //     blackTurn = true;
+                        // } else {
+                        //     whiteTurn = true;
+                        //     blackTurn = false;
+                        // }
 
                         knockedOut = true;
                         piecesOut.clear();
                         piecesOut.add(piece_2);
                         chessboard.setChessboardState(x_1, y_1, x_2, y_2);
                         SpecialMove(piece, x_2, y_2);
-
-                        System.out.println("Moved!");
-                        System.out.println(piecesOut);
                     }
                 }
             } 
@@ -141,12 +138,15 @@ public class Move {
             ArrayList<ArrayList<Integer>> allInvalidPos = new ArrayList<>();
 
             for (ArrayList<Integer> pos : pattern) {
-                System.out.println(pattern);
+                
                 if (chessboardState.get(pos.get(1)).get(pos.get(0)) != null) {
                     if (chessboardState.get(pos.get(1)).get(pos.get(0)).getPieceColor() != piece.getPieceColor()) {
                         allInvalidPos.add(new ArrayList<>(pos));
-                    }
-                }
+                        if (piece.getPiecePos().equals(Arrays.asList(pos.get(0), pos.get(1)+1*piece.pieceColor))) {
+                            allInvalidPos.addAll(new ArrayList<>(pattern));
+                        }
+                    } 
+                } 
             }
 
             for (ArrayList<Integer> pos : allInvalidPos) {
@@ -203,7 +203,7 @@ public class Move {
                 if (chessboardState.get(pos.get(1)).get(pos.get(0)) != null) {
                     if (chessboardState.get(pos.get(1)).get(pos.get(0)).getPieceColor() == piece.getPieceColor()) {
                         allInvalidPos.add(new ArrayList<>(pos));
-                    }
+                    } // FIKSE AT MAN IKKE KAN HOPPE OVER MED 2 STEPS
                 }
             }
 

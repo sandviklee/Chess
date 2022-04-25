@@ -10,11 +10,13 @@ import Chess.Chessboard.Chessboard;
 import Chess.Chessboard.IO;
 import Chess.Chessboard.PiecePlacer;
 import Chess.Pieces.*;
+import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
@@ -31,8 +33,8 @@ public class ChessInit {
   private Pane[][] paneArray;
   private List<Integer> mouseposlist = new ArrayList<>();
   private ImageView draggable;
-  private int pieceOutY;
-  private int pieceOutX;
+  private int pieceOutY = 0;
+  private int pieceOutX = 0;
   private int msecupdate = 10;
   private Pane piecesOutPane;
   private ArrayList<BasePiece> piecesList = new ArrayList<>();
@@ -74,8 +76,8 @@ public class ChessInit {
   int done = -1;
   boolean statement = true;
   private void updatePiecesOut(Pane pane) throws FileNotFoundException {
-    if (piecesOutList != null && !ChessMove.knockedOut) {
-      System.out.println("true");
+    if (piecesOutList != null && !(piecesOutList.size() - 1 == 0) && !ChessMove.knockedOut) {
+      System.out.println(" IKKE NOE TULLBALL");
       for (String pieceStr : piecesOutList) {
         ImageView ImageView = new ImageView();
         switch (pieceStr) {
@@ -208,6 +210,9 @@ public class ChessInit {
             break; 
       }
 
+      System.out.println(piecesList + " piecesList");
+      
+
       ImageView.setScaleX(0.30);
       ImageView.setScaleY(0.30);
       ImageView.setX(pieceOutX*25 - 10);
@@ -222,27 +227,24 @@ public class ChessInit {
           if (piecesList.size() >= 2) {
             if (!piecesList.get(piecesList.size() - 2).equals(piece)) {
               piecesOutGroup.getChildren().addAll(ImageView);
-
               if ((piecesOutGroup.getChildren().size())%8 == 0) {
                 pieceOutY++;
                 pieceOutX = 0;
               } else {
                 pieceOutX++;
               }
-
             } else {
               piecesList.remove(piecesList.size() - 1);
             }
           } else {
-            pieceOutX++;
-            if ((pieceOutX)%8 == 0) {
+            piecesOutGroup.getChildren().addAll(ImageView);
+            if ((pieceOutX + 1)%8 == 0) {
               pieceOutY++;
               pieceOutX = 0;
             } else {
               pieceOutX++;
             }
-
-            piecesOutGroup.getChildren().addAll(ImageView);
+            
           }
         } else {
           piecesOutGroup.getChildren().addAll(ImageView);
@@ -261,13 +263,13 @@ public class ChessInit {
         checkGameState.inCheck();
         checkGameState.inCheckMate();
         gameStart++;
+        System.out.println(IO.pawnDoubleList + " Pawndouble lsit");
 
-        if (!IO.pawnDoubleList.isEmpty()) {
+        if (!(IO.pawnDoubleList.size() == 0)) {
           int i = 0;
           for (ArrayList<BasePiece> row : chessboard.getChessboardState()) {
             for (BasePiece basePiece : row) {
               if (basePiece instanceof Pawn) {
-                System.out.println(IO.pawnDoubleList);
                 basePiece.pawnDoubleMove = IO.pawnDoubleList.get(i);
                 if (i < IO.pawnDoubleList.size() -1) {
                   i++;
@@ -275,11 +277,11 @@ public class ChessInit {
               }
             }
           }
-        }
-
+        } 
       } catch (FileNotFoundException e1) {
         e1.printStackTrace();
         }
+      
     }
 
     root = new Group();
@@ -362,51 +364,41 @@ public class ChessInit {
               root.getChildren().add(root.getChildren().size()-1, piece);
 
               BasePiece boardpiece = chessboard.getChessboardState().get(xaxis).get(yaxis);
-              Thread thread = new Thread(new Runnable() {
+              new AnimationTimer() {
+                private long tick = 0;
                 @Override
-                public void run() {
-                  Runnable updater = new Runnable() {
-                    @Override
-                    public void run() {
-                        if (draggable != null) {
-                        gridPane.setOnMouseMoved(event -> {
-                          if (piece != null && !checkGameState.getCheckMate()) {
-                            try {
-                              availPattern(boardpiece, yaxis, xaxis);
-                            } catch (Exception e) {
-                            }
+                public void handle(long now) {
+                  if (now - tick >= 60_000_000) {
+                    if (draggable != null) {
+                      gridPane.setOnMouseMoved(event -> {
+                        if (piece != null && !checkGameState.getCheckMate()) {
+                          try {
+                            availPattern(boardpiece, yaxis, xaxis);
+                          } catch (Exception e) {
                           }
-                          draggable.setX(event.getSceneX() - 32);
-                          draggable.setY(event.getSceneY() - 32);
-                        });
-                      }
+                        }
+                        draggable.setX(event.getSceneX() - 32);
+                        draggable.setY(event.getSceneY() - 32);
+                      });
                     }
-                  };
-                  while (true) {
-                    try {
-                      Thread.sleep(msecupdate);
-                    } catch (InterruptedException e) {}
-                  Platform.runLater(updater);
                   }
+                  tick = now;
                 }
-              });
-            thread.setDaemon(true);
-            thread.start();
-
-        } else if (mouseposlist.size() == 2) {
-            mouseposlist.add(yaxis);
-            mouseposlist.add(xaxis);
-            ChessMove.MovePiece(mouseposlist.get(0), mouseposlist.get(1), mouseposlist.get(2), mouseposlist.get(3));
-            mouseposlist.clear();
-        
-            try {
-              checkGameState.inDraw(); 
-              checkGameState.inCheck();
-              checkGameState.inCheckMate(); 
-            } catch (FileNotFoundException e1) {
-              e1.printStackTrace();
-            }
-          }                
+              }.start();
+            } else if (mouseposlist.size() == 2) {
+                mouseposlist.add(yaxis);
+                mouseposlist.add(xaxis);
+                ChessMove.MovePiece(mouseposlist.get(0), mouseposlist.get(1), mouseposlist.get(2), mouseposlist.get(3));
+                mouseposlist.clear();
+            
+                try {
+                  checkGameState.inDraw(); 
+                  checkGameState.inCheck();
+                  checkGameState.inCheckMate(); 
+                } catch (FileNotFoundException e1) {
+                  e1.printStackTrace();
+                }
+            }                
         });  
       }
     }
@@ -426,7 +418,6 @@ public class ChessInit {
         
     } else {
         if (IO.player1Name != null) {
-          System.out.println("Hei bitch");
             nameW = IO.player1Name;
             player1.setText(nameW);
             

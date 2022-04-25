@@ -16,7 +16,6 @@ import javafx.stage.Stage;
 
 
 public class MainmenuController {
-
     public static Stage primaryStage;
     private Scene scene;
     private Parent root;

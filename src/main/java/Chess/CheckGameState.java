@@ -20,9 +20,9 @@ public class CheckGameState {
     private BasePiece pieceBCheck;
     private ArrayList<ArrayList<Integer>> piecePosWCheck = new ArrayList<>();
     private ArrayList<ArrayList<Integer>> piecePosBCheck = new ArrayList<>();
-    public boolean draw = false;
     private String playerWName;
     private String playerBName;
+    public boolean draw = false;
 
     public CheckGameState(Chessboard chessboard, Move ChessMove) {
         this.chessboard = chessboard;
@@ -130,7 +130,9 @@ public class CheckGameState {
         }
         if (checkState == -1) {
             kingWCheck = false;
+            piecePosBCheck.clear();
             kingBCheck = false;
+            piecePosWCheck.clear();
         }
     }
     
@@ -161,37 +163,70 @@ public class CheckGameState {
         if (getKingWCheck()) {
             int posX = kingPosW.get(0);
             int posY = kingPosW.get(1);
+            ArrayList<ArrayList<Integer>> allWhitePiecesPos = new ArrayList<>();
             if (ChessMove.validatePattern(posX, posY).isEmpty()) {
+                for (ArrayList<BasePiece> row : chessboardState) {
+                    for (BasePiece piece : row) {
+                        if (piece != null && piece.getPieceColor() == 'w') {
+                            allWhitePiecesPos.add(piece.getPiecePos());
+                        }
+                    }
+                }
                 ArrayList<ArrayList<Integer>> allBlockedMoves = new ArrayList<>(chessboardState.get(posY).get(posX).layPattern(posX, posY));
-                if ((allBlockedMoves.stream().filter(b -> chessboardState.get(b.get(1)).get(b.get(0)) != null)).allMatch(a -> chessboardState.get(a.get(1)).get(a.get(0)).getPieceColor() == 'w')) {
-                    if (allBlockedMoves.stream().filter(b -> chessboardState.get(b.get(1)).get(b.get(0)) != null).anyMatch(a -> ChessMove.validatePattern(a.get(0), a.get(1)).stream().anyMatch(c -> c.equals(piecePosWCheck.get(0))))) {
-                        System.out.println("Du kan fortsatt bevege deg.");
-                    }
-                    else {
-                        checkMate = true;
-                    }
+                
+                if (allWhitePiecesPos.stream().anyMatch(a -> ChessMove.validatePattern(a.get(0), a.get(1)).stream().anyMatch(c -> c.equals(piecePosWCheck.get(0))))) {
+                    System.out.println("Du kan fortsatt bevege deg.");
                 } else {
+                    if ((allBlockedMoves.stream().filter(b -> chessboardState.get(b.get(1)).get(b.get(0)) != null)).allMatch(a -> chessboardState.get(a.get(1)).get(a.get(0)).getPieceColor() == 'w')) {
+                        if (allBlockedMoves.stream().filter(b -> chessboardState.get(b.get(1)).get(b.get(0)) != null).anyMatch(a -> ChessMove.validatePattern(a.get(0), a.get(1)).stream().anyMatch(c -> c.equals(piecePosWCheck.get(0))))) {
+                            System.out.println("Du kan fortsatt bevege deg.");
+                        }
+                        else {
+                            checkMate = true;
+                        }
+                    } else {
+                        checkMate = true;
+                    } 
+                }
+
+                if (piecePosWCheck.size() > 1 && !(piecePosWCheck.stream().distinct().count() <= 1)) {
                     checkMate = true;
-                } 
+                }
             } 
         }
 
         if (getKingBCheck()) {
             int posX = kingPosB.get(0);
             int posY = kingPosB.get(1);
+            ArrayList<ArrayList<Integer>> allBlackPiecesPos = new ArrayList<>();
             if (ChessMove.validatePattern(posX, posY).isEmpty()) {
-                ArrayList<ArrayList<Integer>> allBlockedMoves = new ArrayList<>(chessboardState.get(posY).get(posX).layPattern(posX, posY));
-                if ((allBlockedMoves.stream().filter(b -> chessboardState.get(b.get(1)).get(b.get(0)) != null)).allMatch(a -> chessboardState.get(a.get(1)).get(a.get(0)).getPieceColor() == 'b')) {
-                    if (allBlockedMoves.stream().filter(b -> chessboardState.get(b.get(1)).get(b.get(0)) != null).anyMatch(a -> ChessMove.validatePattern(a.get(0), a.get(1)).stream().anyMatch(c -> c.equals(piecePosWCheck.get(0))))) {
-                        System.out.println("Du kan fortsatt bevege deg.");   
+                for (ArrayList<BasePiece> row : chessboardState) {
+                    for (BasePiece piece : row) {
+                        if (piece != null && piece.getPieceColor() == 'b') {
+                            allBlackPiecesPos.add(piece.getPiecePos());
+                        }
                     }
-                    else {
-                        checkMate = true;
-                    }
-                } else {
-                    checkMate = true;
+                }
 
-                } 
+                ArrayList<ArrayList<Integer>> allBlockedMoves = new ArrayList<>(chessboardState.get(posY).get(posX).layPattern(posX, posY));
+                if (allBlackPiecesPos.stream().anyMatch(a -> ChessMove.validatePattern(a.get(0), a.get(1)).stream().anyMatch(c -> c.equals(piecePosBCheck.get(0))))) {
+                    System.out.println("Du kan fortsatt bevege deg.");
+                } else {
+                    if ((allBlockedMoves.stream().filter(b -> chessboardState.get(b.get(1)).get(b.get(0)) != null)).allMatch(a -> chessboardState.get(a.get(1)).get(a.get(0)).getPieceColor() == 'b')) {
+                        if (allBlockedMoves.stream().filter(b -> chessboardState.get(b.get(1)).get(b.get(0)) != null).anyMatch(a -> ChessMove.validatePattern(a.get(0), a.get(1)).stream().anyMatch(c -> c.equals(piecePosWCheck.get(0))))) {
+                            System.out.println("Du kan fortsatt bevege deg.");   
+                        }
+                        else {
+                            checkMate = true;
+                        }
+                    } else {
+                        checkMate = true;
+    
+                    } 
+                }
+                if (piecePosBCheck.size() > 1 && !(piecePosBCheck.stream().distinct().count() <= 1)) {
+                    checkMate = true;
+                }
             } 
         }
 

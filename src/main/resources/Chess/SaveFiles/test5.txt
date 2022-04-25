@@ -1,5 +1,0 @@
-R,H,B,Q,K,B,H,R,P,P,P,0,P,P,P,P,0,0,0,0,0,0,0,0,0,0,0,P,0,0,0,0,0,0,p,0,0,0,p,0,0,0,0,0,0,0,0,0,p,p,0,p,p,p,0,p,r,h,b,q,k,b,h,r,
-
-PLAYER1,PLAYER2,
-b
-t,t,t,t,t,t,t,f,f,f,t,t,t,t,t,t,

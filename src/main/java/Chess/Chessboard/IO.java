@@ -14,20 +14,16 @@ import Chess.Pieces.BasePiece;
 import Chess.Pieces.Pawn;
 
 public class IO implements IIO {
-
     private List<String> chessPiecesOutList;
-
+    public static String player1Name = "PLAYER1";
+    public static String player2Name = "PLAYER2";
+    public static boolean whiteTurn = true;
+    public static boolean blackTurn = false;
+    public static ArrayList<Boolean> pawnDoubleList = new ArrayList<>();
+    
     public List<String> getPiecesOut() {
         return chessPiecesOutList;
     }
-
-    public static String player1Name = "PLAYER1";
-    public static String player2Name = "PLAYER2";
-
-    public static boolean whiteTurn = true;
-    public static boolean blackTurn = false;
-
-    public static ArrayList<Boolean> pawnDoubleList = new ArrayList<>();
 
     @Override
     public void save(File filename, ChessInit ChessInitialize) throws FileNotFoundException {
@@ -35,150 +31,28 @@ public class IO implements IIO {
             for (ArrayList<BasePiece> row : ChessInitialize.chessboard.getChessboardState()) {
                 for (BasePiece piece : row) {
                     if (piece != null) {
-                        switch (piece.toString()) {
-                            case "Rook":
-                                switch (piece.getPieceColor()) {
-                                    case 'w':
-                                        writer.print("r,");
-                                        break;
-                                    case 'b':
-                                        writer.print("R,");
-                                        break;
-                                }
-                                break;
-                            case "Knight":
-                                switch (piece.getPieceColor()) {
-                                    case 'w':
-                                        writer.print("h,");
-                                        break;
-                                    case 'b':
-                                        writer.print("H,");
-                                        break;
-                                }
-                                break;
-                            case "Bishop":
-                                switch (piece.getPieceColor()) {
-                                    case 'w':
-                                        writer.print("b,");
-                                        break;
-                                    case 'b':
-                                        writer.print("B,");
-                                        break;
-                                }
-                                break;
-                            case "Queen":
-                                switch (piece.getPieceColor()) {
-                                    case 'w':
-                                        writer.print("q,");
-                                        break;
-                                    case 'b':
-                                        writer.print("Q,");
-                                        break;
-                                }
-                                break;
-                            case "King":
-                                switch (piece.getPieceColor()) {
-                                    case 'w':
-                                        writer.print("k,");
-                                        break;
-                                    case 'b':
-                                        writer.print("K,");
-                                        break;
-                                }    
-                                break;
-                            case "Pawn":
-                                switch (piece.getPieceColor()) {
-                                    case 'w':
-                                        writer.print("p,");
-                                        break;
-                                    case 'b':
-                                        writer.print("P,");
-                                        break;
-                                }
-                                break;
-                        }
+                        allCases(piece, writer);
                     } else {
                         writer.print("0,");
                     }
                 }
             }
-            writer.println("");
+            writer.println();
             for (BasePiece piece : ChessInitialize.getpiecesList()) {
-                switch (piece.toString()) {
-                    case "Rook":
-                        switch (piece.getPieceColor()) {
-                            case 'w':
-                                writer.print("r,");
-                                break;
-                            case 'b':
-                                writer.print("R,");
-                                break;
-                        }
-                        break;
-                    case "Knight":
-                        switch (piece.getPieceColor()) {
-                            case 'w':
-                                writer.print("h,");
-                                break;
-                            case 'b':
-                                writer.print("H,");
-                                break;
-                        }
-                        break;
-                    case "Bishop":
-                        switch (piece.getPieceColor()) {
-                            case 'w':
-                                writer.print("b,");
-                                break;
-                            case 'b':
-                                writer.print("B,");
-                                break;
-                        }
-                        break;
-                    case "Queen":
-                        switch (piece.getPieceColor()) {
-                            case 'w':
-                                writer.print("q,");
-                                break;
-                            case 'b':
-                                writer.print("Q,");
-                                break;
-                        }
-                        break;
-                    case "King":
-                        switch (piece.getPieceColor()) {
-                            case 'w':
-                                writer.print("k,");
-                                break;
-                            case 'b':
-                                writer.print("K,");
-                                break;
-                        }    
-                        break;
-                    case "Pawn":
-                        switch (piece.getPieceColor()) {
-                            case 'w':
-                                writer.print("p,");
-                                break;
-                            case 'b':
-                                writer.print("P,");
-                                break;
-                        }
-                        break;
-                }
+                allCases(piece, writer);
             }
-            writer.println("");
+            writer.println();
             writer.print(MainmenuController.player1Name + ",");
             writer.print(MainmenuController.player2Name + ",");
 
-            writer.println("");
+            writer.println();
             if (ChessInitialize.ChessMove.getWhiteTurn()) {
                 writer.print("w");
             }
             else {
                 writer.print("b");
             }
-            writer.println("");
+            writer.println();
             for (ArrayList<BasePiece> row : ChessInitialize.chessboard.getChessboardState()) {
                 for (BasePiece basePiece : row) {
                     if (basePiece instanceof Pawn) {
@@ -226,6 +100,7 @@ public class IO implements IIO {
             }
 
             if (scanner.hasNext()) {
+                pawnDoubleList = new ArrayList<>();
                 String fourthline = scanner.nextLine();
                 String[] truefalseliste = fourthline.split(",");
                 for (String string : truefalseliste) {
@@ -238,6 +113,72 @@ public class IO implements IIO {
                 
             }
             return lineInfo;
+        }
+    }
+
+
+    private void allCases(BasePiece piece, PrintWriter writer) {
+        switch (piece.toString()) {
+            case "Rook":
+                switch (piece.getPieceColor()) {
+                    case 'w':
+                        writer.print("r,");
+                        break;
+                    case 'b':
+                        writer.print("R,");
+                        break;
+                }
+                break;
+            case "Knight":
+                switch (piece.getPieceColor()) {
+                    case 'w':
+                        writer.print("h,");
+                        break;
+                    case 'b':
+                        writer.print("H,");
+                        break;
+                }
+                break;
+            case "Bishop":
+                switch (piece.getPieceColor()) {
+                    case 'w':
+                        writer.print("b,");
+                        break;
+                    case 'b':
+                        writer.print("B,");
+                        break;
+                }
+                break;
+            case "Queen":
+                switch (piece.getPieceColor()) {
+                    case 'w':
+                        writer.print("q,");
+                        break;
+                    case 'b':
+                        writer.print("Q,");
+                        break;
+                }
+                break;
+            case "King":
+                switch (piece.getPieceColor()) {
+                    case 'w':
+                        writer.print("k,");
+                        break;
+                    case 'b':
+                        writer.print("K,");
+                        break;
+                }    
+                break;
+            case "Pawn":
+                switch (piece.getPieceColor()) {
+                    case 'w':
+                        writer.print("p,");
+                        break;
+                    case 'b':
+                        writer.print("P,");
+                        break;
+                }
+                break;
         }
     }
 }
