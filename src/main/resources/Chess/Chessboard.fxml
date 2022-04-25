@@ -96,7 +96,7 @@
             <Image url="@images/cpb/b_king_png_shadow_128px.png" />
          </image>
       </ImageView>
-      <GridPane fx:id="gridPane" blendMode="SCREEN" prefHeight="512.0" prefWidth="512.0">
+      <GridPane fx:id="chessGridPane" blendMode="SCREEN" prefHeight="512.0" prefWidth="512.0">
         <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -126,7 +126,7 @@
             <DropShadow />
          </effect>
       </SubScene>
-      <Pane fx:id="grd" layoutX="585.0" layoutY="51.0" prefHeight="124.0" prefWidth="216.0" />
+      <Pane fx:id="piecesOutPane" layoutX="585.0" layoutY="51.0" prefHeight="124.0" prefWidth="216.0" />
       <Label fx:id="player1" alignment="CENTER" layoutX="586.0" layoutY="309.0" prefHeight="48.0" prefWidth="104.0" text="Player 1" textAlignment="CENTER">
          <font>
             <Font name="American Captain" size="18.0" />

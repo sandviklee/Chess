@@ -20,13 +20,13 @@ public class MainmenuController {
     public static Stage primaryStage;
     private Scene scene;
     private Parent root;
-    public static ChessInit ChessInititalize;
+    public static ChessInit ChessInitialize;
     public static Chessboard chessboard;
 
     @FXML public TextField player1;
     @FXML public TextField player2;
-    public static String player1Name;
-    public static String player2Name;
+    public static String player1Name = null;
+    public static String player2Name = null;
 
 
     @FXML
@@ -46,9 +46,9 @@ public class MainmenuController {
         }
         
         chessboard = new Chessboard();
-        ChessInititalize = new ChessInit(chessboard, false);
-        ChessInititalize.ChessPlay();
-        root = ChessInititalize.getRoot();
+        ChessInitialize = new ChessInit(chessboard, false);
+        ChessInitialize.ChessPlay();
+        root = ChessInitialize.getRoot();
         primaryStage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         primaryStage.setScene(scene);
@@ -58,6 +58,9 @@ public class MainmenuController {
 
     @FXML
     private void loadClick(ActionEvent event) throws Exception {
+        player1Name = null;
+        player2Name = null;
+
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().addAll(
             new FileChooser.ExtensionFilter("Text files", "*.txt")
@@ -66,9 +69,9 @@ public class MainmenuController {
         File selectedFile = fileChooser.showOpenDialog(primaryStage);
         
         chessboard = new Chessboard(selectedFile); 
-        ChessInititalize = new ChessInit(chessboard, true);
-        ChessInititalize.ChessPlay();
-        root = ChessInititalize.getRoot();
+        ChessInitialize = new ChessInit(chessboard, true);
+        ChessInitialize.ChessPlay();
+        root = ChessInitialize.getRoot();
         primaryStage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         primaryStage.setScene(scene);

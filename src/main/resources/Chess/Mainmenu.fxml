@@ -58,7 +58,7 @@
             <Reflection topOpacity="0.13" />
          </effect>
       </Text>
-      <TextField fx:id="player1" layoutX="351.0" layoutY="299.0" promptText="Player 1 (White)" />
-      <TextField fx:id="player2" layoutX="351.0" layoutY="331.0" promptText="Player 2 (Black)" />
+      <TextField fx:id="player1" layoutX="351.0" layoutY="299.0" prefHeight="26.0" prefWidth="150.0" promptText="Player 1 (White)" />
+      <TextField fx:id="player2" layoutX="351.0" layoutY="331.0" prefHeight="26.0" prefWidth="150.0" promptText="Player 2 (Black)" />
    </children>
 </AnchorPane>

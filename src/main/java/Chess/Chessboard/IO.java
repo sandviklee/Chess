@@ -11,6 +11,7 @@ import java.util.Scanner;
 import Chess.ChessInit;
 import Chess.MainmenuController;
 import Chess.Pieces.BasePiece;
+import Chess.Pieces.Pawn;
 
 public class IO implements IIO {
 
@@ -22,8 +23,11 @@ public class IO implements IIO {
 
     public static String player1Name = "PLAYER1";
     public static String player2Name = "PLAYER2";
+
     public static boolean whiteTurn = true;
     public static boolean blackTurn = false;
+
+    public static ArrayList<Boolean> pawnDoubleList = new ArrayList<>();
 
     @Override
     public void save(File filename, ChessInit ChessInitialize) throws FileNotFoundException {
@@ -174,6 +178,18 @@ public class IO implements IIO {
             else {
                 writer.print("b");
             }
+            writer.println("");
+            for (ArrayList<BasePiece> row : ChessInitialize.chessboard.getChessboardState()) {
+                for (BasePiece basePiece : row) {
+                    if (basePiece instanceof Pawn) {
+                        if (basePiece.pawnDoubleMove) {
+                            writer.print("t,");
+                        } else {
+                            writer.print("f,");
+                        }
+                    }
+                }
+            }
 
             writer.flush();
             writer.close();
@@ -207,6 +223,19 @@ public class IO implements IIO {
                     whiteTurn = false;
                     blackTurn = true;
                 }
+            }
+
+            if (scanner.hasNext()) {
+                String fourthline = scanner.nextLine();
+                String[] truefalseliste = fourthline.split(",");
+                for (String string : truefalseliste) {
+                    if (string.equals("t")) {
+                        pawnDoubleList.add(true);
+                    } else {
+                        pawnDoubleList.add(false);
+                    }
+                }
+                
             }
             return lineInfo;
         }

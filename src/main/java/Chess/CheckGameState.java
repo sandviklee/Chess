@@ -20,9 +20,9 @@ public class CheckGameState {
     private BasePiece pieceBCheck;
     private ArrayList<ArrayList<Integer>> piecePosWCheck = new ArrayList<>();
     private ArrayList<ArrayList<Integer>> piecePosBCheck = new ArrayList<>();
-    private boolean draw = false;
-    private String playerWName = "PLAYER1";
-    private String playerBName = "PLAYER2";
+    public boolean draw = false;
+    private String playerWName;
+    private String playerBName;
 
     public CheckGameState(Chessboard chessboard, Move ChessMove) {
         this.chessboard = chessboard;
@@ -59,6 +59,20 @@ public class CheckGameState {
         a.setGraphic(new ImageView(chessboard.addChessImage(ChessImg)));
         a.setContentText(Text + piece);
         a.show(); 
+    }
+
+    public void AlertGameState(String header, String text) {
+        Alert a = new Alert(AlertType.INFORMATION);
+        a.setHeaderText(header);
+        a.setContentText(text);
+        a.show();
+    }
+
+    public void AlertGameState(String header, String text, AlertType alerttype) {
+        Alert a = new Alert(alerttype);
+        a.setHeaderText(header);
+        a.setContentText(text);
+        a.show();
     }
     
     public void inCheck() throws FileNotFoundException {
@@ -195,19 +209,14 @@ public class CheckGameState {
                 AlertGameState("Black King in check!", "Checked by White ", "cpb/b_king", pieceBCheck);
             }          
         }
-
         
+    }
+
+    public void inDraw() {
         if (draw) {
             ChessMove.setGameOver(draw);
-            Alert a = new Alert(AlertType.INFORMATION);
-            a.setHeaderText("Draw!");
-            a.setContentText("This game ended in draw.");
-            a.show(); 
-            
+            AlertGameState("Draw!", "This game ended in a draw!");
         }
-
-        
-        
     }
 
 }
