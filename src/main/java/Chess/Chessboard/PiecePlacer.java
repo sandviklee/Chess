@@ -18,6 +18,9 @@ public class PiecePlacer {
         IO IOload = new IO();
         PiecePlacer.IOload = IOload;
         this.PieceList = Arrays.asList(IOload.load(filename));
+        if (!(this.PieceList.size() == 64)) {
+            throw new IllegalStateException("Det er ikke nok brikker i fila.");
+        }
     }
     
     public void addPieces() {

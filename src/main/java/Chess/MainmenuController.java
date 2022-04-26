@@ -21,25 +21,22 @@ public class MainmenuController {
     private Parent root;
     public static ChessInit ChessInitialize;
     public static Chessboard chessboard;
-
-    @FXML public TextField player1;
-    @FXML public TextField player2;
     public static String player1Name = null;
     public static String player2Name = null;
 
+    @FXML public TextField player1;
+    @FXML public TextField player2;
 
     @FXML
     private void newgameClick(ActionEvent event) throws Exception {
         player1Name = "PLAYER1";
         player2Name = "PLAYER2";
-
-        IO.blackTurn = false;
         IO.whiteTurn = true;
+        IO.blackTurn = false;
         
         if (!player1.getText().isBlank()) {
             player1Name = player1.getText();
         }
-        
         if (!player2.getText().isBlank()) {
             player2Name = player2.getText();
         }

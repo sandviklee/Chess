@@ -1,0 +1,5 @@
+R,H,B,Q,K,B,H,R,P,P,P,P,P,P,P,P,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,p,p,p,p,p,p,p,p,r,h,b,q,k,b,h,r,
+
+Simon,Frida,
+w
+t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,

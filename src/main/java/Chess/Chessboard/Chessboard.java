@@ -21,7 +21,6 @@ public class Chessboard {
         this.chessboard = chessboard.getOuter();
     }
 
-
     public Chessboard(File filename) throws FileNotFoundException {
         PiecePlacer chessboard = new PiecePlacer(filename);
         chessboard.addPieces();
@@ -147,8 +146,7 @@ public class Chessboard {
     public void setChessboardState(int x_1, int y_1, int x_2, int y_2) {
         BasePiece piece = chessboard.get(y_1).get(x_1);
         BasePiece piece_2 = chessboard.get(y_2).get(x_2);
-        //System.out.println(x_1 + " " + y_1);
-        //System.out.println(x_2 + " " + y_2);
+
         if (y_1 != y_2) {
             chessboard.get(y_2).remove(x_2);
             chessboard.get(y_2).add(x_2, piece);
@@ -169,7 +167,6 @@ public class Chessboard {
                 piece.setPiecePos(x_2, y_2);
             }
         }
-        //System.out.println(piece);
 
     }
 

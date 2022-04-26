@@ -16,7 +16,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
@@ -368,7 +367,7 @@ public class ChessInit {
                 private long tick = 0;
                 @Override
                 public void handle(long now) {
-                  if (now - tick >= 60_000_000) {
+                  if (now - tick >= 60_000_000) { //60 fps
                     if (draggable != null) {
                       gridPane.setOnMouseMoved(event -> {
                         if (piece != null && !checkGameState.getCheckMate()) {
@@ -385,6 +384,7 @@ public class ChessInit {
                   tick = now;
                 }
               }.start();
+
             } else if (mouseposlist.size() == 2) {
                 mouseposlist.add(yaxis);
                 mouseposlist.add(xaxis);
@@ -392,9 +392,9 @@ public class ChessInit {
                 mouseposlist.clear();
             
                 try {
-                  checkGameState.inDraw(); 
                   checkGameState.inCheck();
                   checkGameState.inCheckMate(); 
+                  checkGameState.inDraw(); 
                 } catch (FileNotFoundException e1) {
                   e1.printStackTrace();
                 }
@@ -407,7 +407,6 @@ public class ChessInit {
   public void ChessPlayInitialize(GridPane grid, Pane pane, Label player1, Label player2) {
     ChessPlaySetup(grid);
     setPane(pane);
-    System.out.println(IO.player1Name + " " + IO.player2Name);
 
     String nameW = "PLAYER1";
     String nameB = "PLAYER1";
@@ -424,7 +423,6 @@ public class ChessInit {
         } else {
             nameW = "PLAYER1";
             player1.setText(nameW);
-            
         }
     }
 
@@ -448,6 +446,7 @@ public class ChessInit {
 
   boolean drawOffer = false;
   public void drawState() {
+    System.out.println(drawOffer + " drawOffer");
     if (!checkGameState.draw) {
       if (!ChessMove.getGameOver()) {
           if (ChessMove.getWhiteTurn()) {
@@ -457,16 +456,18 @@ public class ChessInit {
           }
           drawOffer = true;
       } else {
+          drawOffer = true;
           checkGameState.AlertGameState("Not available.", "You cannot offer a draw in an ended game.");
+          throw new IllegalStateException("You cannot draw when the game has ended.");
       }
     }
   }
 
   public void drawnState() {
     if (drawOffer) {
-      checkGameState.setDraw(drawOffer);
+      checkGameState.setDraw(true);
       checkGameState.AlertGameState("Draw!", "This game ended in draw!");
-      ChessMove.setGameOver(drawOffer);
+      ChessMove.setGameOver(true);
     }
   }
 
@@ -485,6 +486,7 @@ public class ChessInit {
       }
   } else {
       checkGameState.AlertGameState("Not a savable game!", "You cannot save a game which has ended.");
+      throw new IllegalStateException("You cannot save when the game has ended.");
     }
   }
 

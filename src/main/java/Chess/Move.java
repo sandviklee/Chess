@@ -4,17 +4,16 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import Chess.Chessboard.Chessboard;
+import Chess.Chessboard.IO;
 import Chess.Pieces.*;
 
 /* This class is for implementing moving on the main board, but also validating piece patterns. */
 
 public class Move {
     private boolean Moving = false;
-    // private boolean whiteTurn = IO.whiteTurn;
-    // private boolean blackTurn = IO.blackTurn;
-    private boolean whiteTurn = true;
-    private boolean blackTurn = true;
-    private boolean statement = true;
+    private boolean whiteTurn = IO.whiteTurn;
+    private boolean blackTurn = IO.blackTurn;
+    private boolean statement = false;
     private boolean gameOver = false;
     private Chessboard chessboard;
     public boolean knockedOut = false;
@@ -49,54 +48,45 @@ public class Move {
     }
 
     public void MovePiece(int x_1, int y_1, int x_2, int y_2) {
-        //TODO: ADD MORE FUNCTIONALITY
-        //NEED BASIC PIECE LOGIC AND MOVING FROM THE SAME SPACE TO THE OTHER IS NOT AN AVAILABLE MOVE.
         Moving = true;
-
         BasePiece piece = chessboard.getChessboardState().get(y_1).get(x_1);
         BasePiece piece_2 = chessboard.getChessboardState().get(y_2).get(x_2);
     
         if (!(piece == null) && !(piece == piece_2)) {
-            // if (whiteTurn) {
-            //     statement = (piece.getPieceColor() == 'w');
-            // } else if (blackTurn) {
-            //     statement = (piece.getPieceColor() == 'b');
-            // }
-
+            if (whiteTurn) {
+                statement = (piece.getPieceColor() == 'w');
+            } else if (blackTurn) {
+                statement = (piece.getPieceColor() == 'b');
+            }
             if (statement && validatePattern(x_1, y_1).contains(new ArrayList<>(Arrays.asList(x_2, y_2))) && !gameOver) {
                 if (piece_2 == null) {
                     try {
                         chessboard.setChessboardState(x_1, y_1, x_2, y_2);
                         SpecialMove(piece, x_2, y_2);
-                       
-                        piece.pawnDoubleMove = false;
-                        
-                        // if (whiteTurn) {
-                        //     whiteTurn = false;
-                        //     blackTurn = true;
-                        // } else {
-                        //     whiteTurn = true;
-                        //     blackTurn = false;
-                        // }
-
+                        piece.pawnDoubleMove = false;                        
+                        if (whiteTurn) {
+                            whiteTurn = false;
+                            blackTurn = true;
+                        } else {
+                            whiteTurn = true;
+                            blackTurn = false;
+                        }
                     } catch (Exception e) {
                         System.out.println("Bug:" + e);
                     }
 
                 } else {
                     if ((piece.getPieceColor() == piece_2.getPieceColor())) {
-                        System.out.println("Not a legal move!");
+                        throw new IllegalArgumentException("Same Color! Can't Do this move.");
 
-                    } else {
-                        
-                        // if (whiteTurn) {
-                        //     whiteTurn = false;
-                        //     blackTurn = true;
-                        // } else {
-                        //     whiteTurn = true;
-                        //     blackTurn = false;
-                        // }
-
+                    } else {                        
+                        if (whiteTurn) {
+                            whiteTurn = false;
+                            blackTurn = true;
+                        } else {
+                            whiteTurn = true;
+                            blackTurn = false;
+                        }
                         knockedOut = true;
                         piecesOut.clear();
                         piecesOut.add(piece_2);
@@ -140,11 +130,9 @@ public class Move {
             for (ArrayList<Integer> pos : pattern) {
                 
                 if (chessboardState.get(pos.get(1)).get(pos.get(0)) != null) {
-                    if (chessboardState.get(pos.get(1)).get(pos.get(0)).getPieceColor() != piece.getPieceColor()) {
-                        allInvalidPos.add(new ArrayList<>(pos));
-                        if (piece.getPiecePos().equals(Arrays.asList(pos.get(0), pos.get(1)+1*piece.pieceColor))) {
-                            allInvalidPos.addAll(new ArrayList<>(pattern));
-                        }
+                    allInvalidPos.add(new ArrayList<>(pos));
+                    if (piece.getPiecePos().equals(Arrays.asList(pos.get(0), pos.get(1)+1*piece.pieceColor))) {
+                        allInvalidPos.addAll(new ArrayList<>(pattern));
                     } 
                 } 
             }
@@ -153,47 +141,21 @@ public class Move {
                 pattern.remove(pos);
             }
 
-            try {
-                if (chessboardState.get(y-1*piece.pieceColor).get(x) != null) {
-                    pattern.remove(new ArrayList<>(Arrays.asList(x, y-1*piece.pieceColor)));
-                }
-            } catch (Exception e) {
-                //TODO: handle exception 
-            }
-            try {
-                if (chessboardState.get(y+1).get(x+1) != null && !(chessboardState.get(y+1).get(x+1).getPieceColor() == piece.getPieceColor())) {
-                    pattern.add(new ArrayList<>(Arrays.asList(x+1, y+1)));
-                }
-            } catch (Exception e) {
-                //TODO: handle exception
+            if ((y < 7 && x < 7) && chessboardState.get(y+1).get(x+1) != null && !(chessboardState.get(y+1).get(x+1).getPieceColor() == piece.getPieceColor())) {
+                pattern.add(new ArrayList<>(Arrays.asList(x+1, y+1)));
             }
 
-            try {
-                if (chessboardState.get(y+1).get(x-1) != null && !(chessboardState.get(y+1).get(x-1).getPieceColor() == piece.getPieceColor())) {
-                    pattern.add(new ArrayList<>(Arrays.asList(x-1, y+1)));
-                }
-            } catch (Exception e) {
-                //TODO: handle exception
-            }
-            try {
-
-                if (chessboardState.get(y-1).get(x+1) != null && !(chessboardState.get(y-1).get(x+1).getPieceColor() == piece.getPieceColor())) {
-                    pattern.add(new ArrayList<>(Arrays.asList(x+1, y-1)));
-                }
-                
-            } catch (Exception e) {
-                //TODO: handle exception
+            if ((y < 7 && x > 0) && chessboardState.get(y+1).get(x-1) != null && !(chessboardState.get(y+1).get(x-1).getPieceColor() == piece.getPieceColor())) {
+                pattern.add(new ArrayList<>(Arrays.asList(x-1, y+1)));
             }
 
-            try {
-                if (chessboardState.get(y-1).get(x-1) != null && !(chessboardState.get(y-1).get(x-1).getPieceColor() == piece.getPieceColor())) {
-                    pattern.add(new ArrayList<>(Arrays.asList(x-1, y-1)));
-                }        
-                
-            } catch (Exception e) {
-                //TODO: handle exception
+            if ((y > 0 && x < 7) && chessboardState.get(y-1).get(x+1) != null && !(chessboardState.get(y-1).get(x+1).getPieceColor() == piece.getPieceColor())) {
+                pattern.add(new ArrayList<>(Arrays.asList(x+1, y-1)));
             }
 
+            if ((y > 0 && x > 0) && chessboardState.get(y-1).get(x-1) != null && !(chessboardState.get(y-1).get(x-1).getPieceColor() == piece.getPieceColor())) {
+                pattern.add(new ArrayList<>(Arrays.asList(x-1, y-1)));
+            }     
 
         }
         else if (piece instanceof Knight) {
@@ -309,7 +271,7 @@ public class Move {
                         allInvalidPos.add(new ArrayList<>(pos));
                     }
                     else if (pos.equals(Arrays.asList(x - 1, y)) || pos.equals(Arrays.asList(x + 1, y))) {
-                        if (chessboardState.get(pos.get(1)).get(pos.get(0)).toString().equals("Pawn")) {
+                        if (chessboardState.get(pos.get(1)).get(pos.get(0)) instanceof Pawn) {
                             allInvalidPos.add(new ArrayList<>(Arrays.asList(x, y + 1)));
                             allInvalidPos.add(new ArrayList<>(Arrays.asList(x, y - 1)));
                         }
@@ -424,7 +386,7 @@ public class Move {
                     }
                 }
             }
-            //System.out.println(allInvalidPos + ": InvalidPos");
+
             for (ArrayList<Integer> pos : allInvalidPos) {
                 pattern.remove(pos);
             }

@@ -5,12 +5,12 @@ import java.util.ArrayList;
 
 import Chess.Chessboard.Chessboard;
 import Chess.Pieces.BasePiece;
+import Chess.Pieces.King;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.ImageView;
 
 public class CheckGameState {
-
     private Chessboard chessboard;
     private Move ChessMove;
     private boolean kingWCheck;
@@ -41,8 +41,8 @@ public class CheckGameState {
         return checkMate;
     }
 
-    public void setDraw(boolean b) {
-        this.draw = b;
+    public void setDraw(boolean draw) {
+        this.draw = draw;
     }
 
     public void setPlayerWName(String name) {
@@ -74,30 +74,24 @@ public class CheckGameState {
         a.setContentText(text);
         a.show();
     }
-    
-    public void inCheck() throws FileNotFoundException {
-        ArrayList<ArrayList<BasePiece>> chessboardState = chessboard.getChessboardState();
-        ArrayList<Integer> kingPosB = new ArrayList<>();
-        ArrayList<Integer> kingPosW = new ArrayList<>();
 
+    private ArrayList<Integer> kingPosFinder(ArrayList<ArrayList<BasePiece>> chessboardState, char k) {
         for (ArrayList<BasePiece> row : chessboardState) {
             for (BasePiece piece : row) {
                 if (piece != null) {
-                    switch (piece.toString()) {
-                        case "King":
-                            switch (piece.getPieceColor()) {
-                                case 'w':
-                                    kingPosW = new ArrayList<>(piece.getPiecePos());
-                                    break;
-                                case 'b':
-                                    kingPosB = new ArrayList<>(piece.getPiecePos());
-                                    break;
-                            }
-                            break;
+                    if (piece instanceof King && piece.getPieceColor() == k) {
+                        return piece.getPiecePos();
                     }
                 }
             }
         }
+        return null;
+    }
+    
+    public void inCheck() throws FileNotFoundException {
+        ArrayList<ArrayList<BasePiece>> chessboardState = chessboard.getChessboardState();
+        ArrayList<Integer> kingPosB = kingPosFinder(chessboardState, 'b');
+        ArrayList<Integer> kingPosW = kingPosFinder(chessboardState, 'w');
 
         int checkState = -1;
         for (ArrayList<BasePiece> row : chessboardState) {
@@ -109,7 +103,6 @@ public class CheckGameState {
                         if (ChessMove.validatePattern(posX, posY).contains(kingPosB)) {
                             checkState += 1;
                             kingBCheck = true;
-                            // ChessMove.setKingNotCheck(false);
                             piecePosBCheck.add(piece.getPiecePos());
                             pieceBCheck = piece;      
                         }
@@ -120,7 +113,6 @@ public class CheckGameState {
                         if (ChessMove.validatePattern(posX, posY).contains(kingPosW)) {
                             checkState += 1;
                             kingWCheck = true;
-                            // ChessMove.setKingNotCheck(false);
                             piecePosWCheck.add(piece.getPiecePos());
                             pieceWCheck = piece;               
                         } 
@@ -138,27 +130,8 @@ public class CheckGameState {
     
     public void inCheckMate() throws FileNotFoundException {
         ArrayList<ArrayList<BasePiece>> chessboardState = chessboard.getChessboardState();
-        ArrayList<Integer> kingPosB = new ArrayList<>();
-        ArrayList<Integer> kingPosW = new ArrayList<>();
-
-        for (ArrayList<BasePiece> row : chessboardState) {
-            for (BasePiece piece : row) {
-                if (piece != null) {
-                    switch (piece.toString()) {
-                        case "King":
-                            switch (piece.getPieceColor()) {
-                                case 'w':
-                                    kingPosW = new ArrayList<>(piece.getPiecePos());                     
-                                    break;
-                                case 'b':
-                                    kingPosB = new ArrayList<>(piece.getPiecePos());
-                                    break;
-                            }
-                            break;
-                    }
-                }
-            }
-        }
+        ArrayList<Integer> kingPosB = kingPosFinder(chessboardState, 'b');
+        ArrayList<Integer> kingPosW = kingPosFinder(chessboardState, 'w');
 
         if (getKingWCheck()) {
             int posX = kingPosW.get(0);
@@ -176,10 +149,18 @@ public class CheckGameState {
                 
                 if (allWhitePiecesPos.stream().anyMatch(a -> ChessMove.validatePattern(a.get(0), a.get(1)).stream().anyMatch(c -> c.equals(piecePosWCheck.get(0))))) {
                     System.out.println("Du kan fortsatt bevege deg.");
+
+                    if (piecePosWCheck.size() > 1 && !(piecePosWCheck.stream().distinct().count() <= 1)) {
+                        checkMate = true;
+                    }
                 } else {
                     if ((allBlockedMoves.stream().filter(b -> chessboardState.get(b.get(1)).get(b.get(0)) != null)).allMatch(a -> chessboardState.get(a.get(1)).get(a.get(0)).getPieceColor() == 'w')) {
                         if (allBlockedMoves.stream().filter(b -> chessboardState.get(b.get(1)).get(b.get(0)) != null).anyMatch(a -> ChessMove.validatePattern(a.get(0), a.get(1)).stream().anyMatch(c -> c.equals(piecePosWCheck.get(0))))) {
                             System.out.println("Du kan fortsatt bevege deg.");
+
+                            if (piecePosWCheck.size() > 1 && !(piecePosWCheck.stream().distinct().count() <= 1)) {
+                                checkMate = true;
+                            }
                         }
                         else {
                             checkMate = true;
@@ -187,10 +168,6 @@ public class CheckGameState {
                     } else {
                         checkMate = true;
                     } 
-                }
-
-                if (piecePosWCheck.size() > 1 && !(piecePosWCheck.stream().distinct().count() <= 1)) {
-                    checkMate = true;
                 }
             } 
         }
@@ -211,10 +188,18 @@ public class CheckGameState {
                 ArrayList<ArrayList<Integer>> allBlockedMoves = new ArrayList<>(chessboardState.get(posY).get(posX).layPattern(posX, posY));
                 if (allBlackPiecesPos.stream().anyMatch(a -> ChessMove.validatePattern(a.get(0), a.get(1)).stream().anyMatch(c -> c.equals(piecePosBCheck.get(0))))) {
                     System.out.println("Du kan fortsatt bevege deg.");
+
+                    if (piecePosBCheck.size() > 1 && !(piecePosBCheck.stream().distinct().count() <= 1)) {
+                        checkMate = true;
+                    }
                 } else {
                     if ((allBlockedMoves.stream().filter(b -> chessboardState.get(b.get(1)).get(b.get(0)) != null)).allMatch(a -> chessboardState.get(a.get(1)).get(a.get(0)).getPieceColor() == 'b')) {
                         if (allBlockedMoves.stream().filter(b -> chessboardState.get(b.get(1)).get(b.get(0)) != null).anyMatch(a -> ChessMove.validatePattern(a.get(0), a.get(1)).stream().anyMatch(c -> c.equals(piecePosWCheck.get(0))))) {
                             System.out.println("Du kan fortsatt bevege deg.");   
+
+                            if (piecePosBCheck.size() > 1 && !(piecePosBCheck.stream().distinct().count() <= 1)) {
+                                checkMate = true;
+                            }
                         }
                         else {
                             checkMate = true;
@@ -223,9 +208,6 @@ public class CheckGameState {
                         checkMate = true;
     
                     } 
-                }
-                if (piecePosBCheck.size() > 1 && !(piecePosBCheck.stream().distinct().count() <= 1)) {
-                    checkMate = true;
                 }
             } 
         }
@@ -249,7 +231,7 @@ public class CheckGameState {
 
     public void inDraw() {
         if (draw) {
-            ChessMove.setGameOver(draw);
+            ChessMove.setGameOver(true);
             AlertGameState("Draw!", "This game ended in a draw!");
         }
     }

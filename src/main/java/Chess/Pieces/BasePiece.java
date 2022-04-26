@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public abstract class BasePiece {
     public int pieceColor;
-    ArrayList<Integer> availColor = new ArrayList<>();
+    private ArrayList<Integer> availColor = new ArrayList<>();
     ArrayList<Integer> pos = new ArrayList<>();
     public boolean pawnDoubleMove = true;
 
@@ -19,17 +19,12 @@ public abstract class BasePiece {
         } this.pieceColor = pieceColor;
         
         if (!(x < 8 && x >= 0) || !(y < 8 && y >= 0)) {
-            System.out.println(x + y);
             throw new IllegalArgumentException("The piece is not in an available range.");
         } 
 
         pos.add(x);
         pos.add(y);
     }
-
-    public abstract boolean legalMove(int x, int y);
-
-    public abstract ArrayList<ArrayList<Integer>>  layPattern(int x, int y);
 
     public String getPieceName() {
         return "" + this.getClass().getName() + "";
@@ -43,7 +38,6 @@ public abstract class BasePiece {
 
     public void setPiecePos(int x, int y) {
         if (!(x < 8 && x >= 0) || !(y < 8 && y >= 0)) {
-            System.out.println(x + y);
             throw new IllegalArgumentException("The piece is not in an available range.");
         }
         
@@ -55,6 +49,11 @@ public abstract class BasePiece {
     public ArrayList<Integer> getPiecePos() {
         return new ArrayList<>(pos);
     }
+
+    public abstract boolean legalMove(int x, int y);
+
+    public abstract ArrayList<ArrayList<Integer>>  layPattern(int x, int y);
+
 
     @Override
     public String toString() {
