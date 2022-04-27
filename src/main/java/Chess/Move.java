@@ -47,6 +47,10 @@ public class Move {
         return gameOver;
     }
 
+    public ArrayList<ArrayList<Integer>> getValidatedPattern(int x, int y) {
+        return validatedPattern(x, y);
+    }
+
     public void MovePiece(int x_1, int y_1, int x_2, int y_2) {
         Moving = true;
         BasePiece piece = chessboard.getChessboardState().get(y_1).get(x_1);
@@ -58,7 +62,7 @@ public class Move {
             } else if (blackTurn) {
                 statement = (piece.getPieceColor() == 'b');
             }
-            if (statement && validatePattern(x_1, y_1).contains(new ArrayList<>(Arrays.asList(x_2, y_2))) && !gameOver) {
+            if (statement && getValidatedPattern(x_1, y_1).contains(new ArrayList<>(Arrays.asList(x_2, y_2))) && !gameOver) {
                 if (piece_2 == null) {
                     try {
                         chessboard.setChessboardState(x_1, y_1, x_2, y_2);
@@ -111,7 +115,7 @@ public class Move {
         }
     }
 
-    public ArrayList<ArrayList<Integer>> validatePattern(int x, int y) {
+    private ArrayList<ArrayList<Integer>> validatedPattern(int x, int y) {
         ArrayList<ArrayList<BasePiece>> chessboardState = chessboard.getChessboardState();
         BasePiece piece = chessboardState.get(y).get(x);
         ArrayList<ArrayList<Integer>> pattern = new ArrayList<>();
@@ -287,12 +291,12 @@ public class Move {
 
                                 if (pieces instanceof Bishop || pieces instanceof Rook || pieces instanceof Queen) {
                                     
-                                    if (validatePattern(posX, posY).contains(Arrays.asList(x, y)) && !piece.layPattern(x, y).contains(Arrays.asList(posX, posY))) {
+                                    if (getValidatedPattern(posX, posY).contains(Arrays.asList(x, y)) && !piece.layPattern(x, y).contains(Arrays.asList(posX, posY))) {
                                         for (ArrayList<Integer> piecepos : pieces.layPattern(posX, posY)) {
                                             allInvalidPos.add(new ArrayList<>(piecepos));
                                         }
                                     } else {
-                                        for (ArrayList<Integer> piecepos : validatePattern(posX, posY)) {
+                                        for (ArrayList<Integer> piecepos : getValidatedPattern(posX, posY)) {
                                             allInvalidPos.add(new ArrayList<>(piecepos));
                                         }
                                     }
@@ -305,10 +309,10 @@ public class Move {
                                             if (pieces.layPattern(posX, posY).contains(patternpos)) {
                                                 if (chessboardState.get(patternY).get(patternX) != null) {
                                                     if (!chessboardState.get(patternY).get(patternX).equals(pieces)) {
-                                                        if (validatePattern(posX, posY).contains(Arrays.asList(patternX - 1, patternY + 1)) ||
-                                                        validatePattern(posX, posY).contains(Arrays.asList(patternX + 1, patternY + 1)) ||
-                                                        validatePattern(posX, posY).contains(Arrays.asList(patternX - 1, patternY - 1)) ||
-                                                        validatePattern(posX, posY).contains(Arrays.asList(patternX + 1, patternY - 1)) ||
+                                                        if (getValidatedPattern(posX, posY).contains(Arrays.asList(patternX - 1, patternY + 1)) ||
+                                                        getValidatedPattern(posX, posY).contains(Arrays.asList(patternX + 1, patternY + 1)) ||
+                                                        getValidatedPattern(posX, posY).contains(Arrays.asList(patternX - 1, patternY - 1)) ||
+                                                        getValidatedPattern(posX, posY).contains(Arrays.asList(patternX + 1, patternY - 1)) ||
                                                         pieces.getPiecePos().equals(Arrays.asList(patternX - 1, patternY + 1)) ||
                                                         pieces.getPiecePos().equals(Arrays.asList(patternX + 1, patternY + 1)) ||
                                                         pieces.getPiecePos().equals(Arrays.asList(patternX - 1, patternY - 1)) ||
@@ -329,10 +333,10 @@ public class Move {
                                             if (pieces.layPattern(posX, posY).contains(patternpos)) {
                                                 if (chessboardState.get(patternY).get(patternX) != null) {
                                                     if (!chessboardState.get(patternY).get(patternX).equals(pieces)) {
-                                                        if (validatePattern(posX, posY).contains(Arrays.asList(patternX, patternY + 1)) ||
-                                                        validatePattern(posX, posY).contains(Arrays.asList(patternX, patternY - 1)) ||
-                                                        validatePattern(posX, posY).contains(Arrays.asList(patternX - 1, patternY)) ||
-                                                        validatePattern(posX, posY).contains(Arrays.asList(patternX + 1, patternY)) ||
+                                                        if (getValidatedPattern(posX, posY).contains(Arrays.asList(patternX, patternY + 1)) ||
+                                                        getValidatedPattern(posX, posY).contains(Arrays.asList(patternX, patternY - 1)) ||
+                                                        getValidatedPattern(posX, posY).contains(Arrays.asList(patternX - 1, patternY)) ||
+                                                        getValidatedPattern(posX, posY).contains(Arrays.asList(patternX + 1, patternY)) ||
                                                         pieces.getPiecePos().equals(Arrays.asList(patternX, patternY + 1)) ||
                                                         pieces.getPiecePos().equals(Arrays.asList(patternX, patternY - 1)) ||
                                                         pieces.getPiecePos().equals(Arrays.asList(patternX - 1, patternY)) ||

@@ -119,12 +119,12 @@ public class MoveTest {
                 if (basePiece instanceof Pawn) {
                     assertEquals(Arrays.asList(Arrays.asList(basePiece.getPiecePos().get(0), basePiece.getPiecePos().get(1) - 2*basePiece.pieceColor), (Arrays.asList(basePiece.getPiecePos().get(0), 
                     basePiece.getPiecePos().get(1) - 1*basePiece.pieceColor))) ,
-                    ChessMove.validatePattern(basePiece.getPiecePos().get(0), basePiece.getPiecePos().get(1)));
+                    ChessMove.getValidatedPattern(basePiece.getPiecePos().get(0), basePiece.getPiecePos().get(1)));
                 } else if (basePiece instanceof Knight) {
                     assertEquals(Arrays.asList(Arrays.asList(basePiece.getPiecePos().get(0) - 1, basePiece.getPiecePos().get(1) - 2*basePiece.pieceColor), Arrays.asList(basePiece.getPiecePos().get(0) + 1, basePiece.getPiecePos().get(1) - 2*basePiece.pieceColor)) ,
-                    ChessMove.validatePattern(basePiece.getPiecePos().get(0), basePiece.getPiecePos().get(1)));
+                    ChessMove.getValidatedPattern(basePiece.getPiecePos().get(0), basePiece.getPiecePos().get(1)));
                 } else if (basePiece != null) {
-                    assertEquals(0, ChessMove.validatePattern(basePiece.getPiecePos().get(0), basePiece.getPiecePos().get(1)).size());
+                    assertEquals(0, ChessMove.getValidatedPattern(basePiece.getPiecePos().get(0), basePiece.getPiecePos().get(1)).size());
                 }
             }
         }

@@ -47,7 +47,7 @@ public class ChessInit {
   public ChessInit(Chessboard chessboard, boolean pawnDoubleMove) {
     this.chessboard = chessboard;
     this.ChessMove = new Move(chessboard);
-    this.checkGameState = new CheckGameState(chessboard, ChessMove);
+    this.checkGameState = new CheckGameState(chessboard);
     this.piecesOutList = PiecePlacer.IOload.getPiecesOut();
     //BasePiece.setMoved(pawnDoubleMove); // Pawn double move available ?
     
@@ -487,7 +487,7 @@ public class ChessInit {
   private void availPattern(BasePiece piece, int x, int y) {
     if (!ChessMove.getGameOver()) {
       if ((piece.getPieceColor() == 'w' && ChessMove.getWhiteTurn()) || (piece.getPieceColor() == 'b' && ChessMove.getBlackTurn()))  {
-        for (ArrayList<Integer> pos : ChessMove.validatePattern(x, y)) {
+        for (ArrayList<Integer> pos : ChessMove.getValidatedPattern(x, y)) {
           GreenClick(pos.get(0), pos.get(1));
         }
       }
