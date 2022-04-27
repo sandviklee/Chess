@@ -76,7 +76,6 @@ public class ChessInit {
   boolean statement = true;
   private void updatePiecesOut(Pane pane) throws FileNotFoundException {
     if (piecesOutList != null && !(piecesOutList.size() - 1 == 0) && !ChessMove.knockedOut) {
-      System.out.println(" IKKE NOE TULLBALL");
       for (String pieceStr : piecesOutList) {
         ImageView ImageView = new ImageView();
         switch (pieceStr) {
@@ -209,9 +208,6 @@ public class ChessInit {
             break; 
       }
 
-      System.out.println(piecesList + " piecesList");
-      
-
       ImageView.setScaleX(0.30);
       ImageView.setScaleY(0.30);
       ImageView.setX(pieceOutX*25 - 10);
@@ -262,7 +258,6 @@ public class ChessInit {
         checkGameState.inCheck();
         checkGameState.inCheckMate();
         gameStart++;
-        System.out.println(IO.pawnDoubleList + " Pawndouble lsit");
 
         if (!(IO.pawnDoubleList.size() == 0)) {
           int i = 0;
@@ -446,7 +441,6 @@ public class ChessInit {
 
   boolean drawOffer = false;
   public void drawState() {
-    System.out.println(drawOffer + " drawOffer");
     if (!checkGameState.draw) {
       if (!ChessMove.getGameOver()) {
           if (ChessMove.getWhiteTurn()) {

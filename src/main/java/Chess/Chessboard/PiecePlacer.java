@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import Chess.Exceptions.NotEnoughPiecesException;
 import Chess.Pieces.*;
 
 public class PiecePlacer {
@@ -14,13 +15,18 @@ public class PiecePlacer {
     public List<String> PieceList;
     public static IO IOload;
 
-    public PiecePlacer(File filename) throws FileNotFoundException  {
+    public PiecePlacer(File filename) throws FileNotFoundException, NotEnoughPiecesException  {
         IO IOload = new IO();
         PiecePlacer.IOload = IOload;
         this.PieceList = Arrays.asList(IOload.load(filename));
+        
         if (!(this.PieceList.size() == 64)) {
-            throw new IllegalStateException("Det er ikke nok brikker i fila.");
+            throw new NotEnoughPiecesException("Det er ikke nok brikker i fila.");
         }
+    }
+
+    public List<String> getPieceList() {
+        return PieceList;
     }
     
     public void addPieces() {
@@ -121,7 +127,6 @@ public class PiecePlacer {
                     inner.add(null);
                 }
                 
-                System.out.println(inner);
                 counterx = 0;
                 this.outer.add(inner);
                 inner = new ArrayList<>();
@@ -134,15 +139,5 @@ public class PiecePlacer {
     public ArrayList<ArrayList<BasePiece>> getOuter() {
         return new ArrayList<ArrayList<BasePiece>>(this.outer);
     }
-
-    public static void main(String[] args) throws FileNotFoundException {
-        File file = new File("newGameState.txt");
-        PiecePlacer placer = new PiecePlacer(file);
-        System.out.println(placer.PieceList);
-        //placer.addPieces();
-        // System.out.println(placer.getOuter());
-    
-    }
-
 
 }

@@ -7,6 +7,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 
+import Chess.Exceptions.NotEnoughPiecesException;
 import Chess.Pieces.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -14,14 +15,14 @@ import javafx.scene.image.ImageView;
 public class Chessboard {
     private ArrayList<ArrayList<BasePiece>> chessboard;
 
-    public Chessboard() throws FileNotFoundException {
+    public Chessboard() throws FileNotFoundException, NotEnoughPiecesException {
         File newGameFile = new File("src/main/resources/Chess/SaveFiles/newGameState.txt");
         PiecePlacer chessboard = new PiecePlacer(newGameFile);
         chessboard.addPieces();
         this.chessboard = chessboard.getOuter();
     }
 
-    public Chessboard(File filename) throws FileNotFoundException {
+    public Chessboard(File filename) throws FileNotFoundException, NotEnoughPiecesException {
         PiecePlacer chessboard = new PiecePlacer(filename);
         chessboard.addPieces();
         this.chessboard = chessboard.getOuter();
@@ -160,7 +161,7 @@ public class Chessboard {
                 Collections.swap(chessboard.get(y_1), x_1, x_2);
                 piece.setPiecePos(x_2, y_2);
 
-            } else if (!(piece.getPieceColor() == (piece_2.getPieceColor()))) {
+            } else if (piece.getPieceColor() != (piece_2.getPieceColor())) {
                 Collections.swap(chessboard.get(y_1), x_1, x_2);
                 chessboard.get(y_2).remove(x_1);
                 chessboard.get(y_2).add(x_1, null);
@@ -176,7 +177,7 @@ public class Chessboard {
         chessboard.get(y_1).add(x_1, piece);
     }
 
-    public static void main(String[] args) throws FileNotFoundException {
+    public static void main(String[] args) throws FileNotFoundException, NotEnoughPiecesException {
         Chessboard c1 = new Chessboard();
         c1.setChessboardState(0, 1, 0, 2);
         System.out.println("" + "\n" + c1.getChessboardState());

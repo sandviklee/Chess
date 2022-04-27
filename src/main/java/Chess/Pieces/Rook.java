@@ -12,7 +12,10 @@ public class Rook extends BasePiece{
 
     @Override
     public boolean legalMove(int x, int y) {
-        return (this.getPiecePos().get(0) != x && this.getPiecePos().get(1) == y) || (this.getPiecePos().get(0) == x && this.getPiecePos().get(1) != y);
+        if ((x < 8 && x >= 0) && (y < 8 && y >= 0)) {
+            return (this.getPiecePos().get(0) != x && this.getPiecePos().get(1) == y) || (this.getPiecePos().get(0) == x && this.getPiecePos().get(1) != y);
+        }
+        return false;
     }
 
     @Override

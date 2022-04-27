@@ -11,7 +11,10 @@ public class Bishop extends BasePiece {
 
     @Override
     public boolean legalMove(int x, int y) {
-        return Math.abs(this.pos.get(0)-x) == Math.abs(this.pos.get(1)-y);
+        if ((x < 8 && x >= 0) && (y < 8 && y >= 0)) {
+            return Math.abs(this.pos.get(0)-x) == Math.abs(this.pos.get(1)-y);
+        }
+        return false;
     }
 
     @Override

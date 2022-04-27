@@ -52,7 +52,7 @@ public abstract class BasePiece {
 
     public abstract boolean legalMove(int x, int y);
 
-    public abstract ArrayList<ArrayList<Integer>>  layPattern(int x, int y);
+    public abstract ArrayList<ArrayList<Integer>> layPattern(int x, int y);
 
 
     @Override

@@ -75,24 +75,20 @@ public class Move {
                         System.out.println("Bug:" + e);
                     }
 
-                } else {
-                    if ((piece.getPieceColor() == piece_2.getPieceColor())) {
-                        throw new IllegalArgumentException("Same Color! Can't Do this move.");
-
-                    } else {                        
-                        if (whiteTurn) {
-                            whiteTurn = false;
-                            blackTurn = true;
-                        } else {
-                            whiteTurn = true;
-                            blackTurn = false;
-                        }
-                        knockedOut = true;
-                        piecesOut.clear();
-                        piecesOut.add(piece_2);
-                        chessboard.setChessboardState(x_1, y_1, x_2, y_2);
-                        SpecialMove(piece, x_2, y_2);
+                } else {                    
+                    if (whiteTurn) {
+                        whiteTurn = false;
+                        blackTurn = true;
+                    } else {
+                        whiteTurn = true;
+                        blackTurn = false;
                     }
+                    knockedOut = true;
+                    piecesOut.clear();
+                    piecesOut.add(piece_2);
+                    chessboard.setChessboardState(x_1, y_1, x_2, y_2);
+                    SpecialMove(piece, x_2, y_2);
+                    
                 }
             } 
         }
