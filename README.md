@@ -10,14 +10,17 @@ Java Chess game made during the course **[TDT4100 - Object oriented programming]
 - Piece patterns and logic. ☑
 - IO system, storing and accessing files. ☑
 - Switching between White and Black logic. ☑
-- Check game state (Checkmate, Check and draw). □
-- Show all garbage pieces. □
-- Show last move (With the chess terms). □
-- Add Players. □
+- Check game state (Checkmate, Check and draw). ☑
+- Show all garbage pieces. ☑
+- Add Players. ☑
+- JUnit 5 Tests
+
+
 
 ## What i want to implement in the future:
 - AI that you can play against.
 - Better coding structure, with more efficient code.
+- Show last move (With the chess terms).
 
 ## Project Keypoints
 
