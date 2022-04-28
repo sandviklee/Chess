@@ -13,7 +13,7 @@ Java Chess game made during the course **[TDT4100 - Object oriented programming]
 - Check game state (Checkmate, Check and draw). ☑
 - Show all garbage pieces. ☑
 - Add Players. ☑
-- JUnit 5 Tests
+- JUnit 5 Tests ☐
 
 
 
