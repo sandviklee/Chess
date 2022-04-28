@@ -69,7 +69,7 @@ public class ChessboardTest {
         BasePiece piece = chessboard.getChessboardState().get(y_1).get(x_1); //Initiating a piece on the chessboard.
         
         for (ArrayList<BasePiece> arrayList : chessboard.getChessboardState()) {
-            oldChessboardState.add(new ArrayList<>(arrayList));
+            oldChessboardState.add(new ArrayList<>(arrayList)); //Saving the chessbordState
         }
         
         assertEquals(Arrays.asList(x_1, y_1), piece.getPiecePos(), "Checks if Piece pos is correct.");
@@ -90,7 +90,7 @@ public class ChessboardTest {
         int y_3 = 5;
 
         for (ArrayList<BasePiece> arrayList : chessboard.getChessboardState()) {
-            oldChessboardState2.add(new ArrayList<>(arrayList));
+            oldChessboardState2.add(new ArrayList<>(arrayList)); //Saving the chessbordState
         }
 
         chessboard.setChessboardState(x_2, y_2, x_3, y_3);
@@ -108,7 +108,7 @@ public class ChessboardTest {
         int y_5 = 6;
 
         for (ArrayList<BasePiece> arrayList : chessboard.getChessboardState()) {
-            oldChessboardState3.add(new ArrayList<>(arrayList));
+            oldChessboardState3.add(new ArrayList<>(arrayList)); //Saving the chessbordState
         }
 
         chessboard.setChessboardState(x_4, y_4, x_5, y_5);
@@ -127,7 +127,7 @@ public class ChessboardTest {
 
         ArrayList<ArrayList<BasePiece>> oldChessboardState = new ArrayList<>();
         for (ArrayList<BasePiece> arrayList : chessboard.getChessboardState()) {
-            oldChessboardState.add(new ArrayList<>(arrayList));
+            oldChessboardState.add(new ArrayList<>(arrayList)); //Saving the chessbordState
         }
         BasePiece piece = chessboard.getChessboardState().get(y_1).get(x_1);
         assertTrue(piece instanceof Pawn, "Checks if the piece is a Pawn.");

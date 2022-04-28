@@ -49,6 +49,7 @@ public class IOTest {
 
     @Test
     public void testLoadFile() {
+        //General Loading
         List<String> savedGameState;
         try {
             savedGameState = iO.load(new File("src/main/resources/Chess/SaveFiles/newGameState.txt"));
@@ -59,6 +60,7 @@ public class IOTest {
         assertEquals(chessboard.getPiecePlacer().PieceList, savedGameState);
         assertFalse(ChessInitialize.ChessMove.getGameOver());
     }
+
 
     @Test 
     public void testLoadFileNotFound() {
@@ -84,7 +86,8 @@ public class IOTest {
             fail("Could not save file");
         }
 
-        byte[] testFile = null, newTestFile = null;  
+        byte[] testFile = null, newTestFile = null; 
+         
         
         try {
 			testFile = Files.readAllBytes(Path.of("src/main/resources/Chess/SaveFiles/newGameState.txt"));
@@ -114,8 +117,9 @@ public class IOTest {
         assertThrows(GameEndedException.class, () -> {
             ChessInitialize.saveGameState(iO);
         });
-        
-
+        assertThrows(GameEndedException.class, () -> {
+            ChessInitialize.drawState();
+        });
     }
 
     @AfterAll
