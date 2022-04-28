@@ -14,12 +14,17 @@ import javafx.scene.image.ImageView;
 
 public class Chessboard {
     private ArrayList<ArrayList<BasePiece>> chessboard;
+    private PiecePlacer piecePlacer;
+
+    public PiecePlacer getPiecePlacer() {
+        return piecePlacer;
+    }
 
     public Chessboard() throws FileNotFoundException, NotEnoughPiecesException {
         File newGameFile = new File("src/main/resources/Chess/SaveFiles/newGameState.txt");
-        PiecePlacer chessboard = new PiecePlacer(newGameFile);
-        chessboard.addPieces();
-        this.chessboard = chessboard.getOuter();
+        piecePlacer = new PiecePlacer(newGameFile);
+        piecePlacer.addPieces();
+        this.chessboard = piecePlacer.getOuter();
     }
 
     public Chessboard(File filename) throws FileNotFoundException, NotEnoughPiecesException {
@@ -175,13 +180,5 @@ public class Chessboard {
         BasePiece piece = new Queen(pieceColor, x_1, y_1);
         chessboard.get(y_1).remove(x_1);
         chessboard.get(y_1).add(x_1, piece);
-    }
-
-    public static void main(String[] args) throws FileNotFoundException, NotEnoughPiecesException {
-        Chessboard c1 = new Chessboard();
-        c1.setChessboardState(0, 1, 0, 2);
-        System.out.println("" + "\n" + c1.getChessboardState());
-        c1.setChessboardState(0, 1, 0, 2);
-        System.out.println("" + "\n" + c1.getChessboardState());
     }
 }

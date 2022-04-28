@@ -5,6 +5,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import Chess.Chessboard.IO;
+import Chess.Exceptions.GameEndedException;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -28,7 +29,7 @@ public class ChessController implements Initializable{
     }
     
     @FXML
-    private void offerdrawClick() {
+    private void offerdrawClick() throws GameEndedException {
         ChessInitialize.drawState();
     }
 
@@ -38,7 +39,7 @@ public class ChessController implements Initializable{
     }
 
     @FXML
-    private void saveClick() {
+    private void saveClick() throws GameEndedException {
         ChessInitialize.saveGameState(IOsave);
     }
 

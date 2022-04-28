@@ -9,20 +9,32 @@ import java.util.List;
 import java.util.Scanner;
 
 import Chess.ChessInit;
-import Chess.MainmenuController;
+import Chess.Exceptions.NotEnoughPiecesException;
 import Chess.Pieces.BasePiece;
 import Chess.Pieces.Pawn;
 
 public class IO implements IIO {
     private List<String> chessPiecesOutList;
-    public static String player1Name = "PLAYER1";
-    public static String player2Name = "PLAYER2";
+    private static String player1Name;
+    private static String player2Name;
     public static boolean whiteTurn = true;
     public static boolean blackTurn = false;
-    public static ArrayList<Boolean> pawnDoubleList = new ArrayList<>();
+    private static ArrayList<Boolean> pawnDoubleList = new ArrayList<>();
+
+    public static ArrayList<Boolean> getPawnDoubleList() {
+        return pawnDoubleList;
+    }
     
     public List<String> getPiecesOut() {
         return chessPiecesOutList;
+    }
+
+    public static String getPlayer1NameIO() {
+        return player1Name;
+    }
+
+    public static String getPlayer2NameIO() {
+        return player2Name;
     }
 
     @Override
@@ -42,8 +54,8 @@ public class IO implements IIO {
                 allCases(piece, writer);
             }
             writer.println();
-            writer.print(MainmenuController.player1Name + ",");
-            writer.print(MainmenuController.player2Name + ",");
+            writer.print(ChessInitialize.getPlayer1Name() + ",");
+            writer.print(ChessInitialize.getPlayer2Name() + ",");
 
             writer.println();
             if (ChessInitialize.ChessMove.getWhiteTurn()) {
@@ -72,12 +84,16 @@ public class IO implements IIO {
     
 
     @Override
-    public String[] load(File filename) throws FileNotFoundException {
+    public List<String> load(File filename) throws FileNotFoundException, NotEnoughPiecesException {
         try (Scanner scanner = new Scanner(filename)) {
             String[] lineInfo = {};
-
             String line = scanner.nextLine();
             lineInfo = line.split(",");
+
+            List<String> pieceList = Arrays.asList(lineInfo);
+            if (pieceList.size() != 64) {
+                throw new NotEnoughPiecesException("Ikke nokk brikker!");
+            }
             if (scanner.hasNext()) {
                 String secondline = scanner.nextLine();
                 chessPiecesOutList = Arrays.asList(secondline.split(","));
@@ -111,7 +127,7 @@ public class IO implements IIO {
                 }
                 
             }
-            return lineInfo;
+            return pieceList;
         }
     }
 
@@ -180,4 +196,5 @@ public class IO implements IIO {
                 break;
         }
     }
+
 }

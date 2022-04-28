@@ -91,7 +91,7 @@ public class MoveTest {
         assertTrue(ChessMove.getBlackTurn());
         assertFalse(ChessMove.getWhiteTurn());
         assertEquals(piece, chessboardState.get(y_2).get(x_2)); 
-        assertTrue(ChessMove.knockedOut);
+        assertTrue(ChessMove.getKnockedOut());
         assertEquals(Arrays.asList(piece2), ChessMove.piecesOut);
 
         //Svart slår ut den hvite brikken som angrep.
@@ -108,7 +108,7 @@ public class MoveTest {
         assertTrue(ChessMove.getWhiteTurn());
         assertFalse(ChessMove.getBlackTurn());
         assertEquals(piece3, chessboardState.get(y_2).get(x_2)); 
-        assertTrue(ChessMove.knockedOut);
+        assertTrue(ChessMove.getKnockedOut());
         assertEquals(Arrays.asList(piece), ChessMove.piecesOut);
     }
 

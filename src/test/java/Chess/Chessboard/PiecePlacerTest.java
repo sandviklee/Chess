@@ -15,7 +15,7 @@ import Chess.Exceptions.NotEnoughPiecesException;
 public class PiecePlacerTest {
     PiecePlacer pieceplacer;
     private File file = new File("src/main/resources/Chess/SaveFiles/newGameState.txt");
-    private File corruptFile = new File("src/main/resources/Chess/SaveFiles/newGameStateTest.txt");
+    private File corruptFile = new File("src/main/resources/Chess/SaveFiles/TestFiles/newGameStateTest.txt");
 
     @BeforeEach
     public void setup() throws FileNotFoundException, NotEnoughPiecesException {

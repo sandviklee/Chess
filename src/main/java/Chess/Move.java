@@ -10,15 +10,13 @@ import Chess.Pieces.*;
 /* This class is for implementing moving on the main board, but also validating piece patterns. */
 
 public class Move {
-    private boolean Moving = false;
-    // private boolean whiteTurn = IO.whiteTurn;
-    // private boolean blackTurn = IO.blackTurn;
-    private boolean whiteTurn = true;
-    private boolean blackTurn = true;
-    private boolean statement = true;
-    private boolean gameOver = false;
     private Chessboard chessboard;
-    public boolean knockedOut = false;
+    private boolean Moving = false;
+    private boolean whiteTurn = IO.whiteTurn;
+    private boolean blackTurn = IO.blackTurn;
+    private boolean statement = false;
+    private boolean gameOver = false;
+    private boolean knockedOut = false;
     public ArrayList<BasePiece> piecesOut = new ArrayList<>();
 
     public Move(Chessboard chessboard) {
@@ -52,46 +50,51 @@ public class Move {
         return gameOver;
     }
 
+    public boolean getKnockedOut() {
+        return knockedOut;
+    }
+
     public ArrayList<ArrayList<Integer>> getValidatedPattern(int x, int y) {
         return validatedPattern(x, y);
     }
 
     public void MovePiece(int x_1, int y_1, int x_2, int y_2) {
+        System.out.println(gameOver);
         Moving = true;
         BasePiece piece = chessboard.getChessboardState().get(y_1).get(x_1);
         BasePiece piece_2 = chessboard.getChessboardState().get(y_2).get(x_2);
     
         if (!(piece == null) && !(piece == piece_2)) {
-            // if (whiteTurn) {
-            //     statement = (piece.getPieceColor() == 'w');
-            // } else if (blackTurn) {
-            //     statement = (piece.getPieceColor() == 'b');
-            // }
+            if (whiteTurn) {
+                statement = (piece.getPieceColor() == 'w');
+            } else if (blackTurn) {
+                statement = (piece.getPieceColor() == 'b');
+            }
             if (statement && getValidatedPattern(x_1, y_1).contains(new ArrayList<>(Arrays.asList(x_2, y_2))) && !gameOver) {
                 if (piece_2 == null) {
                     try {
                         chessboard.setChessboardState(x_1, y_1, x_2, y_2);
                         SpecialMove(piece, x_2, y_2);
                         piece.pawnDoubleMove = false;                        
-                        // if (whiteTurn) {
-                        //     whiteTurn = false;
-                        //     blackTurn = true;
-                        // } else {
-                        //     whiteTurn = true;
-                        //     blackTurn = false;
-                        // }
+                        if (whiteTurn) {
+                            whiteTurn = false;
+                            blackTurn = true;
+                        } else {
+                            whiteTurn = true;
+                            blackTurn = false;
+                        }
                     } catch (Exception e) {
                         System.out.println("Bug:" + e);
                     }
 
                 } else {                    
-                    // if (whiteTurn) {
-                    //     whiteTurn = false;
-                    //     blackTurn = true;
-                    // } else {
-                    //     whiteTurn = true;
-                    //     blackTurn = false;
-                    // }
+                    if (whiteTurn) {
+                        whiteTurn = false;
+                        blackTurn = true;
+                    } else {
+                        whiteTurn = true;
+                        blackTurn = false;
+                    }
                     knockedOut = true;
                     piecesOut.clear();
                     piecesOut.add(piece_2);

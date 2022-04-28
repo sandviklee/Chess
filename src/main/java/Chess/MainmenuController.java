@@ -42,7 +42,7 @@ public class MainmenuController {
         }
         
         chessboard = new Chessboard();
-        ChessInitialize = new ChessInit(chessboard, false);
+        ChessInitialize = new ChessInit(chessboard);
         ChessInitialize.ChessPlay();
         root = ChessInitialize.getRoot();
         primaryStage = (Stage)((Node)event.getSource()).getScene().getWindow();
@@ -65,7 +65,7 @@ public class MainmenuController {
         File selectedFile = fileChooser.showOpenDialog(primaryStage);
         
         chessboard = new Chessboard(selectedFile); 
-        ChessInitialize = new ChessInit(chessboard, true);
+        ChessInitialize = new ChessInit(chessboard);
         ChessInitialize.ChessPlay();
         root = ChessInitialize.getRoot();
         primaryStage = (Stage)((Node)event.getSource()).getScene().getWindow();

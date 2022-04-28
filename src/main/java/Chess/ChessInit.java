@@ -9,6 +9,7 @@ import java.util.List;
 import Chess.Chessboard.Chessboard;
 import Chess.Chessboard.IO;
 import Chess.Chessboard.PiecePlacer;
+import Chess.Exceptions.GameEndedException;
 import Chess.Pieces.*;
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
@@ -38,13 +39,15 @@ public class ChessInit {
   private Pane piecesOutPane;
   private ArrayList<BasePiece> piecesList = new ArrayList<>();
   private List<String> piecesOutList = new ArrayList<>();
-  
+  private long fps = 60_000_000; //60 fps.
+  private String nameW = "PLAYER1";
+  private String nameB = "PLAYER2";
   public Chessboard chessboard;
   public Move ChessMove;
   public CheckGameState checkGameState;
   
   // CONSTRUCTOR
-  public ChessInit(Chessboard chessboard, boolean pawnDoubleMove) {
+  public ChessInit(Chessboard chessboard) {
     this.chessboard = chessboard;
     this.ChessMove = new Move(chessboard);
     this.checkGameState = new CheckGameState(chessboard, ChessMove);
@@ -74,10 +77,18 @@ public class ChessInit {
     return piecesList;
   }
 
+  public String getPlayer1Name() {
+    return nameW;
+  }
+
+  public String getPlayer2Name() {
+    return nameB;
+  }
+
   int done = -1;
   boolean statement = true;
   private void updatePiecesOut(Pane pane) throws FileNotFoundException {
-    if (piecesOutList != null && !(piecesOutList.size() - 1 == 0) && !ChessMove.knockedOut) {
+    if (piecesOutList != null && !(piecesOutList.size() - 1 == 0) && !ChessMove.getKnockedOut()) {
       for (String pieceStr : piecesOutList) {
         ImageView ImageView = new ImageView();
         switch (pieceStr) {
@@ -253,7 +264,7 @@ public class ChessInit {
       }
     }
   
-  int gameStart = -1;
+  public int gameStart = -1;
   public void ChessPlay() throws IOException {
     if (gameStart != 0) {
       try {
@@ -261,13 +272,13 @@ public class ChessInit {
         checkGameState.inCheckMate();
         gameStart++;
 
-        if (!(IO.pawnDoubleList.size() == 0)) {
+        if (!(IO.getPawnDoubleList().size() == 0)) {
           int i = 0;
           for (ArrayList<BasePiece> row : chessboard.getChessboardState()) {
             for (BasePiece basePiece : row) {
               if (basePiece instanceof Pawn) {
-                basePiece.pawnDoubleMove = IO.pawnDoubleList.get(i);
-                if (i < IO.pawnDoubleList.size() -1) {
+                basePiece.pawnDoubleMove = IO.getPawnDoubleList().get(i);
+                if (i < IO.getPawnDoubleList().size() -1) {
                   i++;
                 }
               }
@@ -275,10 +286,12 @@ public class ChessInit {
           }
         } 
       } catch (FileNotFoundException e1) {
+        System.out.println("Initializing failed.");
         e1.printStackTrace();
         }
       
     }
+    System.out.println("Initializing complete!");
 
     root = new Group();
     root.getChildren().add(chessboard.ChessboardView());
@@ -339,15 +352,14 @@ public class ChessInit {
           pane.setCursor(Cursor.HAND); //Changes cursor on board to hand
           gridPane.add(pane, yaxis, xaxis);
           pane.setOnMouseEntered(e -> {
-              GrayHover(yaxis, xaxis);
+            //System.out.println("x: " + yaxis + " y: " + xaxis);
+            GrayHover(yaxis, xaxis);
           });
           pane.setOnMouseExited(e -> {
-              RemoveGrayHover(yaxis, xaxis);
+            RemoveGrayHover(yaxis, xaxis);
           });
           
           pane.setOnMouseClicked(e -> { //Lambda Eventhandler MouseEvent
-            System.out.println("y: " + xaxis + " x: " + yaxis);
-
             if (mouseposlist.size() < 2) {
               mouseposlist.add(yaxis);
               mouseposlist.add(xaxis);
@@ -364,7 +376,7 @@ public class ChessInit {
                 private long tick = 0;
                 @Override
                 public void handle(long now) {
-                  if (now - tick >= 60_000_000) { //60 fps
+                  if (now - tick >= fps) { 
                     if (draggable != null) {
                       gridPane.setOnMouseMoved(event -> {
                         if (piece != null && !checkGameState.getCheckMate()) {
@@ -406,16 +418,16 @@ public class ChessInit {
     ChessPlaySetup(grid);
     setPane(pane);
 
-    String nameW = "PLAYER1";
-    String nameB = "PLAYER1";
+    nameW = "PLAYER1";
+    nameB = "PLAYER1";
     
     if (MainmenuController.player1Name != null) {
         nameW = MainmenuController.player1Name;
         player1.setText(nameW);
         
     } else {
-        if (IO.player1Name != null) {
-            nameW = IO.player1Name;
+        if (IO.getPlayer1NameIO() != null) {
+            nameW = IO.getPlayer1NameIO();
             player1.setText(nameW);
             
         } else {
@@ -429,8 +441,8 @@ public class ChessInit {
         player2.setText(nameB);
         
     } else {
-        if (IO.player2Name != null) {
-            nameB = IO.player2Name;
+        if (IO.getPlayer2NameIO() != null) {
+            nameB = IO.getPlayer1NameIO();
             player2.setText(nameB);
    
         } else {
@@ -443,7 +455,7 @@ public class ChessInit {
   }
 
   boolean drawOffer = false;
-  public void drawState() {
+  public void drawState() throws GameEndedException {
     if (!checkGameState.getDraw()) {
       if (!ChessMove.getGameOver()) {
           if (ChessMove.getWhiteTurn()) {
@@ -453,9 +465,7 @@ public class ChessInit {
           }
           drawOffer = true;
       } else {
-          
-          checkGameState.AlertGameState("Not available.", "You cannot offer a draw in an ended game.");
-          throw new IllegalStateException("You cannot draw when the game has ended.");
+        throw new GameEndedException("You cannot offer draw when the game has ended.");
       }
     }
   }
@@ -463,13 +473,13 @@ public class ChessInit {
   public void drawnState() {
     if (drawOffer) {
       checkGameState.setDraw(true);
-      checkGameState.AlertGameState("Draw!", "This game ended in draw!");
+      checkGameState.AlertGameState("Draw!", "This game ended in draw!", AlertType.INFORMATION);
       ChessMove.setGameOver(true);
     }
   }
 
-  public void saveGameState(IO IOsave) {
-    if (/*!ChessMove.getGameOver()*/ true) {
+  public void saveGameState(IO IOsave) throws GameEndedException {
+    if (!ChessMove.getGameOver()) {
       try {
           FileChooser fileChooser = new FileChooser();
           fileChooser.setTitle("Save");
@@ -482,8 +492,7 @@ public class ChessInit {
           System.out.println("Du kan ikke lagre grunnet: " + e);
       }
   } else {
-      checkGameState.AlertGameState("Not a savable game!", "You cannot save a game which has ended.");
-      throw new IllegalStateException("You cannot save when the game has ended.");
+      throw new GameEndedException("You cannot save when the game has ended.");
     }
   }
 

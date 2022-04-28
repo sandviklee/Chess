@@ -15,13 +15,13 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="552.0" prefWidth="834.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Chess.MainmenuController">
    <children>
-      <ImageView blendMode="DARKEN" cacheHint="SPEED" fitHeight="559.0" fitWidth="851.0" layoutX="-11.0" pickOnBounds="true" preserveRatio="true" smooth="false">
-         <image>
-            <Image url="@images/MainMenu.gif" />
-         </image>
+      <ImageView blendMode="DARKEN" cache="true" cacheHint="SPEED" fitHeight="559.0" fitWidth="851.0" layoutX="-11.0" pickOnBounds="true" preserveRatio="true">
          <viewport>
             <Rectangle2D />
          </viewport>
+         <image>
+            <Image url="@images/MainMenu.gif" />
+         </image>
       </ImageView>
       <SubScene height="79.0" layoutX="342.0" layoutY="286.0" width="167.0">
         <root>

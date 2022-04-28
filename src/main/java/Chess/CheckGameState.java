@@ -78,13 +78,6 @@ public class CheckGameState {
         a.show(); 
     }
 
-    public void AlertGameState(String header, String text) {
-        Alert a = new Alert(AlertType.INFORMATION);
-        a.setHeaderText(header);
-        a.setContentText(text);
-        a.show();
-    }
-
     public void AlertGameState(String header, String text, AlertType alerttype) {
         Alert a = new Alert(alerttype);
         a.setHeaderText(header);
@@ -104,13 +97,13 @@ public class CheckGameState {
         }
         return null;
     }
-    
+    public int checkState;
     public void inCheck() throws FileNotFoundException {
         chessboardState = chessboard.getChessboardState();
         kingPosB = kingPosFinder(chessboardState, 'b');
         kingPosW = kingPosFinder(chessboardState, 'w');
 
-        int checkState = -1;
+        checkState = -1;
         for (ArrayList<BasePiece> row : chessboardState) {
             for (BasePiece piece : row) {
                 if (piece != null) {
@@ -210,35 +203,39 @@ public class CheckGameState {
                 }
 
                 ArrayList<ArrayList<Integer>> allBlockedMoves = new ArrayList<>(chessboardState.get(posY).get(posX).layPattern(posX, posY));
-                if (allBlackPiecesPos.stream().anyMatch(a -> ChessMove.getValidatedPattern(a.get(0), a.get(1)).stream().anyMatch(c -> c.equals(piecePosBCheck.get(0))))) {
-                    System.out.println("You can still move! ");
+                for (ArrayList<Integer> arrayList : allBlockedMoves) {
+                    if (allBlackPiecesPos.contains(arrayList)) {
+                        allBlackPiecesPos.remove(arrayList);
+                    }
+                }
+                allBlockedMoves.remove(kingPosB);
 
+                if (allBlackPiecesPos.stream().anyMatch(a -> ChessMove.getValidatedPattern(a.get(0), a.get(1)).stream().anyMatch(c -> piecePosBCheck.contains(c)))) {
                     if (piecePosBCheck.size() > 1 && !(piecePosBCheck.stream().distinct().count() <= 1)) {
+                        System.out.println("State 2");
                         checkMate = true;
                     }
                 } else {
-                    if ((allBlockedMoves.stream().filter(b -> chessboardState.get(b.get(1)).get(b.get(0)) != null)).allMatch(a -> chessboardState.get(a.get(1)).get(a.get(0)).getPieceColor() == 'b')) {
-                        if (allBlockedMoves.stream().filter(b -> chessboardState.get(b.get(1)).get(b.get(0)) != null).anyMatch(a -> ChessMove.getValidatedPattern(a.get(0), a.get(1)).stream().anyMatch(c -> c.equals(piecePosWCheck.get(0))))) {
-                            System.out.println("You can still move!");   
-
+                    if ((allBlockedMoves.stream().filter(b -> chessboardState.get(b.get(1)).get(b.get(0)) != null)).anyMatch(a -> chessboardState.get(a.get(1)).get(a.get(0)).getPieceColor() == 'b')) {
+                        if (allBlockedMoves.stream().filter(b -> chessboardState.get(b.get(1)).get(b.get(0)) != null).anyMatch(a -> ChessMove.getValidatedPattern(a.get(0), a.get(1)).stream().anyMatch(c -> piecePosBCheck.contains(c)))) {
                             if (piecePosBCheck.size() > 1 && !(piecePosBCheck.stream().distinct().count() <= 1)) {
+                                System.out.println("State 4");
                                 checkMate = true;
                             }
                         }
                         else {
+                            System.out.println("State 3");
                             checkMate = true;
                         }
                     } else {
+                        System.out.println("State 1");
                         checkMate = true;
-    
                     } 
                 }
             } 
         }
 
         ChessMove.setGameOver(checkMate);
-
-        
     }
 
     public void inDraw() {
@@ -263,7 +260,7 @@ public class CheckGameState {
         }
 
         if (draw) {
-            AlertGameState("Draw!", "This game ended in a draw!");
+            AlertGameState("Draw!", "This game ended in a draw!", AlertType.INFORMATION);
         }
     }
 

@@ -33,27 +33,25 @@ public class ChessboardTest {
 
     @Test
     public void testChessboard() {
-        assertNotNull(chessboard.getChessboardState());
+        assertNotNull(chessboard.getChessboardState(), "Checks if there is a chessboard available.");
         assertThrows(NotEnoughPiecesException.class, () -> {
             chessboard = new Chessboard(corruptFile);
-        });
+        }, "Throws if there is not enough Pieces.");
     } 
 
     @Test
     public void testChessImages() throws FileNotFoundException {
-        assertTrue(chessboard.addChessImage("cpb/b_bishop") instanceof Image);
+        assertTrue(chessboard.addChessImage("cpb/b_bishop") instanceof Image, "Checks if the file that has been loaded is an Image.");
         assertThrows(FileNotFoundException.class, () -> {
             chessboard.addChessImage("");
-        });
-
-        assertTrue(chessboard.ChessboardView() instanceof ImageView);
+        }, "Throws if there is no file.");
+        assertTrue(chessboard.ChessboardView() instanceof ImageView, "Checks if the chessboardView is an ImageView.");
         
     }
 
     @Test
     public void testMatrixToFXML() throws FileNotFoundException {
-        assertNotNull(chessboard.getChessboardState());
-        assertTrue(chessboard.MatrixToFXML() instanceof ArrayList<ImageView>);
+        assertTrue(chessboard.MatrixToFXML() instanceof ArrayList<ImageView>, "Checks if the chessboard is the correct instance");
     }
 
     @Test
@@ -63,27 +61,29 @@ public class ChessboardTest {
         ArrayList<ArrayList<BasePiece>> oldChessboardState3 = new ArrayList<>();
         
         //General movement
-        int x_1 = 2;
-        int y_1 = 1;
-        int x_2 = 2;
-        int y_2 = 5;
+        int x_1 = 2; //First x-pos
+        int y_1 = 1; //First y-pos
+        int x_2 = 2; //Second x-pos
+        int y_2 = 5; //Second y-pos
         
-        BasePiece piece = chessboard.getChessboardState().get(y_1).get(x_1);
+        BasePiece piece = chessboard.getChessboardState().get(y_1).get(x_1); //Initiating a piece on the chessboard.
         
         for (ArrayList<BasePiece> arrayList : chessboard.getChessboardState()) {
             oldChessboardState.add(new ArrayList<>(arrayList));
         }
         
-        assertEquals(Arrays.asList(x_1, y_1), piece.getPiecePos());
-        chessboard.setChessboardState(x_1, y_1, x_2, y_2); //Utføring.
-        assertNotEquals(oldChessboardState.get(y_2), chessboard.getChessboardState().get(y_2));
-        assertNotEquals(Arrays.asList(x_1, y_1), piece.getPiecePos());
-        assertNotEquals(oldChessboardState, chessboard.getChessboardState());
-        assertEquals(oldChessboardState.get(y_1).size(), chessboard.getChessboardState().get(y_1).size());
-        assertEquals(oldChessboardState.get(y_2).size(), chessboard.getChessboardState().get(y_2).size());
-        assertEquals(Arrays.asList(x_2, y_2), piece.getPiecePos());
-        assertEquals(piece, chessboard.getChessboardState().get(y_2).get(x_2));    
-        assertNull(chessboard.getChessboardState().get(y_1).get(x_1));
+        assertEquals(Arrays.asList(x_1, y_1), piece.getPiecePos(), "Checks if Piece pos is correct.");
+
+        chessboard.setChessboardState(x_1, y_1, x_2, y_2); 
+
+        assertNotEquals(oldChessboardState.get(y_2), chessboard.getChessboardState().get(y_2), "Checks that the chesspiece has moved");
+        assertNotEquals(Arrays.asList(x_1, y_1), piece.getPiecePos(), "Checks if the Piece pos has been updated.");
+        assertNotEquals(oldChessboardState, chessboard.getChessboardState(), "Checks that the old chessboardstate is not equal to the new.");
+        assertEquals(oldChessboardState.get(y_1).size(), chessboard.getChessboardState().get(y_1).size(), "Checks that there still are 8 pieces on the initiating row.");
+        assertEquals(oldChessboardState.get(y_2).size(), chessboard.getChessboardState().get(y_2).size(), "Checks that there still are 8 pieces on the final row.");
+        assertEquals(Arrays.asList(x_2, y_2), piece.getPiecePos(), "Checks if the Piece pos has been updated to the correct pos.");
+        assertEquals(piece, chessboard.getChessboardState().get(y_2).get(x_2), "Checks if the piece in the final pos still is the same object.");    
+        assertNull(chessboard.getChessboardState().get(y_1).get(x_1), "Checks that the initiating position now is Null (Without any piece).");
 
         //SideWays onto nullpiece
         int x_3 = 3;
@@ -94,8 +94,9 @@ public class ChessboardTest {
         }
 
         chessboard.setChessboardState(x_2, y_2, x_3, y_3);
-        assertNotEquals(oldChessboardState2.get(y_2), chessboard.getChessboardState().get(y_2));
-        assertEquals(Arrays.asList(x_3, y_3), piece.getPiecePos());
+
+        assertNotEquals(oldChessboardState2.get(y_2), chessboard.getChessboardState().get(y_2), "Checks that the old chessboardstate is not equal to the new.");
+        assertEquals(Arrays.asList(x_3, y_3), piece.getPiecePos(), "Checks if Piece pos is correct.");
         
         //An extra move.
         int x_4 = 3;
@@ -111,10 +112,11 @@ public class ChessboardTest {
         }
 
         chessboard.setChessboardState(x_4, y_4, x_5, y_5);
-        assertNotEquals(oldChessboardState3.get(y_4), chessboard.getChessboardState().get(y_4));
-        assertEquals(piece, chessboard.getChessboardState().get(y_5).get(x_5));    
-        assertEquals(oldChessboardState3.get(y_4).size(), chessboard.getChessboardState().get(y_4).size());
-        assertEquals(Arrays.asList(x_5, y_5), piece.getPiecePos());
+
+        assertNotEquals(oldChessboardState3.get(y_4), chessboard.getChessboardState().get(y_4), "Checks that the old chessboardstate is not equal to the new.");
+        assertEquals(piece, chessboard.getChessboardState().get(y_5).get(x_5), "Checks if the piece in the final pos still is the same object.");    
+        assertEquals(oldChessboardState3.get(y_4).size(), chessboard.getChessboardState().get(y_4).size(),  "Checks that there still are 8 pieces on the final row.");
+        assertEquals(Arrays.asList(x_5, y_5), piece.getPiecePos(), "Checks if the Piece pos has been updated to the correct pos.");
     }
 
     @Test
@@ -128,11 +130,11 @@ public class ChessboardTest {
             oldChessboardState.add(new ArrayList<>(arrayList));
         }
         BasePiece piece = chessboard.getChessboardState().get(y_1).get(x_1);
-        assertTrue(piece instanceof Pawn);
+        assertTrue(piece instanceof Pawn, "Checks if the piece is a Pawn.");
         chessboard.PawnToQueen(pieceColor, x_1, y_1);
-        assertEquals(oldChessboardState.get(y_1).size(), chessboard.getChessboardState().get(y_1).size());
+        assertEquals(oldChessboardState.get(y_1).size(), chessboard.getChessboardState().get(y_1).size(), "Checks that there still are 8 pieces on the final row.");
         piece = chessboard.getChessboardState().get(y_1).get(x_1);
-        assertTrue(piece instanceof Queen);
+        assertTrue(piece instanceof Queen, "Checks if the piece is now a Queen.");
     }
 
 }

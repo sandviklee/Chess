@@ -3,7 +3,6 @@ package Chess.Chessboard;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import Chess.Exceptions.NotEnoughPiecesException;
@@ -18,11 +17,7 @@ public class PiecePlacer {
     public PiecePlacer(File filename) throws FileNotFoundException, NotEnoughPiecesException  {
         IO IOload = new IO();
         PiecePlacer.IOload = IOload;
-        this.PieceList = Arrays.asList(IOload.load(filename));
-        
-        if (!(this.PieceList.size() == 64)) {
-            throw new NotEnoughPiecesException("Det er ikke nok brikker i fila.");
-        }
+        this.PieceList = IOload.load(filename);
     }
 
     public List<String> getPieceList() {
