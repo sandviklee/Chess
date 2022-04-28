@@ -10,8 +10,10 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.ImageView;
 
-public class CheckGameState extends Move{
+public class CheckGameState {
     private Chessboard chessboard;
+    private Move ChessMove;
+    private ArrayList<ArrayList<BasePiece>> chessboardState = new ArrayList<>();
     private boolean kingWCheck;
     private boolean kingBCheck;
     private boolean checkMate = false;
@@ -21,14 +23,25 @@ public class CheckGameState extends Move{
     private ArrayList<ArrayList<Integer>> piecePosBCheck = new ArrayList<>();
     private String playerWName;
     private String playerBName;
-    public boolean draw = false;
+    private ArrayList<Integer> kingPosB = new ArrayList<>();
+    private ArrayList<Integer> kingPosW = new ArrayList<>();
+    private boolean draw = false;
 
-    public CheckGameState(Chessboard chessboard) {
-        super(chessboard);
+    public CheckGameState(Chessboard chessboard, Move ChessMove) {
         this.chessboard = chessboard;
-        
+        this.ChessMove = ChessMove;
+        if (chessboard == null || ChessMove == null) {
+            throw new NullPointerException();
+        }
     }
 
+    public ArrayList<Integer> getKingWPos() {
+        return kingPosW;
+    }
+
+    public ArrayList<Integer> getKingBPos() {
+        return kingPosB;
+    }
     public boolean getKingWCheck() {
         return kingWCheck;
     }
@@ -43,6 +56,10 @@ public class CheckGameState extends Move{
 
     public void setDraw(boolean draw) {
         this.draw = draw;
+    }
+
+    public boolean getDraw() {
+        return draw;
     }
 
     public void setPlayerWName(String name) {
@@ -89,9 +106,9 @@ public class CheckGameState extends Move{
     }
     
     public void inCheck() throws FileNotFoundException {
-        ArrayList<ArrayList<BasePiece>> chessboardState = chessboard.getChessboardState();
-        ArrayList<Integer> kingPosB = kingPosFinder(chessboardState, 'b');
-        ArrayList<Integer> kingPosW = kingPosFinder(chessboardState, 'w');
+        chessboardState = chessboard.getChessboardState();
+        kingPosB = kingPosFinder(chessboardState, 'b');
+        kingPosW = kingPosFinder(chessboardState, 'w');
 
         int checkState = -1;
         for (ArrayList<BasePiece> row : chessboardState) {
@@ -100,7 +117,7 @@ public class CheckGameState extends Move{
                     if (piece.getPieceColor() == 'w') {
                         int posX = piece.getPiecePos().get(0);
                         int posY = piece.getPiecePos().get(1);
-                        if (getValidatedPattern(posX, posY).contains(kingPosB)) {
+                        if (ChessMove.getValidatedPattern(posX, posY).contains(kingPosB)) {
                             checkState += 1;
                             kingBCheck = true;
                             piecePosBCheck.add(piece.getPiecePos());
@@ -110,7 +127,7 @@ public class CheckGameState extends Move{
                     } else if (piece.getPieceColor() == 'b') {
                         int posX = piece.getPiecePos().get(0);
                         int posY = piece.getPiecePos().get(1);
-                        if (getValidatedPattern(posX, posY).contains(kingPosW)) {
+                        if (ChessMove.getValidatedPattern(posX, posY).contains(kingPosW)) {
                             checkState += 1;
                             kingWCheck = true;
                             piecePosWCheck.add(piece.getPiecePos());
@@ -129,15 +146,15 @@ public class CheckGameState extends Move{
     }
     
     public void inCheckMate() throws FileNotFoundException {
-        ArrayList<ArrayList<BasePiece>> chessboardState = chessboard.getChessboardState();
-        ArrayList<Integer> kingPosB = kingPosFinder(chessboardState, 'b');
-        ArrayList<Integer> kingPosW = kingPosFinder(chessboardState, 'w');
+        chessboardState = chessboard.getChessboardState();
+        kingPosB = kingPosFinder(chessboardState, 'b');
+        kingPosW = kingPosFinder(chessboardState, 'w');
 
         if (getKingWCheck()) {
             int posX = kingPosW.get(0);
             int posY = kingPosW.get(1);
             ArrayList<ArrayList<Integer>> allWhitePiecesPos = new ArrayList<>();
-            if (getValidatedPattern(posX, posY).isEmpty()) {
+            if (ChessMove.getValidatedPattern(posX, posY).isEmpty()) {
                 for (ArrayList<BasePiece> row : chessboardState) {
                     for (BasePiece piece : row) {
                         if (piece != null && piece.getPieceColor() == 'w') {
@@ -145,27 +162,34 @@ public class CheckGameState extends Move{
                         }
                     }
                 }
-                ArrayList<ArrayList<Integer>> allBlockedMoves = new ArrayList<>(chessboardState.get(posY).get(posX).layPattern(posX, posY));
-                
-                if (allWhitePiecesPos.stream().anyMatch(a -> getValidatedPattern(a.get(0), a.get(1)).stream().anyMatch(c -> c.equals(piecePosWCheck.get(0))))) {
-                    System.out.println("Du kan fortsatt bevege deg.");
 
+                ArrayList<ArrayList<Integer>> allBlockedMoves = new ArrayList<>(chessboardState.get(posY).get(posX).layPattern(posX, posY));
+                for (ArrayList<Integer> arrayList : allBlockedMoves) {
+                    if (allWhitePiecesPos.contains(arrayList)) {
+                        allWhitePiecesPos.remove(arrayList);
+                    }
+                }
+                allBlockedMoves.remove(kingPosW);
+
+                if (allWhitePiecesPos.stream().anyMatch(a -> ChessMove.getValidatedPattern(a.get(0), a.get(1)).stream().anyMatch(c -> piecePosWCheck.contains(c)))) {  
                     if (piecePosWCheck.size() > 1 && !(piecePosWCheck.stream().distinct().count() <= 1)) {
+                        System.out.println("State 2");
                         checkMate = true;
                     }
                 } else {
-                    if ((allBlockedMoves.stream().filter(b -> chessboardState.get(b.get(1)).get(b.get(0)) != null)).allMatch(a -> chessboardState.get(a.get(1)).get(a.get(0)).getPieceColor() == 'w')) {
-                        if (allBlockedMoves.stream().filter(b -> chessboardState.get(b.get(1)).get(b.get(0)) != null).anyMatch(a -> getValidatedPattern(a.get(0), a.get(1)).stream().anyMatch(c -> c.equals(piecePosWCheck.get(0))))) {
-                            System.out.println("Du kan fortsatt bevege deg.");
-
+                    if ((allBlockedMoves.stream().filter(b -> chessboardState.get(b.get(1)).get(b.get(0)) != null)).anyMatch(a -> chessboardState.get(a.get(1)).get(a.get(0)).getPieceColor() == 'w')) {
+                        if (allBlockedMoves.stream().filter(b -> chessboardState.get(b.get(1)).get(b.get(0)) != null).anyMatch(a -> ChessMove.getValidatedPattern(a.get(0), a.get(1)).stream().anyMatch(c -> piecePosWCheck.contains(c)))) {
                             if (piecePosWCheck.size() > 1 && !(piecePosWCheck.stream().distinct().count() <= 1)) {
+                                System.out.println("State 4");
                                 checkMate = true;
                             }
                         }
                         else {
+                            System.out.println("State 3");
                             checkMate = true;
                         }
                     } else {
+                        System.out.println("State 1");
                         checkMate = true;
                     } 
                 }
@@ -176,7 +200,7 @@ public class CheckGameState extends Move{
             int posX = kingPosB.get(0);
             int posY = kingPosB.get(1);
             ArrayList<ArrayList<Integer>> allBlackPiecesPos = new ArrayList<>();
-            if (getValidatedPattern(posX, posY).isEmpty()) {
+            if (ChessMove.getValidatedPattern(posX, posY).isEmpty()) {
                 for (ArrayList<BasePiece> row : chessboardState) {
                     for (BasePiece piece : row) {
                         if (piece != null && piece.getPieceColor() == 'b') {
@@ -186,16 +210,16 @@ public class CheckGameState extends Move{
                 }
 
                 ArrayList<ArrayList<Integer>> allBlockedMoves = new ArrayList<>(chessboardState.get(posY).get(posX).layPattern(posX, posY));
-                if (allBlackPiecesPos.stream().anyMatch(a -> getValidatedPattern(a.get(0), a.get(1)).stream().anyMatch(c -> c.equals(piecePosBCheck.get(0))))) {
-                    System.out.println("Du kan fortsatt bevege deg.");
+                if (allBlackPiecesPos.stream().anyMatch(a -> ChessMove.getValidatedPattern(a.get(0), a.get(1)).stream().anyMatch(c -> c.equals(piecePosBCheck.get(0))))) {
+                    System.out.println("You can still move! ");
 
                     if (piecePosBCheck.size() > 1 && !(piecePosBCheck.stream().distinct().count() <= 1)) {
                         checkMate = true;
                     }
                 } else {
                     if ((allBlockedMoves.stream().filter(b -> chessboardState.get(b.get(1)).get(b.get(0)) != null)).allMatch(a -> chessboardState.get(a.get(1)).get(a.get(0)).getPieceColor() == 'b')) {
-                        if (allBlockedMoves.stream().filter(b -> chessboardState.get(b.get(1)).get(b.get(0)) != null).anyMatch(a -> getValidatedPattern(a.get(0), a.get(1)).stream().anyMatch(c -> c.equals(piecePosWCheck.get(0))))) {
-                            System.out.println("Du kan fortsatt bevege deg.");   
+                        if (allBlockedMoves.stream().filter(b -> chessboardState.get(b.get(1)).get(b.get(0)) != null).anyMatch(a -> ChessMove.getValidatedPattern(a.get(0), a.get(1)).stream().anyMatch(c -> c.equals(piecePosWCheck.get(0))))) {
+                            System.out.println("You can still move!");   
 
                             if (piecePosBCheck.size() > 1 && !(piecePosBCheck.stream().distinct().count() <= 1)) {
                                 checkMate = true;
@@ -212,7 +236,18 @@ public class CheckGameState extends Move{
             } 
         }
 
-        setGameOver(checkMate);
+        ChessMove.setGameOver(checkMate);
+
+        
+    }
+
+    public void inDraw() {
+        if (draw) {
+            ChessMove.setGameOver(true);
+        }
+    }
+
+    public void setgameStateAlert() throws FileNotFoundException {
         if (getKingWCheck()) {
             if (checkMate) {
                 AlertGameState("Black Won!", "" + playerWName + " Won! Checked by ", "cpb/b_" + pieceWCheck + "".toLowerCase(), pieceWCheck);
@@ -226,12 +261,8 @@ public class CheckGameState extends Move{
                 AlertGameState("Black King in check!", "Checked by White ", "cpb/b_king", pieceBCheck);
             }          
         }
-        
-    }
 
-    public void inDraw() {
         if (draw) {
-            setGameOver(true);
             AlertGameState("Draw!", "This game ended in a draw!");
         }
     }

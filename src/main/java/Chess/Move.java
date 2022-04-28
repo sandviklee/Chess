@@ -11,9 +11,11 @@ import Chess.Pieces.*;
 
 public class Move {
     private boolean Moving = false;
-    private boolean whiteTurn = IO.whiteTurn;
-    private boolean blackTurn = IO.blackTurn;
-    private boolean statement = false;
+    // private boolean whiteTurn = IO.whiteTurn;
+    // private boolean blackTurn = IO.blackTurn;
+    private boolean whiteTurn = true;
+    private boolean blackTurn = true;
+    private boolean statement = true;
     private boolean gameOver = false;
     private Chessboard chessboard;
     public boolean knockedOut = false;
@@ -21,6 +23,9 @@ public class Move {
 
     public Move(Chessboard chessboard) {
         this.chessboard = chessboard;
+        if (chessboard == null) {
+            throw new NullPointerException();
+        }
     }
 
     public boolean getMoving() {
@@ -57,36 +62,36 @@ public class Move {
         BasePiece piece_2 = chessboard.getChessboardState().get(y_2).get(x_2);
     
         if (!(piece == null) && !(piece == piece_2)) {
-            if (whiteTurn) {
-                statement = (piece.getPieceColor() == 'w');
-            } else if (blackTurn) {
-                statement = (piece.getPieceColor() == 'b');
-            }
+            // if (whiteTurn) {
+            //     statement = (piece.getPieceColor() == 'w');
+            // } else if (blackTurn) {
+            //     statement = (piece.getPieceColor() == 'b');
+            // }
             if (statement && getValidatedPattern(x_1, y_1).contains(new ArrayList<>(Arrays.asList(x_2, y_2))) && !gameOver) {
                 if (piece_2 == null) {
                     try {
                         chessboard.setChessboardState(x_1, y_1, x_2, y_2);
                         SpecialMove(piece, x_2, y_2);
                         piece.pawnDoubleMove = false;                        
-                        if (whiteTurn) {
-                            whiteTurn = false;
-                            blackTurn = true;
-                        } else {
-                            whiteTurn = true;
-                            blackTurn = false;
-                        }
+                        // if (whiteTurn) {
+                        //     whiteTurn = false;
+                        //     blackTurn = true;
+                        // } else {
+                        //     whiteTurn = true;
+                        //     blackTurn = false;
+                        // }
                     } catch (Exception e) {
                         System.out.println("Bug:" + e);
                     }
 
                 } else {                    
-                    if (whiteTurn) {
-                        whiteTurn = false;
-                        blackTurn = true;
-                    } else {
-                        whiteTurn = true;
-                        blackTurn = false;
-                    }
+                    // if (whiteTurn) {
+                    //     whiteTurn = false;
+                    //     blackTurn = true;
+                    // } else {
+                    //     whiteTurn = true;
+                    //     blackTurn = false;
+                    // }
                     knockedOut = true;
                     piecesOut.clear();
                     piecesOut.add(piece_2);

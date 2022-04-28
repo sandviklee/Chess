@@ -47,9 +47,11 @@ public class ChessInit {
   public ChessInit(Chessboard chessboard, boolean pawnDoubleMove) {
     this.chessboard = chessboard;
     this.ChessMove = new Move(chessboard);
-    this.checkGameState = new CheckGameState(chessboard);
+    this.checkGameState = new CheckGameState(chessboard, ChessMove);
     this.piecesOutList = PiecePlacer.IOload.getPiecesOut();
-    //BasePiece.setMoved(pawnDoubleMove); // Pawn double move available ?
+    if (chessboard == null) {
+      throw new NullPointerException();
+    }
     
   }
 
@@ -388,8 +390,9 @@ public class ChessInit {
             
                 try {
                   checkGameState.inCheck();
-                  checkGameState.inCheckMate(); 
-                  checkGameState.inDraw(); 
+                  checkGameState.inCheckMate();
+                  checkGameState.inDraw();
+                  checkGameState.setgameStateAlert(); 
                 } catch (FileNotFoundException e1) {
                   e1.printStackTrace();
                 }
@@ -441,7 +444,7 @@ public class ChessInit {
 
   boolean drawOffer = false;
   public void drawState() {
-    if (!checkGameState.draw) {
+    if (!checkGameState.getDraw()) {
       if (!ChessMove.getGameOver()) {
           if (ChessMove.getWhiteTurn()) {
             checkGameState.AlertGameState("White offers DRAW!", "White is in a pickle! Black, do you want to draw? (Claim Draw)", AlertType.WARNING);
@@ -450,7 +453,7 @@ public class ChessInit {
           }
           drawOffer = true;
       } else {
-          drawOffer = true;
+          
           checkGameState.AlertGameState("Not available.", "You cannot offer a draw in an ended game.");
           throw new IllegalStateException("You cannot draw when the game has ended.");
       }
@@ -466,7 +469,7 @@ public class ChessInit {
   }
 
   public void saveGameState(IO IOsave) {
-    if (!ChessMove.getGameOver()) {
+    if (/*!ChessMove.getGameOver()*/ true) {
       try {
           FileChooser fileChooser = new FileChooser();
           fileChooser.setTitle("Save");

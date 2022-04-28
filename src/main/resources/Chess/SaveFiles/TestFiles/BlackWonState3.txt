@@ -1,0 +1,5 @@
+R,H,B,0,K,B,0,R,P,P,P,P,0,P,P,P,0,0,0,0,P,0,0,0,0,0,0,0,0,0,Q,k,0,0,0,0,H,0,0,r,0,0,0,0,0,0,0,0,p,p,p,p,0,p,p,0,r,h,b,q,0,b,h,0,
+p,p,
+PLAYER1,PLAYER2,
+w
+t,t,t,t,t,t,t,f,t,t,t,t,t,t,

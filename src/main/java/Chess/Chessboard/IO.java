@@ -93,7 +93,6 @@ public class IO implements IIO {
             if (scanner.hasNext()) {
                 String thirdline = scanner.nextLine();
                 if (thirdline.equals("b")) {
-                    System.out.println("heisann!");
                     whiteTurn = false;
                     blackTurn = true;
                 }

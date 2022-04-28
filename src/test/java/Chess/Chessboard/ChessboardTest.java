@@ -24,7 +24,7 @@ import javafx.scene.image.ImageView;
 
 public class ChessboardTest {
     Chessboard chessboard;
-    private File corruptFile = new File("src/main/resources/Chess/SaveFiles/newGameStateTest.txt");
+    private File corruptFile = new File("src/main/resources/Chess/SaveFiles/TestFiles/newGameStateTest.txt");
 
     @BeforeEach
     public void setup() throws FileNotFoundException, NotEnoughPiecesException {
