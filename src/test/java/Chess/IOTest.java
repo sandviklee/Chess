@@ -58,7 +58,7 @@ public class IOTest {
             return;
         }
         assertEquals(chessboard.getPiecePlacer().PieceList, savedGameState);
-        assertFalse(ChessInitialize.ChessMove.getGameOver());
+        assertFalse(ChessInitialize.getMove().getGameOver());
     }
 
 
@@ -107,13 +107,13 @@ public class IOTest {
 
         //Secondly with the save method in ChessInitialize
         //Need a chessboard where it's gameover. Because of FileChooser, you can't run it as a test.
-        assertFalse(ChessInitialize.checkGameState.getCheckMate());
+        assertFalse(ChessInitialize.getCheckGameState().getCheckMate());
         chessboard = new Chessboard(new File("src/main/resources/Chess/SaveFiles/TestFiles/BlackWonState2.txt"));
         ChessInitialize = new ChessInit(chessboard);
         
-        ChessInitialize.checkGameState.inCheck();
-        ChessInitialize.checkGameState.inCheckMate();
-        assertTrue(ChessInitialize.checkGameState.getCheckMate());
+        ChessInitialize.getCheckGameState().inCheck();
+        ChessInitialize.getCheckGameState().inCheckMate();
+        assertTrue(ChessInitialize.getCheckGameState().getCheckMate());
         assertThrows(GameEndedException.class, () -> {
             ChessInitialize.saveGameState(iO);
         });

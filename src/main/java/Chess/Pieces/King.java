@@ -31,7 +31,7 @@ public class King extends BasePiece {
             }
         }
     
-        return pattern;
+        return new ArrayList<>(pattern);
     }
     
 }

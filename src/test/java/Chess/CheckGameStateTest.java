@@ -43,9 +43,11 @@ public class CheckGameStateTest {
         });
     }
 
+    //Since i check IO in IOTest, I can load in files in these tests.
     @Test
     public void testInCheck() throws FileNotFoundException, NotEnoughPiecesException {
         //Normal game start state;
+        
         checkGameState.inCheck();
         assertEquals(Arrays.asList(4, 0), checkGameState.getKingBPos());
         assertEquals(Arrays.asList(4, 7), checkGameState.getKingWPos());

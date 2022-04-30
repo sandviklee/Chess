@@ -5,10 +5,10 @@ import java.util.ArrayList;
 /*This is where my BasePiece abstract class is written, where all the underclasses (Pieces) are made out of this class */
 
 public abstract class BasePiece {
-    public int pieceColor;
+    public int pieceColor; //public with no encapsulation, because its needed as an integer in calculation. 
     private ArrayList<Integer> availColor = new ArrayList<>();
-    ArrayList<Integer> pos = new ArrayList<>();
-    public boolean pawnDoubleMove = true;
+    protected ArrayList<Integer> pos = new ArrayList<>(); //protected because its only used by subclasses.
+    public boolean pawnDoubleMove = true; //public with no encapsulation, because it will only be set to false after one move.
 
     public BasePiece(int pieceColor, int x, int y) {
         availColor.add(-1);

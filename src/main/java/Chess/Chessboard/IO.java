@@ -14,11 +14,19 @@ import Chess.Pieces.BasePiece;
 import Chess.Pieces.Pawn;
 
 public class IO implements IIO {
+    /* There are quite alot of static fields here, because i thought that 
+    if you have already loaded in an old file, these fields should just be overwritten,
+    and should be reached from any class.
+
+    The most important thing is that PiecePlacer gets its own IOloader, because it needs 
+    the list with Strings to make a chessboard. All the other attributes are just for "showing",
+    or rather just there to be overwritten*/
+    
     private List<String> chessPiecesOutList;
-    private static String player1Name;
-    private static String player2Name;
-    public static boolean whiteTurn = true;
-    public static boolean blackTurn = false;
+    private static String player1Name; //Public and static because its taken directly.
+    private static String player2Name; 
+    public static boolean whiteTurn = true; //Public and static because its taken directly.
+    public static boolean blackTurn = false; //Public and static because its taken directly.
     private static ArrayList<Boolean> pawnDoubleList = new ArrayList<>();
 
     public static ArrayList<Boolean> getPawnDoubleList() {
@@ -40,7 +48,7 @@ public class IO implements IIO {
     @Override
     public void save(File filename, ChessInit ChessInitialize) throws FileNotFoundException {
         try (PrintWriter writer = new PrintWriter(filename)) {
-            for (ArrayList<BasePiece> row : ChessInitialize.chessboard.getChessboardState()) {
+            for (ArrayList<BasePiece> row : ChessInitialize.getChessboard().getChessboardState()) {
                 for (BasePiece piece : row) {
                     if (piece != null) {
                         allCases(piece, writer);
@@ -58,14 +66,14 @@ public class IO implements IIO {
             writer.print(ChessInitialize.getPlayer2Name() + ",");
 
             writer.println();
-            if (ChessInitialize.ChessMove.getWhiteTurn()) {
+            if (ChessInitialize.getMove().getWhiteTurn()) {
                 writer.print("w");
             }
             else {
                 writer.print("b");
             }
             writer.println();
-            for (ArrayList<BasePiece> row : ChessInitialize.chessboard.getChessboardState()) {
+            for (ArrayList<BasePiece> row : ChessInitialize.getChessboard().getChessboardState()) {
                 for (BasePiece basePiece : row) {
                     if (basePiece instanceof Pawn) {
                         if (basePiece.pawnDoubleMove) {

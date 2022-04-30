@@ -28,7 +28,7 @@ public class Queen extends BasePiece {
                 }
             }
         }
-        return pattern;
+        return new ArrayList<>(pattern);
     }
     
 }

@@ -42,9 +42,9 @@ public class ChessInit {
   private long fps = 60_000_000; //60 fps.
   private String nameW = "PLAYER1";
   private String nameB = "PLAYER2";
-  public Chessboard chessboard;
-  public Move ChessMove;
-  public CheckGameState checkGameState;
+  private Chessboard chessboard; //Public because its used directly.
+  private Move ChessMove;
+  private CheckGameState checkGameState;
   
   // CONSTRUCTOR
   public ChessInit(Chessboard chessboard) {
@@ -54,8 +54,7 @@ public class ChessInit {
     this.piecesOutList = PiecePlacer.IOload.getPiecesOut();
     if (chessboard == null) {
       throw new NullPointerException();
-    }
-    
+    } 
   }
 
   // GROUP FOR ALL IMAGES ON THE CHESSBOARD
@@ -85,7 +84,20 @@ public class ChessInit {
     return nameB;
   }
 
-  int done = -1;
+  public Chessboard getChessboard() {
+    return chessboard;
+  }
+
+  public Move getMove() {
+    return ChessMove;
+  }
+
+  public CheckGameState getCheckGameState() {
+    return checkGameState;
+  }
+
+  /*Code for adding knocked out pieces to a pane*/
+  protected int done = -1;
   boolean statement = true;
   private void updatePiecesOut(Pane pane) throws FileNotFoundException {
     if (piecesOutList != null && !(piecesOutList.size() - 1 == 0) && !ChessMove.getKnockedOut()) {
@@ -152,8 +164,8 @@ public class ChessInit {
     BasePiece piece = null;
     ImageView ImageView = new ImageView();
     
-    if (!ChessMove.piecesOut.isEmpty()) {
-      piece = ChessMove.piecesOut.get(0);
+    if (!ChessMove.getPiecesOut().isEmpty()) {
+      piece = ChessMove.getPiecesOut().get(0);
     }
 
     if (piece != null) {
@@ -264,7 +276,7 @@ public class ChessInit {
       }
     }
   
-  public int gameStart = -1;
+  private int gameStart = -1; //private because it is only used by this class.
   public void ChessPlay() throws IOException {
     if (gameStart != 0) {
       try {
@@ -299,6 +311,9 @@ public class ChessInit {
     root.getChildren().add(FXMLLoader.load(ChessApp.class.getResource("Chessboard.fxml")));
     updatePiecesOut(piecesOutPane); //To show all piecesOut
 
+    /*Here i create a Thread to wait for an update to the chessboard, if the chessboard has been
+    updated, it will run ChessPlayUpdate() and updatePiecesOut()*/
+
     Thread thread = new Thread(new Runnable() {
       @Override
       public void run() {
@@ -329,6 +344,7 @@ public class ChessInit {
     thread.start();
   }
 
+  //This is a method to update the GUI on the chessboard, if a piece has been moved. 
   private void ChessPlayUpdate(Group g) throws FileNotFoundException {
     g.getChildren().clear();
     g.getChildren().add(chessboard.ChessboardView());
@@ -341,6 +357,7 @@ public class ChessInit {
     }
   }
 
+  //This is initializing how the chessboard will be. This is initialized by the controller, because it has the gridpane.
   public void ChessPlaySetup(GridPane gridPane) {
     paneArray = new Pane[8][8];
     for (int i = 0; i < 8; i++) {
@@ -372,6 +389,8 @@ public class ChessInit {
               root.getChildren().add(root.getChildren().size()-1, piece);
 
               BasePiece boardpiece = chessboard.getChessboardState().get(xaxis).get(yaxis);
+              /* Here i initialize an AnimationTimer, so that when you click on the piece, you can
+              see that the piece image is updated to your mousepointers coordinates */
               new AnimationTimer() {
                 private long tick = 0;
                 @Override
@@ -414,6 +433,7 @@ public class ChessInit {
     }
   }
 
+  //This is initializing how the chessboard will be. This is initialized by the controller, because it has the gridpane.
   public void ChessPlayInitialize(GridPane grid, Pane pane, Label player1, Label player2) {
     ChessPlaySetup(grid);
     setPane(pane);
@@ -454,7 +474,7 @@ public class ChessInit {
     checkGameState.setPlayerBName(nameB);
   }
 
-  boolean drawOffer = false;
+  private boolean drawOffer = false; //protected because this is the only class that uses it.
   public void drawState() throws GameEndedException {
     if (!checkGameState.getDraw()) {
       if (!ChessMove.getGameOver()) {
@@ -477,10 +497,11 @@ public class ChessInit {
       ChessMove.setGameOver(true);
     }
   }
-
+  
   public void saveGameState(IO IOsave) throws GameEndedException {
     if (!ChessMove.getGameOver()) {
       try {
+          //Here i use a FileChooser to open the OS explorer, so that you can save a file. FileChooser uses my own IO save method from the Class IO. 
           FileChooser fileChooser = new FileChooser();
           fileChooser.setTitle("Save");
           fileChooser.getExtensionFilters().addAll(new ExtensionFilter("Text files", "*.txt"));
@@ -496,6 +517,7 @@ public class ChessInit {
     }
   }
 
+  //Shows the validated patterns made from the Move class as green squares.
   private void availPattern(BasePiece piece, int x, int y) {
     if (!ChessMove.getGameOver()) {
       if ((piece.getPieceColor() == 'w' && ChessMove.getWhiteTurn()) || (piece.getPieceColor() == 'b' && ChessMove.getBlackTurn()))  {

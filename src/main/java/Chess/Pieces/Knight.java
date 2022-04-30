@@ -32,7 +32,7 @@ public class Knight extends BasePiece {
             }
         }
         
-        return pattern;
+        return new ArrayList<>(pattern);
     }
     
 }

@@ -132,7 +132,7 @@ public class PiecePlacer {
     }
 
     public ArrayList<ArrayList<BasePiece>> getOuter() {
-        return new ArrayList<ArrayList<BasePiece>>(this.outer);
+        return new ArrayList<>(outer);
     }
 
 }

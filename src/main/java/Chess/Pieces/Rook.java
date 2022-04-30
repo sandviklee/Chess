@@ -29,7 +29,7 @@ public class Rook extends BasePiece{
             }
         }
         
-        return pattern;
+        return new ArrayList<>(pattern);
     }
     
 }

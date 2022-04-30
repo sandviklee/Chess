@@ -17,13 +17,17 @@ public class Move {
     private boolean statement = false;
     private boolean gameOver = false;
     private boolean knockedOut = false;
-    public ArrayList<BasePiece> piecesOut = new ArrayList<>();
+    private ArrayList<BasePiece> piecesOut = new ArrayList<>();
 
     public Move(Chessboard chessboard) {
         this.chessboard = chessboard;
         if (chessboard == null) {
             throw new NullPointerException();
         }
+    }
+
+    public ArrayList<BasePiece> getPiecesOut() {
+        return new ArrayList<>(piecesOut);
     }
 
     public boolean getMoving() {
@@ -55,9 +59,10 @@ public class Move {
     }
 
     public ArrayList<ArrayList<Integer>> getValidatedPattern(int x, int y) {
-        return validatedPattern(x, y);
+        return new ArrayList<>(validatedPattern(x, y));
     }
 
+    //Move method that is updated to how the chessboard is.
     public void MovePiece(int x_1, int y_1, int x_2, int y_2) {
         System.out.println(gameOver);
         Moving = true;
@@ -173,7 +178,7 @@ public class Move {
                 if (chessboardState.get(pos.get(1)).get(pos.get(0)) != null) {
                     if (chessboardState.get(pos.get(1)).get(pos.get(0)).getPieceColor() == piece.getPieceColor()) {
                         allInvalidPos.add(new ArrayList<>(pos));
-                    } // FIKSE AT MAN IKKE KAN HOPPE OVER MED 2 STEPS
+                    } 
                 }
             }
 
@@ -399,7 +404,7 @@ public class Move {
                 pattern.remove(pos);
             }
         } 
-    return pattern;
+    return new ArrayList<>(pattern);
     }
 }
 

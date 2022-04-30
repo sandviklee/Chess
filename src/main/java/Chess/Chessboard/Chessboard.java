@@ -47,6 +47,7 @@ public class Chessboard {
     }
 
     //Adding all images.
+    //IMAGES SHOULD BE VISIBILE TO ANYONE, AND THEREFORE NO ENCAPSULATION.
     public Image bbImage = addChessImage("cpb/b_bishop");
     public Image hbImage = addChessImage("cpb/b_knight");
     public Image rbImage = addChessImage("cpb/b_rook");
@@ -141,7 +142,7 @@ public class Chessboard {
                 }
             }
         }
-        return ImageArray;
+        return new ArrayList<>(ImageArray);
 
     }
 

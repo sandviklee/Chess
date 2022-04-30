@@ -26,6 +26,7 @@ public class PiecePlacerTest {
         pieceplacer = new PiecePlacer(file);
     }
 
+    //Since i check IO in IOTest, I can load in files in these tests.
     @Test
     public void testPiecePlacer() {
         assertTrue(pieceplacer.getPieceList().size() == 64, "Checks if there are 64 pieces to place.");

@@ -97,7 +97,7 @@ public class CheckGameState {
         }
         return null;
     }
-    public int checkState;
+    protected int checkState; //This is protected because im just using it here, and in the Tests.
     public void inCheck() throws FileNotFoundException {
         chessboardState = chessboard.getChessboardState();
         kingPosB = kingPosFinder(chessboardState, 'b');
@@ -164,22 +164,33 @@ public class CheckGameState {
                 }
                 allBlockedMoves.remove(kingPosW);
 
-                if (allWhitePiecesPos.stream().anyMatch(a -> ChessMove.getValidatedPattern(a.get(0), a.get(1)).stream().anyMatch(c -> piecePosWCheck.contains(c)))) {  
+                if (allWhitePiecesPos.stream().anyMatch(a -> ChessMove.getValidatedPattern(a.get(0), a.get(1)).stream().anyMatch(c -> piecePosWCheck.contains(c)))) { 
+                    //Oneliner that checks if there are any pieces that can knock out the checking piece. 
                     if (piecePosWCheck.size() > 1 && !(piecePosWCheck.stream().distinct().count() <= 1)) {
                         System.out.println("State 2");
                         checkMate = true;
                     }
                 } else {
                     if ((allBlockedMoves.stream().filter(b -> chessboardState.get(b.get(1)).get(b.get(0)) != null)).anyMatch(a -> chessboardState.get(a.get(1)).get(a.get(0)).getPieceColor() == 'w')) {
+                        //Oneliner that checks for all the white pieces in the blocked move area.
                         if (allBlockedMoves.stream().filter(b -> chessboardState.get(b.get(1)).get(b.get(0)) != null).anyMatch(a -> ChessMove.getValidatedPattern(a.get(0), a.get(1)).stream().anyMatch(c -> piecePosWCheck.contains(c)))) {
+                            //Oneliner that checks if there are any pieces that blocks the king from moving that can knock out the piece.
                             if (piecePosWCheck.size() > 1 && !(piecePosWCheck.stream().distinct().count() <= 1)) {
                                 System.out.println("State 4");
                                 checkMate = true;
                             }
                         }
                         else {
-                            System.out.println("State 3");
-                            checkMate = true;
+                            //System.out.println(ChessMove.getValidatedPattern(piecePosWCheck.get(0).get(0), piecePosWCheck.get(0).get(1)).stream().filter(a -> (a.get(0) < piecePosWCheck.get(0).get(0) && a.get(0) > kingPosW.get(0))).filter(b -> (b.get(1) > piecePosWCheck.get(0).get(1) && b.get(1) < kingPosW.get(1))).toList());
+                            if (allWhitePiecesPos.stream().anyMatch(a -> ChessMove.getValidatedPattern(a.get(0), a.get(1)).stream().anyMatch(c -> (ChessMove.getValidatedPattern(piecePosWCheck.get(0).get(0), piecePosWCheck.get(0).get(1)).stream().filter(x -> (x.get(0) < piecePosWCheck.get(0).get(0) && x.get(0) > kingPosW.get(0))).filter(y -> (y.get(1) > piecePosWCheck.get(0).get(1) && y.get(1) < kingPosW.get(1)))).toList().contains(c)))) {
+                               /*Oneliner that is not finished, but checks if there are pieces that can block the path to the king, such that you cannot put it in checkmate.
+                                if you want to check this out, load in the file "PieceCanBlockCheckmatePattern" from testFiles in saveFiles.
+                                This oneliner is also not enough to check every state, read the documentation at point 3.5 for more information.*/
+                            } else {
+                                System.out.println("State 3");
+                                checkMate = true;
+                            }
+                            
                         }
                     } else {
                         System.out.println("State 1");

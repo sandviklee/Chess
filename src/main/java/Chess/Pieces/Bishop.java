@@ -28,7 +28,7 @@ public class Bishop extends BasePiece {
             }
         }
     
-        return pattern;
+        return new ArrayList<>(pattern);
     }
     
 }

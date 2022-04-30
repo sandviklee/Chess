@@ -30,7 +30,8 @@ public class ChessboardTest {
     public void setup() throws FileNotFoundException, NotEnoughPiecesException {
         chessboard = new Chessboard();
     }
-
+    
+    //Since i check IO in IOTest, I can load in files in these tests.
     @Test
     public void testChessboard() {
         assertNotNull(chessboard.getChessboardState(), "Checks if there is a chessboard available.");
